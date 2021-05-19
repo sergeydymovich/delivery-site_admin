@@ -1,0 +1,20 @@
+.wrapper {
+  width: 300px;
+  border-right: 1px solid lightgrey;
+}
+
+.list {
+  list-style: none;
+  padding-left: 20px;
+}
+
+.listItem {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+}
+
+.itemIcon {
+  margin-right: 15px;
+}
