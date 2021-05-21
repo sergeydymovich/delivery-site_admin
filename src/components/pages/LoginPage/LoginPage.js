@@ -84,7 +84,7 @@ export default function LoginPage() {
         <form onSubmit={loggedIn} className={styles.form} noValidate>
           <TextField
             error={error}
-            helperText="Неверный телефон или пароль"
+            helperText={error && "Неверный телефон или пароль"}
             variant="outlined"
             margin="normal"
             required
@@ -98,7 +98,7 @@ export default function LoginPage() {
           />
           <TextField
             error={error}
-            helperText="Неверный телефон или пароль"
+            helperText={error && "Неверный телефон или пароль"}
             variant="outlined"
             margin="normal"
             required
