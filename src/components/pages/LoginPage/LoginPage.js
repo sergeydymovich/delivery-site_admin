@@ -11,9 +11,9 @@ import {
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
-import axios from "utils/axios.utils";
 import { useDispatch } from "react-redux";
 import { loggedInUser } from "reducers/authSlice";
+import { fetchLoggedInUser } from "api/api";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -48,15 +48,15 @@ export default function LoginPage() {
 
   const loggedIn = (e) => {
     e.preventDefault();
-    axios
-      .POST("/login", { phone, password })
+
+    fetchLoggedInUser(phone, password)
       .then((res) => {
-        dispatch(loggedInUser(res.data.user));
+        const { user, token } = res.data;
+        dispatch(loggedInUser({ ...user, token }));
         console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
-
         setError(true);
       });
   };

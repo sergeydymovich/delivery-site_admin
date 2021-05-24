@@ -2,15 +2,16 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const counterSlice = createSlice({
   name: "auth",
-  initialState: {
-    user: null,
-  },
+  initialState: {},
   reducers: {
     loggedInUser: (state, action) => {
-      state.user = action.payload;
+      const { firstName, role, token } = action.payload;
+      state.name = firstName;
+      state.role = role;
+      state.token = token;
     },
     loggedOutUser: (state) => {
-      state.user = null;
+      state = null;
     },
   },
 });
