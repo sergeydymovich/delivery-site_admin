@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ProductsPage() {
+function ProductsListPage() {
   const classes = useStyles();
   return (
     <Link to="/products/create">
@@ -19,4 +19,4 @@ function ProductsPage() {
   );
 }
 
-export default ProductsPage;
+export default ProductsListPage;

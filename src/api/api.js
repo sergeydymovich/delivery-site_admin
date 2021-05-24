@@ -10,6 +10,18 @@ export const fetchGetCategories = async () => {
   return await axios.get(`/categories`);
 };
 
+export const fetchAddCategory = async (name, token) => {
+  return await axios.post(
+    `/categories`,
+    { name },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
 export const fetchLoggedInUser = async (phone, password) => {
   return await axios.post(`/login`, { phone, password });
 };

@@ -13,7 +13,7 @@ import logo from "assets/images/logo.png";
 import { Link } from "react-router-dom";
 import {
   AppBar,
-  CssBaseline,
+  Box,
   Divider,
   Drawer,
   Toolbar,
@@ -44,13 +44,15 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     height: "50px",
   },
+  listItem: {
+    textTransform: "uppercase",
+  },
 }));
 
 function Navigation() {
   const classes = useStyles();
   return (
     <>
-      <CssBaseline />
       <AppBar position="fixed" color="default" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" noWrap>
@@ -66,18 +68,18 @@ function Navigation() {
         }}
         anchor="left"
       >
-        <div className={classes.toolbar}>
-          <div className={classes.logoWrapper}>
+        <Box className={classes.toolbar}>
+          <Box className={classes.logoWrapper}>
             <img className={classes.logo} src={logo} alt="logo" />
             <Typography variant="h4" component="p" noWrap>
               СТОЛЛЕ
             </Typography>
-          </div>
-        </div>
+          </Box>
+        </Box>
         <Divider />
-        <List className={classes.list}>
+        <List>
           <Link to="/orders">
-            <ListItem button>
+            <ListItem className={classes.listItem} button>
               <ListItemIcon>
                 <NotificationsActiveIcon />
               </ListItemIcon>
@@ -86,7 +88,7 @@ function Navigation() {
           </Link>
 
           <Link to="/products">
-            <ListItem button>
+            <ListItem className={classes.listItem} button>
               <ListItemIcon>
                 <RestaurantMenuIcon />
               </ListItemIcon>
@@ -94,21 +96,23 @@ function Navigation() {
             </ListItem>
           </Link>
 
-          <ListItem button>
+          <ListItem className={classes.listItem} button>
             <ListItemIcon>
               <ViewComfyIcon />
             </ListItemIcon>
             <ListItemText primary="ингредиенты" />
           </ListItem>
 
-          <ListItem button>
-            <ListItemIcon>
-              <CategoryIcon />
-            </ListItemIcon>
-            <ListItemText primary="категории" />
-          </ListItem>
+          <Link to="/categories">
+            <ListItem className={classes.listItem} button>
+              <ListItemIcon>
+                <CategoryIcon />
+              </ListItemIcon>
+              <ListItemText primary="категории" />
+            </ListItem>
+          </Link>
 
-          <ListItem button>
+          <ListItem className={classes.listItem} button>
             <ListItemIcon>
               <SupervisorAccountIcon />
             </ListItemIcon>

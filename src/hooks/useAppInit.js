@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 
 export const useAppInit = () => {
   const history = useHistory();
-  const user = useSelector((s) => s.auth.user);
+  const user = useSelector((s) => s.auth.token);
 
   useEffect(() => {
     if (user) {
