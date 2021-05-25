@@ -5,7 +5,7 @@ import React from "react";
 function CategoriesListPage() {
   return (
     <Link to="/categories/create">
-      <Button variant="outlined" color="primary">
+      <Button variant="contained" size="large" color="primary">
         Добавить категорию
       </Button>
     </Link>
