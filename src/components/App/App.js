@@ -1,8 +1,12 @@
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import { Box, CssBaseline } from "@material-ui/core";
 import Layout from "components/elements/Layout/Layout";
 import { useAppInit } from "hooks/useAppInit";
+import OrdersPage from "components/pages/OrdersPage/OrdersPage";
+import ProductsListPage from "components/pages/ProductsPages/ProductsListPage/ProductsListPage";
+import CreateProductsPage from "components/pages/ProductsPages/CreateProductPage/CreateProductPage";
+import CategoriesPage from "components/pages/CategoriesPage/CategoriesPage";
 
 function App() {
   useAppInit();
@@ -11,9 +15,18 @@ function App() {
       <CssBaseline />
       <Switch>
         <Route path="/login" component={LoginPage} />
-        <Route path="/">
-          <Layout />
-        </Route>
+        <Layout>
+          <Redirect from="/" to="/orders" />
+          <Route path="/orders" component={OrdersPage} />
+          <Route path="/categories" component={CategoriesPage} />
+          <Route exact strict path="/products" component={ProductsListPage} />
+          <Route
+            exact
+            strict
+            path="/products/create"
+            component={CreateProductsPage}
+          />
+        </Layout>
       </Switch>
     </Box>
   );

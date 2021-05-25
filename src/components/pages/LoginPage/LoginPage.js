@@ -53,7 +53,6 @@ export default function LoginPage() {
       .then((res) => {
         const { user, token } = res.data;
         dispatch(loggedInUser({ ...user, token }));
-        // console.log(res.data);
       })
       .catch((err) => {
         console.log(err);

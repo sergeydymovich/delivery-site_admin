@@ -1,7 +1,9 @@
-import counterSlice from "reducers/authSlice";
+import authSlice from "reducers/authSlice";
+import categoriesSlice from "reducers/categoriesSlice";
 
 const rootReducer = {
-  auth: counterSlice,
+  auth: authSlice,
+  categories: categoriesSlice,
 };
 
 export default rootReducer;
