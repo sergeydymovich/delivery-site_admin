@@ -1,11 +1,23 @@
-import { Button, Container, TextField } from "@material-ui/core";
+import { Button, Container, makeStyles, TextField } from "@material-ui/core";
 import React, { useState } from "react";
 import { fetchAddCategory } from "api/api";
 import { useSelector } from "react-redux";
 
+const useStyles = makeStyles((theme) => ({
+  form: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  input: {
+    marginRight: "15px",
+  },
+}));
+
 function CreateCategoryPage() {
   const [name, setName] = useState("");
   const token = useSelector((s) => s.auth.token);
+  const classes = useStyles();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,18 +37,18 @@ function CreateCategoryPage() {
 
   return (
     <Container maxWidth="xs">
-      <form onSubmit={handleSubmit}>
+      <form className={classes.form} onSubmit={handleSubmit}>
         <TextField
-          id="filled-basic"
-          label="Категория"
-          variant="filled"
-          fullWidth
+          className={classes.input}
+          id="outlined-secondary"
+          label="Название категории"
+          variant="outlined"
+          color="primary"
           margin="normal"
           onChange={handleCategoryName}
         />
         <Button
           type="submit"
-          fullWidth
           variant="contained"
           size="large"
           color="primary"

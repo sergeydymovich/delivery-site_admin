@@ -72,7 +72,7 @@ function Navigation() {
       >
         <Box className={classes.toolbar}>
           <Box className={classes.logoWrapper}>
-            <Avatar src={logo} variant="square" className={classes.logo} />
+            <Avatar src={logo} variant="square" />
             <Typography variant="h5" component="p" noWrap>
               СТОЛЛЕ
             </Typography>
