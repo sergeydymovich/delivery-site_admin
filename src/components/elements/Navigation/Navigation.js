@@ -1,4 +1,5 @@
 import React from "react";
+import UserProfile from "components/elements/UserProfile/UserProfile";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -13,6 +14,7 @@ import logo from "assets/images/logo.png";
 import { Link } from "react-router-dom";
 import {
   AppBar,
+  Avatar,
   Box,
   Divider,
   Drawer,
@@ -35,14 +37,16 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
   },
   toolbar: theme.mixins.toolbar,
+  header: {
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
   logoWrapper: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     height: "100%",
-  },
-  logo: {
-    height: "50px",
   },
   listItem: {
     textTransform: "uppercase",
@@ -54,10 +58,8 @@ function Navigation() {
   return (
     <>
       <AppBar position="fixed" color="default" className={classes.appBar}>
-        <Toolbar>
-          <Typography variant="h6" noWrap>
-            Permanent drawer
-          </Typography>
+        <Toolbar className={classes.header}>
+          <UserProfile />
         </Toolbar>
       </AppBar>
       <Drawer
@@ -70,8 +72,8 @@ function Navigation() {
       >
         <Box className={classes.toolbar}>
           <Box className={classes.logoWrapper}>
-            <img className={classes.logo} src={logo} alt="logo" />
-            <Typography variant="h4" component="p" noWrap>
+            <Avatar src={logo} variant="square" className={classes.logo} />
+            <Typography variant="h5" component="p" noWrap>
               СТОЛЛЕ
             </Typography>
           </Box>

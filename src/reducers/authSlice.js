@@ -5,12 +5,10 @@ export const counterSlice = createSlice({
   initialState: {},
   reducers: {
     loggedInUser: (state, action) => (state = action.payload),
-    loggedOutUser: (state) => {
-      state = null;
-    },
+    loggedOutUser: (state) => (state = {}),
   },
 });
 
-export const { loggedInUser } = counterSlice.actions;
+export const { loggedInUser, loggedOutUser } = counterSlice.actions;
 
 export default counterSlice.reducer;
