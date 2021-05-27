@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import UserProfile from "components/elements/UserProfile/UserProfile";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
@@ -9,13 +9,16 @@ import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import RestaurantMenuIcon from "@material-ui/icons/RestaurantMenu";
 import ViewComfyIcon from "@material-ui/icons/ViewComfy";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
+import ScatterPlotIcon from "@material-ui/icons/ScatterPlot";
 import CategoryIcon from "@material-ui/icons/Category";
+import BorderAllIcon from "@material-ui/icons/BorderAll";
 import logo from "assets/images/logo.png";
 import { Link } from "react-router-dom";
 import {
   AppBar,
   Avatar,
   Box,
+  Collapse,
   Divider,
   Drawer,
   Toolbar,
@@ -51,10 +54,18 @@ const useStyles = makeStyles((theme) => ({
   listItem: {
     textTransform: "uppercase",
   },
+  nested: {
+    paddingLeft: theme.spacing(4),
+  },
 }));
 
 function Navigation() {
+  const [activeCategory, setActiveCategory] = useState("");
   const classes = useStyles();
+
+  const toogleShowNestedList = (category) => {
+    setActiveCategory((prev) => (prev === category ? "" : category));
+  };
   return (
     <>
       <AppBar position="fixed" color="default" className={classes.appBar}>
@@ -98,12 +109,42 @@ function Navigation() {
             </ListItem>
           </Link>
 
-          <ListItem className={classes.listItem} button>
+          <ListItem
+            className={classes.listItem}
+            onClick={() => toogleShowNestedList("ингредиенты")}
+            button
+          >
             <ListItemIcon>
               <ViewComfyIcon />
             </ListItemIcon>
             <ListItemText primary="ингредиенты" />
           </ListItem>
+
+          <Collapse
+            in={activeCategory === "ингредиенты"}
+            timeout="auto"
+            unmountOnExit
+          >
+            <List component="div" disablePadding>
+              <Link to="/ingredients">
+                <ListItem button className={classes.nested}>
+                  <ListItemIcon>
+                    <BorderAllIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="основные" />
+                </ListItem>
+              </Link>
+
+              <Link to="/extra-ingredients">
+                <ListItem button className={classes.nested}>
+                  <ListItemIcon>
+                    <ScatterPlotIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="дополнительные" />
+                </ListItem>
+              </Link>
+            </List>
+          </Collapse>
 
           <Link to="/categories">
             <ListItem className={classes.listItem} button>

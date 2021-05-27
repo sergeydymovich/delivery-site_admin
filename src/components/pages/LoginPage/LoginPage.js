@@ -53,6 +53,7 @@ export default function LoginPage() {
       .then((res) => {
         const { user, token } = res.data;
         dispatch(loggedInUser({ ...user, token }));
+        localStorage.setItem("token", token);
       })
       .catch((err) => {
         console.log(err);

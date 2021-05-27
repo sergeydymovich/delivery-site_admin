@@ -7,6 +7,8 @@ import OrdersPage from "components/pages/OrdersPage/OrdersPage";
 import ProductsListPage from "components/pages/ProductsPages/ProductsListPage/ProductsListPage";
 import CreateProductsPage from "components/pages/ProductsPages/CreateProductPage/CreateProductPage";
 import CategoriesPage from "components/pages/CategoriesPage/CategoriesPage";
+import IngredientsPage from "components/pages/IngredientsPage/IngredientsPage";
+import ExtraIngredientsPage from "components/pages/ExtraIngredientsPage/ExtraIngredientsPage";
 
 function App() {
   useAppInit();
@@ -19,6 +21,8 @@ function App() {
           <Redirect from="/" to="/orders" />
           <Route path="/orders" component={OrdersPage} />
           <Route path="/categories" component={CategoriesPage} />
+          <Route path="/ingredients" component={IngredientsPage} />
+          <Route path="/extra-ingredients" component={ExtraIngredientsPage} />
           <Route exact strict path="/products" component={ProductsListPage} />
           <Route
             exact

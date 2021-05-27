@@ -7,8 +7,8 @@ import {
 } from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
 import React, { useState } from "react";
-import { fetchAddCategory } from "api/api";
-import { addCategory } from "reducers/categoriesSlice";
+import { fetchAddIngredient } from "api/api";
+import { addIngredient } from "reducers/ingredientsSlice";
 import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CreateCategoryForm() {
+function CreateIngredientForm() {
   const [name, setName] = useState("");
   const [showForm, setShowForm] = useState(false);
   const classes = useStyles();
@@ -40,17 +40,18 @@ function CreateCategoryForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetchAddCategory(name)
+    fetchAddIngredient(name)
       .then((res) => {
-        const { category } = res.data;
-        dispatch(addCategory(category));
+        const { ingredient } = res.data;
+        dispatch(addIngredient(ingredient));
+        setName("");
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const handleCategoryName = (e) => {
+  const handleIngredientName = (e) => {
     setName(e.target.value);
   };
 
@@ -67,7 +68,7 @@ function CreateCategoryForm() {
           color="primary"
           onClick={toogleShowForm}
         >
-          Добавить категорию
+          Добавить ингредиент
         </Button>
       )}
       {showForm && (
@@ -82,11 +83,11 @@ function CreateCategoryForm() {
           <TextField
             className={classes.input}
             id="outlined-secondary"
-            label="Название категории"
+            label="Название ингредиента"
             variant="outlined"
             color="primary"
             margin="normal"
-            onChange={handleCategoryName}
+            onChange={handleIngredientName}
           />
           <Button
             type="submit"
@@ -103,4 +104,4 @@ function CreateCategoryForm() {
   );
 }
 
-export default CreateCategoryForm;
+export default CreateIngredientForm;
