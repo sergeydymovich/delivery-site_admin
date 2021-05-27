@@ -1,7 +1,8 @@
 import axiosBase from "axios";
 
 const API_BASE = "http://localhost:5000";
-const AUTH_TOKEN = localStorage.getItem("token");
+const storageUser = JSON.parse(localStorage.getItem("user"));
+const AUTH_TOKEN = storageUser.token;
 
 export const axios = axiosBase.create({
   baseURL: API_BASE,

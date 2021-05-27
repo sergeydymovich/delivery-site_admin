@@ -52,8 +52,9 @@ export default function LoginPage() {
     fetchLoggedInUser(phone, password)
       .then((res) => {
         const { user, token } = res.data;
+        const jsonUser = JSON.stringify({ ...user, token });
         dispatch(loggedInUser({ ...user, token }));
-        localStorage.setItem("token", token);
+        localStorage.setItem("user", jsonUser);
       })
       .catch((err) => {
         console.log(err);

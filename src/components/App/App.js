@@ -12,6 +12,7 @@ import ExtraIngredientsPage from "components/pages/ExtraIngredientsPage/ExtraIng
 
 function App() {
   useAppInit();
+
   return (
     <Box display="flex">
       <CssBaseline />
@@ -24,12 +25,7 @@ function App() {
           <Route path="/ingredients" component={IngredientsPage} />
           <Route path="/extra-ingredients" component={ExtraIngredientsPage} />
           <Route exact strict path="/products" component={ProductsListPage} />
-          <Route
-            exact
-            strict
-            path="/products/create"
-            component={CreateProductsPage}
-          />
+          <Route path="/products/create" component={CreateProductsPage} />
         </Layout>
       </Switch>
     </Box>

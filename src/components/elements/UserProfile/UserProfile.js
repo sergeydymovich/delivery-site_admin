@@ -26,7 +26,7 @@ function UserProfile() {
 
   const handleLoggedOut = () => {
     dispatch(loggedOutUser());
-    localStorage.removeItem("token");
+    localStorage.removeItem("user");
   };
 
   return (
