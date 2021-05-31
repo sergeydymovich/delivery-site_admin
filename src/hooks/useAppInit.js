@@ -1,22 +1,11 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { loggedInUser } from "reducers/authSlice";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 export const useAppInit = () => {
-  const history = useHistory();
-  const token = useSelector((s) => s.auth.token);
-  const storageUser = JSON.parse(localStorage.getItem("user")) || null;
-  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
-    if (storageUser || token) {
-      history.push("/orders");
-      if (!token) {
-        dispatch(loggedInUser(storageUser));
-      }
-    } else {
-      history.push("/login");
-    }
-  }, [token, history, storageUser, dispatch]);
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+  }, [token]);
 };

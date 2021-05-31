@@ -12,8 +12,8 @@ import {
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch } from "react-redux";
-import { loggedInUser } from "reducers/authSlice";
-import { fetchLoggedInUser } from "api/api";
+import { login } from "reducers/authSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -40,26 +40,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function LoginPage() {
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("375447453285");
+  const [password, setPassword] = useState("berezovka1994");
   const [error, setError] = useState(false);
   const styles = useStyles();
   const dispatch = useDispatch();
 
-  const loggedIn = (e) => {
+  const loggedIn = async (e) => {
     e.preventDefault();
 
-    fetchLoggedInUser(phone, password)
-      .then((res) => {
-        const { user, token } = res.data;
-        const jsonUser = JSON.stringify({ ...user, token });
-        dispatch(loggedInUser({ ...user, token }));
-        localStorage.setItem("user", jsonUser);
-      })
-      .catch((err) => {
-        console.log(err);
-        setError(true);
-      });
+    try {
+      unwrapResult(await dispatch(login({ phone, password })));
+    } catch (error) {
+      // setError(error.message);
+      // console.log(console.log(error));
+    }
   };
 
   const handlePhone = (e) => {

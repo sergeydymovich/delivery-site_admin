@@ -1,17 +1,9 @@
-import axiosBase from "axios";
+import axios from "axios";
 
 const API_BASE = "http://localhost:5000";
-const storageUser = JSON.parse(localStorage.getItem("user"));
-const AUTH_TOKEN = storageUser.token;
+axios.defaults.baseURL = API_BASE;
 
-export const axios = axiosBase.create({
-  baseURL: API_BASE,
-  headers: {
-    Authorization: `Bearer ${AUTH_TOKEN}`,
-  },
-});
-
-export const fetchLoggedInUser = async (phone, password) => {
+export const fetchLogin = async (phone, password) => {
   return await axios.post(`/login`, { phone, password });
 };
 
