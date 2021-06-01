@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import CreateExtraIngredientForm from "./CreateExtraIngredientForm";
 import { useDispatch, useSelector } from "react-redux";
 import { getExtraIngredients } from "reducers/extraIngredientsSlice";
-import { fetchGetExtraIngredients } from "api/api";
 import CreateIcon from "@material-ui/icons/Create";
 import {
   Avatar,
@@ -32,15 +31,10 @@ function ExtraIngredientsPage() {
   const classes = useStyles();
 
   useEffect(() => {
-    fetchGetExtraIngredients()
-      .then((res) => {
-        const { ingredients } = res.data;
-        dispatch(getExtraIngredients(ingredients));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [dispatch]);
+    if (!ingredients.length) {
+      dispatch(getExtraIngredients());
+    }
+  }, [dispatch, ingredients.length]);
 
   return (
     <Container maxWidth="xl">

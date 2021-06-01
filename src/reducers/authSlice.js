@@ -3,12 +3,12 @@ import { fetchLogin } from "api/api";
 
 export const login = createAsyncThunk(
   "auth/login",
-  async ({ phone, password }, { dispatch, rejectWithValue }) => {
+  async ({ phone, password }, { rejectWithValue }) => {
     try {
       const response = await fetchLogin(phone, password);
       const { user, token } = response.data;
 
-      return { ...user, token };
+      return { user, token };
     } catch (e) {
       return rejectWithValue(e.response.data.errorMessage);
     }
@@ -19,17 +19,24 @@ export const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: {},
-    errorMessage: "",
+  },
+  reducers: {
+    logout: (state) => {
+      state.user = {};
+      state.token = null;
+    },
   },
   extraReducers: {
     [login.pending]: () => {},
-    [login.fulfilled]: (state, action) => (state.user = action.payload),
-    [login.rejected]: (state, action) => {
-      state.errorMessage = action.payload;
+    [login.fulfilled]: (state, action) => {
+      const { user, token } = action.payload;
+      state.user = user;
+      state.token = token;
     },
+    [login.rejected]: () => {},
   },
 });
 
-export const { setUserInfo, loggedOutUser } = authSlice.actions;
+export const { logout } = authSlice.actions;
 
 export default authSlice.reducer;

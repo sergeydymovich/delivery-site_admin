@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 export default function LoginPage() {
   const [phone, setPhone] = useState("375447453285");
   const [password, setPassword] = useState("berezovka1994");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
   const styles = useStyles();
   const dispatch = useDispatch();
 
@@ -50,21 +50,27 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
-      unwrapResult(await dispatch(login({ phone, password })));
+      unwrapResult(
+        await dispatch(
+          login({
+            phone,
+            password,
+          })
+        )
+      );
     } catch (error) {
-      // setError(error.message);
-      // console.log(console.log(error));
+      setError(error);
     }
   };
 
   const handlePhone = (e) => {
-    setError(false);
     setPhone(e.target.value);
+    setError("");
   };
 
   const handlePassword = (e) => {
-    setError(false);
     setPassword(e.target.value);
+    setError("");
   };
 
   return (
@@ -80,7 +86,7 @@ export default function LoginPage() {
         <form onSubmit={loggedIn} className={styles.form} noValidate>
           <TextField
             error={error}
-            helperText={error && "Неверный телефон или пароль"}
+            helperText={!!error && error}
             variant="outlined"
             margin="normal"
             required
@@ -94,7 +100,7 @@ export default function LoginPage() {
           />
           <TextField
             error={error}
-            helperText={error && "Неверный телефон или пароль"}
+            helperText={!!error && error}
             variant="outlined"
             margin="normal"
             required

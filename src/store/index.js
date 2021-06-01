@@ -13,10 +13,10 @@ import storage from "redux-persist/lib/storage";
 import rootReducer from "reducers";
 
 const authConfig = {
-  key: "auth",
+  key: "root",
   version: 1,
   storage,
-  whiteList: ["auth"],
+  whitelist: ["auth"],
 };
 
 const persistedReducer = persistReducer(authConfig, rootReducer);

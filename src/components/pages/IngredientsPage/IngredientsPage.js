@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import CreateIngredientForm from "./CreateIngredientForm";
 import { useDispatch, useSelector } from "react-redux";
 import { getIngredients } from "reducers/ingredientsSlice";
-import { fetchGetIngredients } from "api/api";
 import CreateIcon from "@material-ui/icons/Create";
 import {
   Container,
@@ -20,15 +19,10 @@ function IngredientsPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchGetIngredients()
-      .then((res) => {
-        const { ingredients } = res.data;
-        dispatch(getIngredients(ingredients));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [dispatch]);
+    if (!ingredients.length) {
+      dispatch(getIngredients());
+    }
+  }, [dispatch, ingredients.length]);
 
   return (
     <Container maxWidth="xl">

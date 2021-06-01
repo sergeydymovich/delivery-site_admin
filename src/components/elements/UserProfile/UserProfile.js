@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PersonIcon from "@material-ui/icons/Person";
-import { loggedOutUser } from "reducers/authSlice";
+import { logout } from "reducers/authSlice";
 import {
   Avatar,
   Box,
@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 
 function UserProfile() {
-  const { role } = useSelector((s) => s.auth);
+  const role = useSelector((state) => state.auth.user.role);
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
 
@@ -25,8 +25,7 @@ function UserProfile() {
   };
 
   const handleLoggedOut = () => {
-    dispatch(loggedOutUser());
-    localStorage.removeItem("user");
+    dispatch(logout());
   };
 
   return (

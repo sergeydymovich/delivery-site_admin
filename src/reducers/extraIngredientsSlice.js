@@ -1,4 +1,18 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { fetchGetExtraIngredients } from "api/api";
+
+export const getExtraIngredients = createAsyncThunk(
+  "/extra-ingredients",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetchGetExtraIngredients();
+
+      return response.data.ingredients;
+    } catch (e) {
+      return rejectWithValue(e.response.data.errorMessage);
+    }
+  }
+);
 
 export const extraIngredientsSlice = createSlice({
   name: "extraIngredients",
@@ -6,16 +20,19 @@ export const extraIngredientsSlice = createSlice({
     extraIngredientsArr: [],
   },
   reducers: {
-    getExtraIngredients: (state, action) => {
+    addExtraIngredient: (state, action) => {
+      state.ingredientsArr.push(action.payload);
+    },
+  },
+  extraReducers: {
+    [getExtraIngredients.pending]: () => {},
+    [getExtraIngredients.fulfilled]: (state, action) => {
       state.extraIngredientsArr = action.payload;
     },
-    addExtraIngredient: (state, action) => {
-      state.extraIngredientsArr.push(action.payload);
-    },
+    [getExtraIngredients.rejected]: () => {},
   },
 });
 
-export const { getExtraIngredients, addExtraIngredient } =
-  extraIngredientsSlice.actions;
+export const { addExtraIngredient } = extraIngredientsSlice.actions;
 
 export default extraIngredientsSlice.reducer;

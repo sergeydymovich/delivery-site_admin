@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import CreateCategoryForm from "./CreateCategoryForm";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategories } from "reducers/categoriesSlice";
-import { fetchGetCategories } from "api/api";
 import CreateIcon from "@material-ui/icons/Create";
 import {
   Container,
@@ -20,15 +19,10 @@ function CategoriesPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchGetCategories()
-      .then((res) => {
-        const { categories } = res.data;
-        dispatch(getCategories(categories));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [dispatch]);
+    if (!categories.length) {
+      dispatch(getCategories());
+    }
+  }, [dispatch, categories.length]);
 
   return (
     <Container maxWidth="xl">
