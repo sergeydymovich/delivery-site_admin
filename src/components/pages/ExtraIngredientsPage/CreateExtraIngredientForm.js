@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Container,
   IconButton,
@@ -11,7 +10,7 @@ import React, { useState } from "react";
 import { fetchAddExtraIngredient } from "api/api";
 import { addExtraIngredient } from "reducers/extraIngredientsSlice";
 import { useDispatch } from "react-redux";
-import { PhotoCamera, Close } from "@material-ui/icons";
+import UploadPhoto from "components/ui-kit/uploadPhoto/uploadPhoto";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -31,37 +30,6 @@ const useStyles = makeStyles((theme) => ({
   },
   closeBtn: {
     marginRight: "10px",
-  },
-  inputImage: {
-    display: "none",
-  },
-  uploadLabel: {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    cursor: "pointer",
-  },
-  uploadWrapper: {
-    height: "200px",
-    width: "200px",
-  },
-  imageWrapper: {
-    width: "100%",
-    height: "100%",
-    position: "relative",
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-    borderRadius: "15px",
-  },
-  deleteImageBtn: {
-    position: "absolute",
-    right: "10px",
-    top: "10px",
   },
 }));
 
@@ -136,45 +104,17 @@ function CreateExtraIngredientForm() {
           >
             <CancelIcon onClick={toogleShowForm} />
           </IconButton>
-          <input
-            accept="image/*"
-            className={classes.inputImage}
-            id="icon-button-file"
-            type="file"
-            onChange={(e) => handleUploadImage(e.target.files[0])}
+
+          <UploadPhoto
+            handleDeleteImage={handleDeleteImage}
+            handleUploadImage={handleUploadImage}
+            image={image}
           />
-          <Box className={classes.uploadWrapper}>
-            {!image && (
-              <Box
-                component="label"
-                className={classes.uploadLabel}
-                htmlFor="icon-button-file"
-              >
-                <PhotoCamera color="primary" />
-              </Box>
-            )}
-            {image && (
-              <Box className={classes.imageWrapper}>
-                <img
-                  className={classes.image}
-                  src={URL.createObjectURL(image)}
-                  alt="ingredient"
-                />
-                <IconButton
-                  className={classes.deleteImageBtn}
-                  size="small"
-                  aria-label="close"
-                >
-                  <Close onClick={handleDeleteImage} />
-                </IconButton>
-              </Box>
-            )}
-          </Box>
 
           <TextField
             className={classes.input}
             id="outlined-secondary"
-            label="Название ингредиента"
+            label="Название"
             variant="outlined"
             color="primary"
             margin="normal"
