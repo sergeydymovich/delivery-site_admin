@@ -14,8 +14,8 @@ function App() {
   useAppInit();
 
   return (
-    <Box display="flex">
-      <CssBaseline />
+    <Box display="flex">    
+      <CssBaseline />       
       <Switch>
         <Route path="/login" component={LoginPage} />
         <Layout>
