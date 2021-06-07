@@ -41,11 +41,11 @@ function CreateProductPage() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const { control, watch, setValue, handleSubmit } = useForm({
+  const { control, watch, setValue, reset, handleSubmit } = useForm({
     defaultValues: {
       name: "",
       category: "",
-      isAvailable: "",
+      isAvailable: '',
       price: "",
       portionAmount: "",
       volume: "",
@@ -79,7 +79,7 @@ function CreateProductPage() {
     .then((res) => {
       const { product } = res.data;
       dispatch(addProduct(product));
-      e.target.reset();
+      reset();
     })
     .catch((err) => {
       console.log(err);
