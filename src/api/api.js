@@ -30,3 +30,7 @@ export const fetchAddExtraIngredient = async (data) => {
 export const fetchGetExtraIngredients = async () => {
   return await axios.get(`/extra-ingredients`);
 };
+
+export const fetchAddProduct = async (data) => {
+  return await axios.post(`/products`, data);
+};

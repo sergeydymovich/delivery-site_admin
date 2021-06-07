@@ -31,6 +31,12 @@ const useStyles = makeStyles((theme) => ({
   closeBtn: {
     marginRight: "10px",
   },
+  uploadContainer: {
+    width: '150px',
+    height:'150px',
+    border: '1px dashed lightgrey',
+    marginRight: '10px'
+  }
 }));
 
 function CreateExtraIngredientForm() {
@@ -40,6 +46,7 @@ function CreateExtraIngredientForm() {
   const [showForm, setShowForm] = useState(false);
   const classes = useStyles();
   const dispatch = useDispatch();
+  console.log("image!!!!!!!!!!!", image);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -69,7 +76,8 @@ function CreateExtraIngredientForm() {
     setPrice(e.target.value);
   };
 
-  const handleUploadImage = (file) => {
+  const handleUploadImage = (e) => {
+    const file = e.target.files[0];
     if (file) {
       setImage(file);
     }
@@ -79,7 +87,7 @@ function CreateExtraIngredientForm() {
     setImage("");
   };
 
-  const toogleShowForm = () => {
+  const toggleShowForm = () => {
     setShowForm((prev) => !prev);
   };
 
@@ -90,7 +98,7 @@ function CreateExtraIngredientForm() {
           variant="contained"
           size="large"
           color="primary"
-          onClick={toogleShowForm}
+          onClick={toggleShowForm}
         >
           Добавить ингредиент
         </Button>
@@ -102,18 +110,18 @@ function CreateExtraIngredientForm() {
             size="small"
             aria-label="close"
           >
-            <CancelIcon onClick={toogleShowForm} />
+            <CancelIcon onClick={toggleShowForm} />
           </IconButton>
 
           <UploadPhoto
             handleDeleteImage={handleDeleteImage}
             handleUploadImage={handleUploadImage}
             image={image}
+            className={classes.uploadContainer}
           />
 
           <TextField
             className={classes.input}
-            id="outlined-secondary"
             label="Название"
             variant="outlined"
             color="primary"
@@ -122,7 +130,6 @@ function CreateExtraIngredientForm() {
           />
           <TextField
             className={classes.input}
-            id="outlined-secondary"
             label="Цена"
             variant="outlined"
             color="primary"

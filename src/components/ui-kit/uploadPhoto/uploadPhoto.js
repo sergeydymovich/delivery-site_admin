@@ -1,4 +1,4 @@
-import { Box, Container, IconButton, makeStyles } from "@material-ui/core";
+import { Box, IconButton, makeStyles } from "@material-ui/core";
 import React from "react";
 import { PhotoCamera, Close } from "@material-ui/icons";
 
@@ -15,8 +15,8 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
   },
   uploadWrapper: {
-    height: "200px",
-    width: "200px",
+    height: "100%",
+    width: "100%",
   },
   imageWrapper: {
     width: "100%",
@@ -36,16 +36,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function UploadPhoto({ handleUploadImage, handleDeleteImage, image }) {
+function UploadPhoto({ handleUploadImage, handleDeleteImage, image, className }) {
   const classes = useStyles();
 
   return (
-    <Container maxWidth="xl">
-      <input
+    <Box className={className}>
+       <input      
         accept="image/*"
         type="file"
         className={classes.inputImage}
-        onChange={(e) => handleUploadImage(e.target.files[0])}
+        id='icon-button-file'
+        value=''
+        onChange={handleUploadImage}
       />
       <Box className={classes.uploadWrapper}>
         {!image && (
@@ -68,13 +70,14 @@ function UploadPhoto({ handleUploadImage, handleDeleteImage, image }) {
               className={classes.deleteImageBtn}
               size="small"
               aria-label="close"
+              onClick={handleDeleteImage}
             >
-              <Close onClick={handleDeleteImage} />
+              <Close  />
             </IconButton>
           </Box>
         )}
       </Box>
-    </Container>
+    </Box>
   );
 }
 
