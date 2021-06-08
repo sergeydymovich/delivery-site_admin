@@ -1,6 +1,5 @@
 import {
   Button,
-  Container,
   IconButton,
   makeStyles,
   TextField,
@@ -13,13 +12,6 @@ import { useDispatch } from "react-redux";
 import UploadPhoto from "components/ui-kit/uploadPhoto/uploadPhoto";
 
 const useStyles = makeStyles((theme) => ({
-  wrapper: {
-    display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    minHeight: "100px",
-    transition: "height 2s",
-  },
   form: {
     display: "flex",
     justifyContent: "center",
@@ -39,14 +31,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function CreateExtraIngredientForm() {
+function CreateExtraIngredientForm({ toggleShowForm }) {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
-  const [showForm, setShowForm] = useState(false);
   const classes = useStyles();
   const dispatch = useDispatch();
-  console.log("image!!!!!!!!!!!", image);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -58,8 +48,7 @@ function CreateExtraIngredientForm() {
 
     fetchAddExtraIngredient(formData)
       .then((res) => {
-        const { ingredient } = res.data;
-        dispatch(addExtraIngredient(ingredient));
+        dispatch(addExtraIngredient(res.data));
         setName("");
         setPrice("");
       })
@@ -87,67 +76,53 @@ function CreateExtraIngredientForm() {
     setImage("");
   };
 
-  const toggleShowForm = () => {
-    setShowForm((prev) => !prev);
-  };
+  
 
   return (
-    <Container maxWidth="xl" className={classes.wrapper}>
-      {!showForm && (
-        <Button
-          variant="contained"
-          size="large"
-          color="primary"
-          onClick={toggleShowForm}
-        >
-          Добавить ингредиент
-        </Button>
-      )}
-      {showForm && (
         <form className={classes.form} onSubmit={handleSubmit}>
-          <IconButton
-            className={classes.closeBtn}
-            size="small"
-            aria-label="close"
-          >
-            <CancelIcon onClick={toggleShowForm} />
-          </IconButton>
+            <IconButton
+              className={classes.closeBtn}
+              size="small"
+              aria-label="close"
+            >
+              <CancelIcon onClick={toggleShowForm} />
+            </IconButton>
 
-          <UploadPhoto
-            handleDeleteImage={handleDeleteImage}
-            handleUploadImage={handleUploadImage}
-            image={image}
-            className={classes.uploadContainer}
-          />
+            <UploadPhoto
+              handleDeleteImage={handleDeleteImage}
+              handleUploadImage={handleUploadImage}
+              image={image}
+              className={classes.uploadContainer}
+            />
 
-          <TextField
-            className={classes.input}
-            label="Название"
-            variant="outlined"
-            color="primary"
-            margin="normal"
-            onChange={handleIngredientName}
-          />
-          <TextField
-            className={classes.input}
-            label="Цена"
-            variant="outlined"
-            color="primary"
-            margin="normal"
-            onChange={handleIngredientPrice}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            size="large"
-            color="primary"
-            disabled={!name || !price || !image}
-          >
-            Добавить
-          </Button>
+            <TextField
+              className={classes.input}
+              label="Название"
+              variant="outlined"
+              color="primary"
+              margin="normal"
+              onChange={handleIngredientName}
+              value={name}
+            />
+            <TextField
+              className={classes.input}
+              label="Цена"
+              variant="outlined"
+              color="primary"
+              margin="normal"
+              onChange={handleIngredientPrice}
+              value={price}
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              size="large"
+              color="primary"
+              disabled={!name || !price || !image}
+            >
+              Добавить
+            </Button>
         </form>
-      )}
-    </Container>
   );
 }
 

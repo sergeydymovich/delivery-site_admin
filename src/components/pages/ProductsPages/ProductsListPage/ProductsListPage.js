@@ -1,26 +1,47 @@
-import { Button } from "@material-ui/core";
-import { Link } from "react-router-dom";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getCategories } from "reducers/categoriesSlice";
 import { getIngredients } from "reducers/ingredientsSlice";
 import { getExtraIngredients } from "reducers/extraIngredientsSlice";
+import { getProducts } from "reducers/productsSlice";
+import { Box, Button, Container, makeStyles } from "@material-ui/core";
+import ProductsTable from "./ProductsTable";
+import { Link } from "react-router-dom";
+
+const useStyles = makeStyles((theme) => ({
+  linkWrapper: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignContent: 'center',
+    marginBottom: '20px',
+    marginTop: '20px',
+  },
+}));
 
 function ProductsListPage() {
+  const classes = useStyles();
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(getProducts());
     dispatch(getCategories());
     dispatch(getIngredients());
     dispatch(getExtraIngredients());
   }, [dispatch]);
 
   return (
-    <Link to="/products/create">
-      <Button variant="contained" size="large" color="primary">
-        Добавить продукт
-      </Button>
-    </Link>
+    <Container  maxWidth="xl">
+      <Box className={classes.linkWrapper}>
+        <Link className={classes.link} to="/products/create">
+          <Button variant="contained" size="large" color="primary">
+            Добавить продукт
+          </Button>
+        </Link>
+      </Box>
+
+      <ProductsTable />
+    </Container>
+
   );
 }
 

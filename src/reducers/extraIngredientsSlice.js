@@ -21,7 +21,7 @@ export const extraIngredientsSlice = createSlice({
   },
   reducers: {
     addExtraIngredient: (state, action) => {
-      state.ingredientsArr.push(action.payload);
+      state.extraIngredientsArr.push(action.payload);
     },
   },
   extraReducers: {

@@ -59,21 +59,21 @@ function CreateProductPage() {
   const watchFields = watch();
   console.log(watchFields)
 
-  const onSubmit = (data, e) => {
-    const ingredients = data['ingredients'].map((ingredient) => ingredient._id);
-    const extraIngredients = data['extraIngredients'].map((ingredient) => ingredient._id);
+  const onSubmit = (product) => {
+    const ingredientsIds = product.ingredients.map((ingredient) => ingredient._id);
+    const extraIngredientsIds = product.extraIngredients.map((ingredient) => ingredient._id);
     const formData = new FormData();
 
-    formData.append("name", data["name"]);
-    formData.append("category", data["category"]);
-    formData.append("isAvailable", data["isAvailable"]);
-    formData.append("price", data["price"]);
-    formData.append("portionAmount", data["portionAmount"]);
-    formData.append("volume", data["volume"]);
-    formData.append("weight", data["weight"]);
-    formData.append("ingredients", ingredients);
-    formData.append("extraIngredients", extraIngredients);
-    formData.append("image", data["image"], data["image"].name);
+    formData.append("name", product.name);
+    formData.append("category", product.category);
+    formData.append("isAvailable", product.isAvailable);
+    formData.append("price", product.price);
+    formData.append("portionAmount", product.portionAmount);
+    formData.append("volume", product.volume);
+    formData.append("weight", product.weight);
+    formData.append("ingredients", ingredientsIds);
+    formData.append("extraIngredients", extraIngredientsIds);
+    formData.append("image", product.image, product.image.name);
  
     fetchAddProduct(formData)
     .then((res) => {

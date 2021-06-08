@@ -1,6 +1,5 @@
 import {
   Button,
-  Container,
   IconButton,
   makeStyles,
   TextField,
@@ -12,12 +11,6 @@ import { addIngredient } from "reducers/ingredientsSlice";
 import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
-  wrapper: {
-    display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    minHeight: "100px",
-  },
   form: {
     display: "flex",
     justifyContent: "center",
@@ -31,9 +24,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CreateIngredientForm() {
+function CreateIngredientForm({ toggleShowForm }) {
   const [name, setName] = useState("");
-  const [showForm, setShowForm] = useState(false);
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -55,30 +47,16 @@ function CreateIngredientForm() {
     setName(e.target.value);
   };
 
-  const toogleShowForm = () => {
-    setShowForm((prev) => !prev);
-  };
+
 
   return (
-    <Container maxWidth="xl" className={classes.wrapper}>
-      {!showForm && (
-        <Button
-          variant="contained"
-          size="large"
-          color="primary"
-          onClick={toogleShowForm}
-        >
-          Добавить ингредиент
-        </Button>
-      )}
-      {showForm && (
         <form className={classes.form} onSubmit={handleSubmit}>
           <IconButton
             className={classes.closeBtn}
             size="small"
             aria-label="close"
           >
-            <CancelIcon onClick={toogleShowForm} />
+            <CancelIcon onClick={toggleShowForm} />
           </IconButton>
           <TextField
             className={classes.input}
@@ -99,8 +77,6 @@ function CreateIngredientForm() {
             Добавить
           </Button>
         </form>
-      )}
-    </Container>
   );
 }
 

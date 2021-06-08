@@ -1,22 +1,33 @@
-import React, { useEffect } from "react";
-import CreateIngredientForm from "./CreateIngredientForm";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getIngredients } from "reducers/ingredientsSlice";
-import CreateIcon from "@material-ui/icons/Create";
 import {
+  Box,
+  Button,
   Container,
-  IconButton,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
+  makeStyles,
 } from "@material-ui/core";
+import IngredientsTable from "components/pages/IngredientsPage/IngredientsTable";
+import CreateIngredientForm from "components/pages/IngredientsPage/CreateIngredientForm";
+
+const useStyles = makeStyles((theme) => ({
+  formWrapper: {
+    minHeight: "100px",
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+}));
 
 function IngredientsPage() {
   const ingredients = useSelector((s) => s.ingredients.ingredientsArr);
+  const [showForm, setShowForm] = useState(false);
   const dispatch = useDispatch();
+  const classes = useStyles();
+
+    const toggleShowForm = () => {
+    setShowForm((prev) => !prev);
+  };
 
   useEffect(() => {
     if (!ingredients.length) {
@@ -26,35 +37,22 @@ function IngredientsPage() {
 
   return (
     <Container maxWidth="xl">
-      <CreateIngredientForm />
-      <TableContainer>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Название</TableCell>
-              <TableCell align="right">Дата создания</TableCell>
-              <TableCell align="right">Инструменты</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {ingredients.map((ingredient) => (
-              <TableRow key={ingredient._id}>
-                <TableCell component="th" scope="row">
-                  {ingredient.name}
-                </TableCell>
-                <TableCell align="right">
-                  {new Date(ingredient.createdAt).toLocaleDateString()}
-                </TableCell>
-                <TableCell component="th" align="right" scope="row">
-                  <IconButton aria-label="change">
-                    <CreateIcon aria-label="change" size="small" />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Box className={classes.formWrapper}>
+        {!showForm && (
+          <Button
+            variant="contained"
+            size="large"
+            color="primary"
+            onClick={toggleShowForm}
+          >
+            Добавить ингредиент
+          </Button>
+        )}
+        {showForm &&
+          <CreateIngredientForm toggleShowForm={toggleShowForm} />
+        }
+      </Box>
+      <IngredientsTable />
     </Container>
   );
 }
