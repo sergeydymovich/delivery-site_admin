@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Box,
   Button,
   FormControl,
   FormControlLabel,
@@ -9,7 +8,10 @@ import {
   Select,
   TextField,
   Switch,
+  Container,
+  Chip,
 } from "@material-ui/core";
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import UploadPhoto from 'components/ui-kit/uploadPhoto/uploadPhoto';
@@ -29,8 +31,26 @@ const useStyles = makeStyles((theme) => ({
     width: '200px',
     height:'200px',
     border: '1px dashed lightgrey',
+  },
+  multiSelect: {
+    minWidth: '250px',
+    marginBottom: '15px',
   }
 }));
+
+
+const DEFAULT_VALUES = {
+  name: "",
+  category: "",
+  isAvailable: true,
+  price: "",
+  portionAmount: "",
+  volume: "",
+  weight: "",
+  image: "",
+  ingredients: [],
+  extraIngredients: [],
+}
 
 function CreateProductPage() {
   const categories = useSelector((state) => state.categories.categoriesArr);
@@ -41,29 +61,25 @@ function CreateProductPage() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const { control, watch, setValue, reset, handleSubmit } = useForm({
-    defaultValues: {
-      name: "",
-      category: "",
-      isAvailable: '',
-      price: "",
-      portionAmount: "",
-      volume: "",
-      weight: "",
-      image: "",
-      ingredients: [],
-      extraIngredients: [],
-    },
-  });
+  const { control, watch, setValue, reset, handleSubmit } = useForm({ defaultValues: DEFAULT_VALUES });
 
   const watchFields = watch();
   console.log(watchFields)
 
   const onSubmit = (product) => {
-    const ingredientsIds = product.ingredients.map((ingredient) => ingredient._id);
-    const extraIngredientsIds = product.extraIngredients.map((ingredient) => ingredient._id);
-    const formData = new FormData();
+    let newIngredients = [];
+    let ingredientsIds = []; 
+    let newExtraIngredients = [];
+    let extraIngredientsIds = []; 
+    product.ingredients.forEach((ingredient) =>
+      typeof ingredient === 'string' ? newIngredients.push(ingredient) : ingredientsIds.push(ingredient._id)
+    )
+    product.extraIngredients.forEach((ingredient) => 
+      typeof ingredient === 'string' ? newExtraIngredients.push(ingredient) : extraIngredientsIds.push(ingredient._id)
+    )
 
+    const formData = new FormData();
+;
     formData.append("name", product.name);
     formData.append("category", product.category);
     formData.append("isAvailable", product.isAvailable);
@@ -73,6 +89,9 @@ function CreateProductPage() {
     formData.append("weight", product.weight);
     formData.append("ingredients", ingredientsIds);
     formData.append("extraIngredients", extraIngredientsIds);
+    formData.append("newIngredients", newIngredients);
+    formData.append("newExtraIngredients", newExtraIngredients);
+
     formData.append("image", product.image, product.image.name);
  
     fetchAddProduct(formData)
@@ -88,21 +107,6 @@ function CreateProductPage() {
 
   };
 
-  const handleAddIngredient = (e) => {
-    const ingredient = ingredients.find((el) => el._id === e.target.value);
-    const newValue = [...watchFields.ingredients, ingredient];
-    setValue("ingredients", newValue);
-  };
-
-  const handleAddExtraIngredient = (e) => {
-    const extraIngredient = extraIngredients.find(
-      (el) => el._id === e.target.value
-    );
-    const newValue = [...watchFields.extraIngredients, extraIngredient];
-    setValue("extraIngredients", newValue);
-  };
-
-
   const handleUploadImage = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -114,17 +118,61 @@ function CreateProductPage() {
     setValue('image', '');
   };
 
+  const handleChangeIngredients = (e, ingredients) => {
+    setValue("ingredients", ingredients);
+  }
+
+  const handleChangeExtraIngredients = (e, ingredients) => {
+    setValue("extraIngredients", ingredients);
+  }
+
   return (
-    <Box>
-      <h5>форма создания продукта</h5>
+    <Container>
       <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+        <Autocomplete
+          className={classes.multiSelect}
+          multiple
+          id="tags-filled"
+          options={ingredients}
+          getOptionLabel={(option) => option.name}
+          freeSolo
+          onChange={handleChangeIngredients}
+          renderTags={(value, getTagProps) =>
+            value.map((option, index) => (
+              <Chip variant="outlined"  label={option.name || option} {...getTagProps({ index })} />
+            ))
+          }
+          renderInput={(params) => (
+            <TextField {...params} variant="outlined" label="Ингредиенты" placeholder="Добавить..." />
+          )}
+        />
+
+
+        <Autocomplete
+          className={classes.multiSelect}
+          multiple
+          id="tags-filled"
+          options={extraIngredients}
+          getOptionLabel={(option) => option.name}
+          freeSolo
+          onChange={handleChangeExtraIngredients}
+          renderTags={(value, getTagProps) =>
+            value.map((option, index) => (
+              <Chip variant="outlined"  label={option.name || option} {...getTagProps({ index })} />
+            ))
+          }
+          renderInput={(params) => (
+            <TextField {...params} variant="outlined" label="Доп ингредиенты" placeholder="Добавить..." />
+          )}
+        />
+
         <Controller
           name="isAvailable"
           control={control}
           className={classes.field}
           render={({ field }) => (
             <FormControlLabel
-              control={<Switch color="primary" {...field} />}
+              control={<Switch checked={field.value} color="primary" {...field} />}
               label="Доступен"
               labelPlacement="start"
             />
@@ -134,10 +182,13 @@ function CreateProductPage() {
         <Controller
           name="name"
           control={control}
+          rules={{ required: true }}
           className={classes.field}
-          render={({ field }) => (
+          render={({ field, fieldState: { error } }) => (
             <TextField
               {...field}
+              error={!!error}
+              required='true'
               label="Название"
               variant="outlined"
               color="primary"
@@ -219,38 +270,6 @@ function CreateProductPage() {
           )}
         />
 
-        <FormControl variant="outlined" className={classes.field}>
-          <InputLabel >
-            Ингредиенты
-          </InputLabel>
-          <Select label="Ингредиенты" onChange={handleAddIngredient} native>
-            <option aria-label="None" value="" />
-            {ingredients.map((ingredient) => (
-              <option key={ingredient._id} value={ingredient._id}>
-                {ingredient.name}
-              </option>
-            ))}
-          </Select>
-        </FormControl>
-
-        <FormControl variant="outlined" className={classes.field}>
-          <InputLabel >
-            Доп. ингредиенты
-          </InputLabel>
-          <Select
-            label="Доп. ингредиенты"
-            onChange={handleAddExtraIngredient}
-            native
-          >
-            <option aria-label="None" value="" />
-            {extraIngredients.map((ingredient) => (
-              <option key={ingredient._id} value={ingredient._id}>
-                {ingredient.name}
-              </option>
-            ))}
-          </Select>
-        </FormControl>
-
         <UploadPhoto
         handleUploadImage={handleUploadImage}
         handleDeleteImage={handleDeleteImage}
@@ -262,7 +281,7 @@ function CreateProductPage() {
           Добавить
         </Button>
       </form>
-    </Box>
+    </Container>
   );
 }
 
