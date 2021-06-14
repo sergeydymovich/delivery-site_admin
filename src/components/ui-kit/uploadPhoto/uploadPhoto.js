@@ -63,7 +63,7 @@ function UploadPhoto({ handleUploadImage, handleDeleteImage, image, className })
           <Box className={classes.imageWrapper}>
             <img
               className={classes.image}
-              src={URL.createObjectURL(image)}
+              src={typeof image === "string" ? image : URL.createObjectURL(image)}
               alt="ingredient"
             />
             <IconButton

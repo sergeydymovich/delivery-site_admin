@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@material-ui/core";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   imageWrapper: {
@@ -72,9 +73,18 @@ function ProductsTable() {
               {new Date(product.createdAt).toLocaleDateString()}
             </TableCell>
             <TableCell component="th" align="right" scope="row">
+            <Link
+              to={{
+                pathname: "/products/change",
+                state: {
+                  product
+                },
+              }}
+            >
               <IconButton aria-label="change">
                 <CreateIcon aria-label="change" size="small" />
               </IconButton>
+              </Link>
             </TableCell>
           </TableRow>
         ))}

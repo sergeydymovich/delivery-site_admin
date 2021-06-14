@@ -51,6 +51,7 @@ function CreateExtraIngredientForm({ toggleShowForm }) {
         dispatch(addExtraIngredient(res.data));
         setName("");
         setPrice("");
+        setImage("");
       })
       .catch((err) => {
         console.log(err);

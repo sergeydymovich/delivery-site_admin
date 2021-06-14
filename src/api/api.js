@@ -38,3 +38,8 @@ export const fetchGetProducts = async () => {
 export const fetchAddProduct = async (data) => {
   return await axios.post(`/products`, data);
 };
+
+export const fetchChangeProduct = async (data) => {
+  return await axios.put(`/products`, data);
+};
+

@@ -26,6 +26,7 @@ function App() {
           <Route path="/extra-ingredients" component={ExtraIngredientsPage} />
           <Route exact strict path="/products" component={ProductsListPage} />
           <Route path="/products/create" component={CreateProductsPage} />
+          <Route path="/products/change" component={CreateProductsPage} />
         </Layout>
       </Switch>
     </Box>

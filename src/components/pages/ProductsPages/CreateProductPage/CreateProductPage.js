@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   FormControl,
@@ -15,8 +15,9 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import UploadPhoto from 'components/ui-kit/uploadPhoto/uploadPhoto';
-import { fetchAddProduct } from 'api/api';
+import { fetchAddProduct, fetchChangeProduct } from 'api/api';
 import { addProduct } from 'reducers/productsSlice';
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -38,21 +39,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-
-const DEFAULT_VALUES = {
-  name: "",
-  category: "",
-  isAvailable: true,
-  price: "",
-  portionAmount: "",
-  volume: "",
-  weight: "",
-  image: "",
-  ingredients: [],
-  extraIngredients: [],
-}
-
 function CreateProductPage() {
+  const location = useLocation();
+  const { product } = location.state || {};
   const categories = useSelector((state) => state.categories.categoriesArr);
   const ingredients = useSelector((state) => state.ingredients.ingredientsArr);
   const extraIngredients = useSelector(
@@ -61,21 +50,36 @@ function CreateProductPage() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const { control, watch, setValue, reset, handleSubmit } = useForm({ defaultValues: DEFAULT_VALUES });
+  const { control, watch, setValue, reset, handleSubmit, register } = useForm({
+     defaultValues:  {
+      name: product?.name || "",
+      category: product?.category._id ||"",
+      isAvailable: product?.isAvailable || true,
+      price: product?.price || "",
+      portionAmount: product?.portionAmount || "",
+      volume: product?.volume || "",
+      weight: product?.weight ||"",
+      image: product?.image || '',
+      ingredients: product?.ingredients || [],
+      extraIngredients: product?.extraIngredients || [],
+     } 
+
+   });
 
   const watchFields = watch();
   console.log(watchFields)
 
   const onSubmit = (product) => {
+    console.log("form:::::::",product)
     let newIngredients = [];
     let ingredientsIds = []; 
     let newExtraIngredients = [];
     let extraIngredientsIds = []; 
-    product.ingredients.forEach((ingredient) =>
-      typeof ingredient === 'string' ? newIngredients.push(ingredient) : ingredientsIds.push(ingredient._id)
+    product.ingredients?.forEach((ingredient) =>
+      ingredient._id ? ingredientsIds.push(ingredient._id) : newIngredients.push(ingredient.name)
     )
-    product.extraIngredients.forEach((ingredient) => 
-      typeof ingredient === 'string' ? newExtraIngredients.push(ingredient) : extraIngredientsIds.push(ingredient._id)
+    product.extraIngredients?.forEach((ingredient) => 
+    ingredient._id ? extraIngredientsIds.push(ingredient._id) : newExtraIngredients.push(ingredient.name)
     )
 
     const formData = new FormData();
@@ -87,24 +91,52 @@ function CreateProductPage() {
     formData.append("portionAmount", product.portionAmount);
     formData.append("volume", product.volume);
     formData.append("weight", product.weight);
-    formData.append("ingredients", ingredientsIds);
-    formData.append("extraIngredients", extraIngredientsIds);
-    formData.append("newIngredients", newIngredients);
-    formData.append("newExtraIngredients", newExtraIngredients);
 
-    formData.append("image", product.image, product.image.name);
+    if (ingredientsIds.length) {
+      formData.append("ingredients", ingredientsIds);
+    }
+    
+    if (extraIngredientsIds.length) {
+      formData.append("extraIngredients", extraIngredientsIds);
+    }
+    
+    if (newIngredients.length) {
+      formData.append("newIngredients", newIngredients);
+    }
+
+    if (newExtraIngredients.length) {
+      formData.append("newExtraIngredients", newExtraIngredients);
+    }
+
+
+    if (product.image) {
+      formData.append("image", product.image, product.image.name);
+    } else {
+      formData.append("image", '');
  
-    fetchAddProduct(formData)
-    .then((res) => {
-      const { product } = res.data;
-      dispatch(addProduct(product));
-      reset();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    }
 
+    if (location.state) {
+      formData.append("id", location.state.product._id);
 
+      try {
+        fetchChangeProduct(formData)
+      } catch (e) {
+        console.log(e.response.data.errorMessage);
+      } 
+    
+    } else {
+      fetchAddProduct(formData) 
+      .then((res) => {
+        const { product } = res.data;
+        dispatch(addProduct(product));
+        reset();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+ 
   };
 
   const handleUploadImage = (e) => {
@@ -119,31 +151,53 @@ function CreateProductPage() {
   };
 
   const handleChangeIngredients = (e, ingredients) => {
-    setValue("ingredients", ingredients);
+    if (typeof ingredients[ingredients.length - 1] === 'string') {
+      ingredients[ingredients.length - 1] = { name: ingredients[ingredients.length - 1] }    
+    }
+
+    setValue('ingredients', ingredients)
   }
 
-  const handleChangeExtraIngredients = (e, ingredients) => {
-    setValue("extraIngredients", ingredients);
+  const handleChangeExtraIngredients =  (e, ingredients) => {
+    if (typeof ingredients[ingredients.length - 1] === 'string') {
+      ingredients[ingredients.length - 1] = { name: ingredients[ingredients.length - 1] }  
+    }
+
+    setValue('extraIngredients', ingredients)
   }
+
+  useEffect(() => {
+    if (location.state) {
+      register('ingredients');
+      register('extraIngredients');
+      setValue('ingredients', product.ingredients)
+      setValue('extraIngredients', product.extraIngredients)
+      setValue('image', product.imageSrc)
+    }
+  }, [register])
+
 
   return (
     <Container>
       <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+      
         <Autocomplete
           className={classes.multiSelect}
           multiple
           id="tags-filled"
           options={ingredients}
           getOptionLabel={(option) => option.name}
-          freeSolo
           onChange={handleChangeIngredients}
+          defaultValue={watchFields.ingredients}
+          filterSelectedOptions
+          freeSolo
           renderTags={(value, getTagProps) =>
             value.map((option, index) => (
-              <Chip variant="outlined"  label={option.name || option} {...getTagProps({ index })} />
+              <Chip variant="outlined" label={option.name} {...getTagProps({ index })} />
             ))
           }
           renderInput={(params) => (
-            <TextField {...params} variant="outlined" label="Ингредиенты" placeholder="Добавить..." />
+            <TextField {...params} variant="outlined" label="ингредиенты" placeholder="добавить..." />
           )}
         />
 
@@ -154,15 +208,17 @@ function CreateProductPage() {
           id="tags-filled"
           options={extraIngredients}
           getOptionLabel={(option) => option.name}
-          freeSolo
           onChange={handleChangeExtraIngredients}
+          defaultValue={watchFields.extraIngredients}
+          filterSelectedOptions
+          freeSolo
           renderTags={(value, getTagProps) =>
             value.map((option, index) => (
-              <Chip variant="outlined"  label={option.name || option} {...getTagProps({ index })} />
+              <Chip variant="outlined" label={option.name} {...getTagProps({ index })} />
             ))
           }
           renderInput={(params) => (
-            <TextField {...params} variant="outlined" label="Доп ингредиенты" placeholder="Добавить..." />
+            <TextField {...params} variant="outlined" label="Доп ингредиенты" placeholder="добавить..." />
           )}
         />
 
@@ -188,7 +244,6 @@ function CreateProductPage() {
             <TextField
               {...field}
               error={!!error}
-              required='true'
               label="Название"
               variant="outlined"
               color="primary"
