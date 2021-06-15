@@ -23,6 +23,11 @@ export const extraIngredientsSlice = createSlice({
     addExtraIngredient: (state, action) => {
       state.extraIngredientsArr.push(action.payload);
     },
+    changeExtraIngredient: (state, action) => {
+      state.extraIngredientsArr = state.extraIngredientsArr.map((ingredient) => (
+        ingredient._id === action.payload._id ? action.payload : ingredient
+      ));
+    }
   },
   extraReducers: {
     [getExtraIngredients.pending]: () => {},
@@ -33,6 +38,6 @@ export const extraIngredientsSlice = createSlice({
   },
 });
 
-export const { addExtraIngredient } = extraIngredientsSlice.actions;
+export const { addExtraIngredient, changeExtraIngredient } = extraIngredientsSlice.actions;
 
 export default extraIngredientsSlice.reducer;

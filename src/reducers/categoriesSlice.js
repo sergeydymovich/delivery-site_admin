@@ -24,9 +24,8 @@ export const categoriesSlice = createSlice({
       state.categoriesArr.push(action.payload);
     },
     changeCategory: (state, action) => {
-      const { _id, name } = action.payload;
       state.categoriesArr = state.categoriesArr.map((category) => (
-        category._id === _id ? { ...category, name } : category
+        category._id === action.payload._id ? action.payload : category
       ));
     }
   },

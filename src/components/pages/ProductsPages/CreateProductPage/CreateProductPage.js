@@ -326,10 +326,10 @@ function CreateProductPage() {
         />
 
         <UploadPhoto
-        handleUploadImage={handleUploadImage}
-        handleDeleteImage={handleDeleteImage}
-        image={watchFields.image}
-        className={classes.uploadContainer}
+          handleUploadImage={handleUploadImage}
+          handleDeleteImage={handleDeleteImage}
+          image={watchFields.image}
+          className={classes.uploadContainer}
         />
 
         <Button type='submit' variant="contained" size="large" color="primary">

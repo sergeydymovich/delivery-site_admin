@@ -6,6 +6,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import { fetchChangeCategory } from "api/api";
 import { useDispatch } from "react-redux";
 import { changeCategory } from "reducers/categoriesSlice";
+import { useEffect } from "react";
 
 
 function CategoriesTableRow({ category }) {
@@ -18,8 +19,8 @@ function CategoriesTableRow({ category }) {
     if (newCategoryName) {
       fetchChangeCategory({name: newCategoryName, _id: category._id})
       .then((res) => {
-        const { _id, name } = res.data.category;
-        dispatch(changeCategory({ _id, name }));
+        const { category } = res.data;
+        dispatch(changeCategory(category));
       })
       .catch((err) => {
         console.log(err);
@@ -39,6 +40,10 @@ function CategoriesTableRow({ category }) {
   const deactivateEditMode = () => {
     setIsEditMode(false);
   }
+
+  useEffect(() => {
+    setNewCategoryName(category.name);
+  }, [category.name]);
 
   return (
           <TableRow key={category._id}>

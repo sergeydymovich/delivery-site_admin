@@ -24,9 +24,8 @@ export const ingredientsSlice = createSlice({
       state.ingredientsArr.push(action.payload);
     },
     changeIngredient: (state, action) => {
-      const { _id, name } = action.payload;
       state.ingredientsArr = state.ingredientsArr.map((ingredient) => (
-        ingredient._id === _id ? { ...ingredient, name } : ingredient
+        ingredient._id === action.payload._id ? action.payload : ingredient
       ));
     }
   },

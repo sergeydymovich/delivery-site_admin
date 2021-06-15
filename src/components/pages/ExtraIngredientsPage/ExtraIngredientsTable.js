@@ -1,9 +1,5 @@
 import React from "react";
-import CreateIcon from "@material-ui/icons/Create";
 import {
-  Avatar,
-  IconButton,
-  makeStyles,
   Table,
   TableBody,
   TableCell,
@@ -12,19 +8,10 @@ import {
   TableRow,
 } from "@material-ui/core";
 import { useSelector } from "react-redux";
-
-const useStyles = makeStyles((theme) => ({
-  imageWrapper: {
-    marginRight: "auto",
-    marginLeft: "auto",
-  },
-}));
+import ExtraIngredientsTableRow from "./ExtraIngredientsTableRow";
 
 function ExtraIngredientsTable() {
-  const ingredients = useSelector(
-    (s) => s.extraIngredients.extraIngredientsArr
-  );
-  const classes = useStyles();
+  const ingredients = useSelector((state) => state.extraIngredients.extraIngredientsArr);
 
   return (
     <TableContainer>
@@ -40,29 +27,7 @@ function ExtraIngredientsTable() {
       </TableHead>
       <TableBody>
         {ingredients.map((ingredient) => (
-          <TableRow key={ingredient._id}>
-            <TableCell component="th" scope="row">
-              {ingredient.name}
-            </TableCell>
-            <TableCell component="th" align="center" scope="row">
-              <Avatar
-                className={classes.imageWrapper}
-                alt="extra-ingredient"
-                src={ingredient.imageSrc}
-              />
-            </TableCell>
-            <TableCell component="th" align="right" scope="row">
-              {ingredient.price}
-            </TableCell>
-            <TableCell align="right">
-              {new Date(ingredient.createdAt).toLocaleDateString()}
-            </TableCell>
-            <TableCell component="th" align="right" scope="row">
-              <IconButton aria-label="change">
-                <CreateIcon aria-label="change" size="small" />
-              </IconButton>
-            </TableCell>
-          </TableRow>
+          <ExtraIngredientsTableRow ingredient={ingredient} />
         ))}
       </TableBody>
     </Table>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IconButton, TableCell, TableRow, TextField } from "@material-ui/core";
 import CreateIcon from "@material-ui/icons/Create";
 import CloseIcon from '@material-ui/icons/Close';
@@ -18,8 +18,8 @@ function IngredientsTableRow({ ingredient }) {
     if (newIngredientName) {
       fetchChangeIngredient({name: newIngredientName, _id: ingredient._id})
       .then((res) => {
-        const { _id, name } = res.data.ingredient;
-        dispatch(changeIngredient({ _id, name }));
+        const { ingredient } = res.data;
+        dispatch(changeIngredient(ingredient));
       })
       .catch((err) => {
         console.log(err);
@@ -39,6 +39,10 @@ function IngredientsTableRow({ ingredient }) {
   const deactivateEditMode = () => {
     setIsEditMode(false);
   }
+
+  useEffect(() => {
+    setNewIngredientName(ingredient.name);
+  }, [ingredient.name]);
 
   return (
           <TableRow key={ingredient._id}>

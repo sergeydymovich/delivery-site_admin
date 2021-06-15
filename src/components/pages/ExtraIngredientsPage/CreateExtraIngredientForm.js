@@ -40,9 +40,13 @@ function CreateExtraIngredientForm({ toggleShowForm }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const formData = new FormData();
-    formData.append("image", image, image.name);
+    
+    if (image) {
+      formData.append("image", image, image.name);
+    } else {
+      formData.append("image", '');
+    }
     formData.append("name", name);
     formData.append("price", price);
 
@@ -119,7 +123,7 @@ function CreateExtraIngredientForm({ toggleShowForm }) {
               variant="contained"
               size="large"
               color="primary"
-              disabled={!name || !price || !image}
+              disabled={!name}
             >
               Добавить
             </Button>

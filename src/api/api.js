@@ -35,6 +35,10 @@ export const fetchAddExtraIngredient = async (data) => {
   return await axios.post(`/extra-ingredients`, data);
 };
 
+export const fetchChangeExtraIngredient = async (data) => {
+  return await axios.put(`/extra-ingredients`, data);
+};
+
 export const fetchGetExtraIngredients = async () => {
   return await axios.get(`/extra-ingredients`);
 };
