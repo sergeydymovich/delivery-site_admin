@@ -1,22 +1,33 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CreateCategoryForm from "./CreateCategoryForm";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategories } from "reducers/categoriesSlice";
-import CreateIcon from "@material-ui/icons/Create";
 import {
+  Box,
+  Button,
   Container,
-  IconButton,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
+  makeStyles,
 } from "@material-ui/core";
+import CategoriesTable from "./CategoriesTable";
+
+const useStyles = makeStyles((theme) => ({
+  formWrapper: {
+    minHeight: "100px",
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+}));
 
 function CategoriesPage() {
   const categories = useSelector((s) => s.categories.categoriesArr);
+  const [showForm, setShowForm] = useState(false);
   const dispatch = useDispatch();
+  const classes = useStyles();
+
+  const toggleShowForm = () => {
+    setShowForm((prev) => !prev);
+  };
 
   useEffect(() => {
     if (!categories.length) {
@@ -26,35 +37,22 @@ function CategoriesPage() {
 
   return (
     <Container maxWidth="xl">
-      <CreateCategoryForm />
-      <TableContainer>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Название</TableCell>
-              <TableCell align="right">Дата создания</TableCell>
-              <TableCell align="right">Инструменты</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {categories.map((category) => (
-              <TableRow key={category._id}>
-                <TableCell component="th" scope="row">
-                  {category.name}
-                </TableCell>
-                <TableCell align="right">
-                  {new Date(category.createdAt).toLocaleDateString()}
-                </TableCell>
-                <TableCell component="th" align="right" scope="row">
-                  <IconButton aria-label="change">
-                    <CreateIcon aria-label="change" size="small" />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Box className={classes.formWrapper}>
+        {!showForm && (
+          <Button
+            variant="contained"
+            size="large"
+            color="primary"
+            onClick={toggleShowForm}
+          >
+            Добавить категорию
+          </Button>
+        )}
+        {showForm &&
+          <CreateCategoryForm toggleShowForm={toggleShowForm} />
+        }  
+      </Box>
+      <CategoriesTable />     
     </Container>
   );
 }

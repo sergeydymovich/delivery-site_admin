@@ -25,7 +25,7 @@ function IngredientsPage() {
   const dispatch = useDispatch();
   const classes = useStyles();
 
-    const toggleShowForm = () => {
+  const toggleShowForm = () => {
     setShowForm((prev) => !prev);
   };
 

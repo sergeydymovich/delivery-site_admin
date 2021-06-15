@@ -55,8 +55,9 @@ function CreateIngredientForm({ toggleShowForm }) {
             className={classes.closeBtn}
             size="small"
             aria-label="close"
+            onClick={toggleShowForm}
           >
-            <CancelIcon onClick={toggleShowForm} />
+            <CancelIcon />
           </IconButton>
           <TextField
             className={classes.input}

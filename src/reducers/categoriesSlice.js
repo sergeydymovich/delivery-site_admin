@@ -23,6 +23,12 @@ export const categoriesSlice = createSlice({
     addCategory: (state, action) => {
       state.categoriesArr.push(action.payload);
     },
+    changeCategory: (state, action) => {
+      const { _id, name } = action.payload;
+      state.categoriesArr = state.categoriesArr.map((category) => (
+        category._id === _id ? { ...category, name } : category
+      ));
+    }
   },
   extraReducers: {
     [getCategories.pending]: () => {},
@@ -33,6 +39,6 @@ export const categoriesSlice = createSlice({
   },
 });
 
-export const { addCategory } = categoriesSlice.actions;
+export const { addCategory, changeCategory } = categoriesSlice.actions;
 
 export default categoriesSlice.reducer;

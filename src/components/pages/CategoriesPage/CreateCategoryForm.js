@@ -1,23 +1,16 @@
+import React, { useState } from "react";
+import CancelIcon from "@material-ui/icons/Cancel";
+import { fetchAddCategory } from "api/api";
+import { addCategory } from "reducers/categoriesSlice";
+import { useDispatch } from "react-redux";
 import {
   Button,
-  Container,
   IconButton,
   makeStyles,
   TextField,
 } from "@material-ui/core";
-import CancelIcon from "@material-ui/icons/Cancel";
-import React, { useState } from "react";
-import { fetchAddCategory } from "api/api";
-import { addCategory } from "reducers/categoriesSlice";
-import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
-  wrapper: {
-    display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    minHeight: "100px",
-  },
   form: {
     display: "flex",
     justifyContent: "center",
@@ -31,9 +24,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CreateCategoryForm() {
+function CreateCategoryForm({ toggleShowForm }) {
   const [name, setName] = useState("");
-  const [showForm, setShowForm] = useState(false);
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -54,30 +46,14 @@ function CreateCategoryForm() {
     setName(e.target.value);
   };
 
-  const toogleShowForm = () => {
-    setShowForm((prev) => !prev);
-  };
-
   return (
-    <Container maxWidth="xl" className={classes.wrapper}>
-      {!showForm && (
-        <Button
-          variant="contained"
-          size="large"
-          color="primary"
-          onClick={toogleShowForm}
-        >
-          Добавить категорию
-        </Button>
-      )}
-      {showForm && (
         <form className={classes.form} onSubmit={handleSubmit}>
           <IconButton
             className={classes.closeBtn}
             size="small"
             aria-label="close"
           >
-            <CancelIcon onClick={toogleShowForm} />
+            <CancelIcon onClick={toggleShowForm} />
           </IconButton>
           <TextField
             className={classes.input}
@@ -98,8 +74,6 @@ function CreateCategoryForm() {
             Добавить
           </Button>
         </form>
-      )}
-    </Container>
   );
 }
 

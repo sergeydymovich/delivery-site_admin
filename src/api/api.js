@@ -15,6 +15,10 @@ export const fetchAddCategory = async (name) => {
   return await axios.post(`/categories`, { name });
 };
 
+export const fetchChangeCategory = async ({ _id, name }) => {
+  return await axios.put(`/categories`, { _id, name });
+};
+
 export const fetchAddIngredient = async (name) => {
   return await axios.post(`/ingredients`, { name });
 };
