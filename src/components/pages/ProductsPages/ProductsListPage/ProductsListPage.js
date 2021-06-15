@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getCategories } from "reducers/categoriesSlice";
 import { getIngredients } from "reducers/ingredientsSlice";
 import { getExtraIngredients } from "reducers/extraIngredientsSlice";
@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ProductsListPage() {
+  const activeProductsPage = useSelector(state => state.products.requestOptions.activePage);
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -28,6 +29,10 @@ function ProductsListPage() {
     dispatch(getIngredients());
     dispatch(getExtraIngredients());
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getProducts());
+  },[activeProductsPage, dispatch])
 
   return (
     <Container  maxWidth="xl">
