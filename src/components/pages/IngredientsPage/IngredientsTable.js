@@ -1,7 +1,8 @@
 import React from "react";
-import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import CreateIcon from "@material-ui/icons/Create";
+import IngredientsTableRow from "./IngredientsTableRow";
+
 
 
 function IngredientsTable() {
@@ -19,19 +20,7 @@ function IngredientsTable() {
       </TableHead>
       <TableBody>
         {ingredients.map((ingredient) => (
-          <TableRow key={ingredient._id}>
-            <TableCell component="th" scope="row">
-              {ingredient.name}
-            </TableCell>
-            <TableCell align="right">
-              {new Date(ingredient.createdAt).toLocaleDateString()}
-            </TableCell>
-            <TableCell component="th" align="right" scope="row">
-              <IconButton aria-label="change">
-                <CreateIcon aria-label="change" size="small" />
-              </IconButton>
-            </TableCell>
-          </TableRow>
+          <IngredientsTableRow ingredient={ingredient} />
         ))}
       </TableBody>
     </Table>

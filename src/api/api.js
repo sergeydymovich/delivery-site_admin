@@ -19,6 +19,10 @@ export const fetchAddIngredient = async (name) => {
   return await axios.post(`/ingredients`, { name });
 };
 
+export const fetchChangeIngredient = async ({ _id, name }) => {
+  return await axios.put(`/ingredients`, { _id, name });
+};
+
 export const fetchGetIngredients = async () => {
   return await axios.get(`/ingredients`);
 };
