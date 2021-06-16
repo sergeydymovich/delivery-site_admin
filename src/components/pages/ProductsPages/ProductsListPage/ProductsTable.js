@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 function ProductsTable() {
   const products = useSelector((state) => state.products.productsArr);
-  const activePage = useSelector((state) => state.products.requestOptions.pageSize);
+  const activePage = useSelector((state) => state.products.requestOptions.activePage);
   const pagesAmount = useSelector((state) => state.products.requestOptions.pagesAmount);
   const classes = useStyles();
   const dispatch = useDispatch();
