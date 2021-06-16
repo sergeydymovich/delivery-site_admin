@@ -43,8 +43,8 @@ export const fetchGetExtraIngredients = async () => {
   return await axios.get(`/extra-ingredients`);
 };
 
-export const fetchGetProducts = async ({ pageSize, offset }) => {
-  return await axios.get(`/products?limit=${pageSize}&offset=${offset}`);
+export const fetchGetProducts = async ({ pageSize, offset, filterWord }) => {
+  return await axios.get(`/products?limit=${pageSize}&offset=${offset}&filterWord=${filterWord}`)
 };
 
 export const fetchAddProduct = async (data) => {

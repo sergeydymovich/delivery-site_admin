@@ -3,15 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategories } from "reducers/categoriesSlice";
 import { getIngredients } from "reducers/ingredientsSlice";
 import { getExtraIngredients } from "reducers/extraIngredientsSlice";
-import { getProducts } from "reducers/productsSlice";
-import { Box, Button, Container, makeStyles } from "@material-ui/core";
+import { getProducts, changeFilterWord } from "reducers/productsSlice";
+import { Box, Button, Container, makeStyles, TextField } from "@material-ui/core";
 import ProductsTable from "./ProductsTable";
 import { Link } from "react-router-dom";
+import { debounce } from 'throttle-debounce';
 
 const useStyles = makeStyles((theme) => ({
-  linkWrapper: {
+  searchWrapper: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     alignContent: 'center',
     marginBottom: '20px',
     marginTop: '20px',
@@ -20,8 +21,15 @@ const useStyles = makeStyles((theme) => ({
 
 function ProductsListPage() {
   const activeProductsPage = useSelector(state => state.products.requestOptions.activePage);
+  const filterWord = useSelector(state => state.products.requestOptions.filterWord);
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  const handleChangeFilterWord = (e) => {
+    dispatch(changeFilterWord(e.target.value.trim()));
+  }
+
+  const debounceFunc = debounce(700, handleChangeFilterWord);
 
   useEffect(() => {
     dispatch(getProducts());
@@ -32,11 +40,18 @@ function ProductsListPage() {
 
   useEffect(() => {
     dispatch(getProducts());
-  },[activeProductsPage, dispatch])
+  },[activeProductsPage, filterWord, dispatch])
 
   return (
     <Container  maxWidth="xl">
-      <Box className={classes.linkWrapper}>
+      <Box className={classes.searchWrapper}>
+      <TextField
+        onChange={debounceFunc}
+        label="Поиск продуктов"
+        type="search"
+        variant="outlined"
+        size='small'
+      />
         <Link className={classes.link} to="/products/create">
           <Button variant="contained" size="large" color="primary">
             Добавить продукт

@@ -5,10 +5,11 @@ export const getProducts = createAsyncThunk(
   "/products",
   async (_, { rejectWithValue, getState }) => {
     try {
-      const { activePage, pageSize } = getState().products.requestOptions;
+      const { activePage, pageSize, filterWord } = getState().products.requestOptions;
       const response = await fetchGetProducts({
         pageSize,
         offset: (activePage - 1) * pageSize,
+        filterWord
       });
 
       return response.data;
@@ -26,6 +27,7 @@ export const productsSlice = createSlice({
       activePage: 1,
       pageSize: 1,
       pagesAmount: 0,
+      filterWord: '',
     }
   },
   reducers: {
@@ -34,6 +36,10 @@ export const productsSlice = createSlice({
     },
     changeActivePage: (state, action) => {
       state.requestOptions.activePage = action.payload;
+    },
+    changeFilterWord: (state, action) => {
+      state.requestOptions.filterWord = action.payload;
+      state.requestOptions.activePage = 1;
     },
   },
   extraReducers: {
@@ -46,6 +52,6 @@ export const productsSlice = createSlice({
   },
 });
 
-export const { addProduct, changeActivePage } = productsSlice.actions;
+export const { addProduct, changeActivePage, changeFilterWord } = productsSlice.actions;
 
 export default productsSlice.reducer;
