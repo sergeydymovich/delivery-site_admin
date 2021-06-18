@@ -10,6 +10,9 @@ import {
   Switch,
   Container,
   Chip,
+  Typography,
+  Box,
+  MenuItem
 } from "@material-ui/core";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Controller, useForm } from "react-hook-form";
@@ -20,21 +23,36 @@ import { addProduct } from 'reducers/productsSlice';
 import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
+  title: {
+    marginBottom: "30px"
+  },
   form: {
     display: "flex",
-    flexDirection: "column",
     alignItems: "center",
+    justifyContent: 'space-between',
+  },
+  mainInfo: {
+    display: "flex",
+    flexDirection: 'column',
+    marginRight: "20px",
+    width: "200px",
+  },
+  additionalInfo: {
+    display: "flex",
+    flexDirection: 'column',
+    marginRight: "20px",
   },
   field: {
     marginBlock: "10px",
   },
   uploadContainer: {
-    width: '200px',
-    height:'200px',
-    border: '1px dashed lightgrey',
+    width: '300px',
+    height:'400px',
+    border: `1px dashed ${theme.palette.primary.light}`,
+    marginRight: "20px",
   },
   multiSelect: {
-    minWidth: '250px',
+    width: "350px",
     marginBottom: '15px',
   }
 }));
@@ -179,98 +197,57 @@ function CreateProductPage() {
 
   return (
     <Container>
+      <Typography className={classes.title} variant="h4" component="h2">
+        Форма создания продукта
+      </Typography>
       <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
       
-        <Autocomplete
-          className={classes.multiSelect}
-          multiple
-          id="tags-filled"
-          options={ingredients}
-          getOptionLabel={(option) => option.name}
-          onChange={handleChangeIngredients}
-          defaultValue={watchFields.ingredients}
-          filterSelectedOptions
-          freeSolo
-          renderTags={(value, getTagProps) =>
-            value.map((option, index) => (
-              <Chip variant="outlined" label={option.name} {...getTagProps({ index })} />
-            ))
-          }
-          renderInput={(params) => (
-            <TextField {...params} variant="outlined" label="ингредиенты" placeholder="добавить..." />
-          )}
+        <UploadPhoto
+          handleUploadImage={handleUploadImage}
+          handleDeleteImage={handleDeleteImage}
+          image={watchFields.image}
+          className={classes.uploadContainer}
         />
 
+        <Box className={classes.mainInfo}>
+ 
 
-        <Autocomplete
-          className={classes.multiSelect}
-          multiple
-          id="tags-filled"
-          options={extraIngredients}
-          getOptionLabel={(option) => option.name}
-          onChange={handleChangeExtraIngredients}
-          defaultValue={watchFields.extraIngredients}
-          filterSelectedOptions
-          freeSolo
-          renderTags={(value, getTagProps) =>
-            value.map((option, index) => (
-              <Chip variant="outlined" label={option.name} {...getTagProps({ index })} />
-            ))
-          }
-          renderInput={(params) => (
-            <TextField {...params} variant="outlined" label="Доп ингредиенты" placeholder="добавить..." />
-          )}
-        />
-
-        <Controller
-          name="isAvailable"
-          control={control}
-          className={classes.field}
-          render={({ field }) => (
-            <FormControlLabel
-              control={<Switch checked={field.value} color="primary" {...field} />}
-              label="Доступен"
-              labelPlacement="start"
+          <FormControl className={classes.field} variant="outlined">
+            <InputLabel>
+              Категория
+            </InputLabel>
+            <Controller
+              name="category"
+              control={control}
+              render={({ field }) => (
+                <Select label="Категория" {...field}>
+                  <MenuItem value=''></MenuItem>
+                  {categories.map((category) => (
+                    <MenuItem key={category._id} value={category._id}>
+                      {category.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
             />
-          )}
-        />
+          </FormControl>
 
-        <Controller
-          name="name"
-          control={control}
-          rules={{ required: true }}
-          className={classes.field}
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              {...field}
-              error={!!error}
-              label="Название"
-              variant="outlined"
-              color="primary"
-            />
-          )}
-        />
-
-        <FormControl className={classes.field} variant="outlined">
-          <InputLabel>
-            Категория
-          </InputLabel>
           <Controller
-            name="category"
+            name="name"
             control={control}
-            render={({ field }) => (
-              <Select label="Категория" {...field} native>
-                <option aria-label="None" value="" />
-                {categories.map((category) => (
-                  <option key={category._id} value={category._id}>
-                    {category.name}
-                  </option>
-                ))}
-              </Select>
+            rules={{ required: true }}
+            className={classes.field}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                error={!!error}
+                label="Название"
+                variant="outlined"
+                color="primary"
+              />
             )}
-          />
-        </FormControl>
-
+          />  
+        
         <Controller
           name="price"
           control={control}
@@ -283,34 +260,8 @@ function CreateProductPage() {
               className={classes.field}
             />
           )}
-        />
+        /> 
 
-        <Controller
-          name="price"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label="Количество"
-              variant="outlined"
-              color="primary"
-              className={classes.field}
-            />
-          )}
-        />
-        <Controller
-          name="volume"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label="Объем"
-              variant="outlined"
-              color="primary"
-              className={classes.field}
-            />
-          )}
-        />
         <Controller
           name="weight"
           control={control}
@@ -323,14 +274,90 @@ function CreateProductPage() {
               className={classes.field}
             />
           )}
-        />
+        /> 
 
-        <UploadPhoto
-          handleUploadImage={handleUploadImage}
-          handleDeleteImage={handleDeleteImage}
-          image={watchFields.image}
-          className={classes.uploadContainer}
-        />
+        <Controller
+            name="portionAmount"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Количество"
+                variant="outlined"
+                color="primary"
+                className={classes.field}
+              />
+            )}
+          />
+          <Controller
+            name="volume"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Объем"
+                variant="outlined"
+                color="primary"
+                className={classes.field}
+              />
+            )}
+          />    
+        </Box>
+
+        <Box className={classes.additionalInfo}>
+          <Autocomplete
+            className={classes.multiSelect}
+            multiple
+            id="tags-filled"
+            options={ingredients}
+            getOptionLabel={(option) => option.name}
+            onChange={handleChangeIngredients}
+            defaultValue={watchFields.ingredients}
+            filterSelectedOptions
+            freeSolo
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+                <Chip variant="outlined" label={option.name} {...getTagProps({ index })} />
+              ))
+            }
+            renderInput={(params) => (
+              <TextField {...params} variant="outlined" label="ингредиенты" placeholder="добавить..." />
+            )}
+          />
+
+          <Autocomplete
+            className={classes.multiSelect}
+            multiple
+            id="tags-filled"
+            options={extraIngredients}
+            getOptionLabel={(option) => option.name}
+            onChange={handleChangeExtraIngredients}
+            defaultValue={watchFields.extraIngredients}
+            filterSelectedOptions
+            freeSolo
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+                <Chip variant="outlined" label={option.name} {...getTagProps({ index })} />
+              ))
+            }
+            renderInput={(params) => (
+              <TextField {...params} variant="outlined" label="Доп ингредиенты" placeholder="добавить..." />
+            )}
+          />
+
+          <Controller
+            name="isAvailable"
+            control={control}
+            className={classes.field}
+            render={({ field }) => (
+              <FormControlLabel
+                control={<Switch checked={field.value} color="primary" {...field} />}
+                label="Доступен"
+                labelPlacement='top'
+              />
+            )}
+          />
+        </Box>
 
         <Button type='submit' variant="contained" size="large" color="primary">
           Добавить
