@@ -20,6 +20,7 @@ function IngredientsTableRow({ ingredient }) {
       .then((res) => {
         const { ingredient } = res.data;
         dispatch(changeIngredient(ingredient));
+        setIsEditMode(false);
       })
       .catch((err) => {
         console.log(err);

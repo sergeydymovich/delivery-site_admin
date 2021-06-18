@@ -58,6 +58,7 @@ function  ExtraIngredientsTableRow({ ingredient }) {
       .then((res) => {
         const ingredient = res.data;
         dispatch(changeExtraIngredient(ingredient));
+        setIsEditMode(false);
       })
       .catch((err) => {
         console.log(err);

@@ -21,6 +21,7 @@ function CategoriesTableRow({ category }) {
       .then((res) => {
         const { category } = res.data;
         dispatch(changeCategory(category));
+        setIsEditMode(false);
       })
       .catch((err) => {
         console.log(err);

@@ -7,6 +7,10 @@ export const fetchLogin = async (phone, password) => {
   return await axios.post(`/login`, { phone, password });
 };
 
+export const fetchGetOrders = async ({ startDate, endDate, pageSize, offset }) => {
+  return await axios.get(`/orders?startDate=${startDate}&endDate=${endDate}&limit=${pageSize}&offset=${offset}`);
+};
+
 export const fetchGetCategories = async () => {
   return await axios.get(`/categories`);
 };
