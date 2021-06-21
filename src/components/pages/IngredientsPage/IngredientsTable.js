@@ -6,7 +6,7 @@ import IngredientsTableRow from "./IngredientsTableRow";
 
 
 function IngredientsTable() {
-  const ingredients = useSelector((s) => s.ingredients.ingredientsArr);
+  const ingredients = useSelector((state) => state.ingredients.ingredientsArr);
 
   return (
     <TableContainer>
@@ -20,7 +20,7 @@ function IngredientsTable() {
       </TableHead>
       <TableBody>
         {ingredients.map((ingredient) => (
-          <IngredientsTableRow ingredient={ingredient} />
+          <IngredientsTableRow key={ingredient._id} ingredient={ingredient} />
         ))}
       </TableBody>
     </Table>

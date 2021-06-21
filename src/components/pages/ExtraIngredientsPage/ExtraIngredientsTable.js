@@ -27,7 +27,7 @@ function ExtraIngredientsTable() {
       </TableHead>
       <TableBody>
         {ingredients.map((ingredient) => (
-          <ExtraIngredientsTableRow ingredient={ingredient} />
+          <ExtraIngredientsTableRow key={ingredient._id} ingredient={ingredient} />
         ))}
       </TableBody>
     </Table>

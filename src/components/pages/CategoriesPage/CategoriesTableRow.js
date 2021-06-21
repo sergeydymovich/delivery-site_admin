@@ -47,7 +47,7 @@ function CategoriesTableRow({ category }) {
   }, [category.name]);
 
   return (
-          <TableRow key={category._id}>
+          <TableRow>
             <TableCell component="th" scope="row">
               {!isEditMode && category.name}
               {isEditMode &&

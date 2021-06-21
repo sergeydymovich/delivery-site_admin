@@ -102,7 +102,7 @@ function  ExtraIngredientsTableRow({ ingredient }) {
   }, [ingredient])
 
   return (
-        <TableRow key={ingredient._id}>
+        <TableRow>
           <TableCell component="th" scope="row">
             {!isEditMode && ingredient.name}
             {isEditMode &&

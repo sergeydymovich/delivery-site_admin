@@ -26,7 +26,7 @@ function CategoriesTable() {
           </TableHead>
           <TableBody>
             {categories.map((category) => (
-             <CategoriesTableRow category={category} />
+             <CategoriesTableRow key={category._id} category={category} />
             ))}
           </TableBody>
         </Table>
