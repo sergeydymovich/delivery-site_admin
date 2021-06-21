@@ -24,7 +24,7 @@ import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   title: {
-    marginBottom: "30px"
+    marginBottom: "30px",
   },
   form: {
     display: "flex",
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   uploadContainer: {
     width: '300px',
     height:'400px',
-    border: `1px dashed ${theme.palette.primary.light}`,
+    border: `2px dashed ${theme.palette.grey[300]}`,
     marginRight: "20px",
   },
   multiSelect: {
