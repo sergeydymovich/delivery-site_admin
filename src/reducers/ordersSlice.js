@@ -1,18 +1,20 @@
 import {  createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { fetchGetOrders } from "api/api";
 
+const ORDERS_PAGE_SIZE = 1;
+
 export const getOrders = createAsyncThunk(
   "/orders",
-  async ({ startDate, endDate }, { rejectWithValue, getState }) => {
+  async (params, { rejectWithValue, getState }) => {
     try {
-      console.log('зашел ордер санк')
-      const { activePage, pageSize } = getState().orders.requestOptions;
-  
+      const { startDate, endDate } = params;
+      const { activePage } = getState().orders.requestOptions;
+
       const response = await fetchGetOrders({
         startDate: startDate || '',
         endDate: endDate || '',
-        pageSize,
-        offset: (activePage - 1) * pageSize,
+        pageSize: ORDERS_PAGE_SIZE,
+        offset: (activePage - 1) * ORDERS_PAGE_SIZE,
         });
 
       return response.data;
@@ -28,7 +30,6 @@ export const ordersSlice = createSlice({
     ordersArr: [],
     requestOptions: {
       activePage: 1,
-      pageSize: 15,
       pagesAmount: 0,
     }
   },
@@ -41,7 +42,7 @@ export const ordersSlice = createSlice({
     [getOrders.pending]: () => {},
     [getOrders.fulfilled]: (state, action) => {
       state.ordersArr = action.payload.orders;
-      state.requestOptions.pagesAmount = Math.ceil(action.payload.ordersAmount / state.requestOptions.pageSize);
+      state.requestOptions.pagesAmount = Math.ceil(action.payload.ordersAmount / ORDERS_PAGE_SIZE);
     },
     [getOrders.rejected]: () => {},
   },

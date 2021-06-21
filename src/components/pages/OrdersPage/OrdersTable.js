@@ -10,9 +10,8 @@ import {
   TableRow,
 } from "@material-ui/core";
 import OrdersTableRow from "./OrdersTableRow";
-import { changeActivePage, getOrders } from 'reducers/ordersSlice';
+import { changeActivePage } from 'reducers/ordersSlice';
 import Pagination from "@material-ui/lab/Pagination";
-import { format, startOfToday } from "date-fns";
 
 const useStyles = makeStyles((theme) => ({
   pagination: {
@@ -33,12 +32,11 @@ function OrdersTable() {
   const handlePageChange = (event, value) => {
     dispatch(changeActivePage(value));
    };
-
+   
    useEffect(() => {
-    const startDate = format(startOfToday(), 'Pp') ;
-    dispatch(getOrders({ startDate }));
-  },[activePage, dispatch])
-
+    dispatch(changeActivePage(1));
+   }, [dispatch])
+   
   return (
       <TableContainer>
         <Table aria-label="simple table">

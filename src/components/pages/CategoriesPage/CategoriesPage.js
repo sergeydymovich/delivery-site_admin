@@ -7,14 +7,15 @@ import {
   Button,
   Container,
   makeStyles,
+  Typography,
 } from "@material-ui/core";
 import CategoriesTable from "./CategoriesTable";
 
 const useStyles = makeStyles((theme) => ({
   formWrapper: {
-    minHeight: "100px",
+    height: "100px",
     display: "flex",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     alignItems: "center",
   },
 }));
@@ -38,6 +39,9 @@ function CategoriesPage() {
   return (
     <Container maxWidth="xl">
       <Box className={classes.formWrapper}>
+        <Typography variant="h4" component="h2">
+            Категории
+        </Typography>
         {!showForm && (
           <Button
             variant="contained"

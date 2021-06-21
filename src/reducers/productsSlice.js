@@ -1,14 +1,16 @@
 import {  createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { fetchGetProducts } from "api/api";
 
+const PRODUCTS_PAGE_SIZE = 1;
+
 export const getProducts = createAsyncThunk(
   "/products",
   async (_, { rejectWithValue, getState }) => {
     try {
-      const { activePage, pageSize, filterWord } = getState().products.requestOptions;
+      const { activePage, filterWord } = getState().products.requestOptions;
       const response = await fetchGetProducts({
-        pageSize,
-        offset: (activePage - 1) * pageSize,
+        pageSize: PRODUCTS_PAGE_SIZE,
+        offset: (activePage - 1) * PRODUCTS_PAGE_SIZE,
         filterWord
       });
 
@@ -25,7 +27,6 @@ export const productsSlice = createSlice({
     productsArr: [],
     requestOptions: {
       activePage: 1,
-      pageSize: 1,
       pagesAmount: 0,
       filterWord: '',
     }
@@ -46,7 +47,7 @@ export const productsSlice = createSlice({
     [getProducts.pending]: () => {},
     [getProducts.fulfilled]: (state, action) => {
       state.productsArr = action.payload.products;
-      state.requestOptions.pagesAmount = Math.ceil(action.payload.productsAmount / state.requestOptions.pageSize);  
+      state.requestOptions.pagesAmount = Math.ceil(action.payload.productsAmount / PRODUCTS_PAGE_SIZE);  
     },
     [getProducts.rejected]: () => {},
   },

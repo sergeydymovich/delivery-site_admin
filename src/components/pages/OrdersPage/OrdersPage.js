@@ -1,7 +1,7 @@
 import { Box, Container, makeStyles, Typography } from "@material-ui/core";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { getOrders } from "reducers/ordersSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { changeActivePage, getOrders } from "reducers/ordersSlice";
 import OrdersTable from "./OrdersTable";
 import { Link } from "react-router-dom";
 import { format, startOfToday } from 'date-fns'
@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '20px'
+    height: "100px",
   },
   link: {
     color: 'blue'
@@ -19,13 +19,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function OrdersPage() {
+  const activePage = useSelector((state) => state.orders.requestOptions.activePage);
   const dispatch = useDispatch();
   const classes = useStyles(); 
 
-  useEffect(() => {
-    const startDate = format(startOfToday(), 'Pp') ;
+  useEffect(() => { 
+    const startDate = format(startOfToday(), 'Pp');
     dispatch(getOrders({ startDate }));
-  },[dispatch])
+  },[activePage, dispatch])
 
   return (
     <Container  maxWidth="xl">
@@ -33,11 +34,10 @@ function OrdersPage() {
         <Typography variant="h4" component="h2">
           Текущие заказы
         </Typography>
-        <Link className={classes.link} to="#">
+        <Link className={classes.link} to="/orders/history">
            История заказов
         </Link>
-      </Box> 
-     
+      </Box>    
       <OrdersTable />
     </Container>
   );

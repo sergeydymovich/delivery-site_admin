@@ -6,15 +6,16 @@ import {
   Button,
   Container,
   makeStyles,
+  Typography,
 } from "@material-ui/core";
 import IngredientsTable from "components/pages/IngredientsPage/IngredientsTable";
 import CreateIngredientForm from "components/pages/IngredientsPage/CreateIngredientForm";
 
 const useStyles = makeStyles((theme) => ({
   formWrapper: {
-    minHeight: "100px",
+    height: "100px",
     display: "flex",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     alignItems: "center",
   },
 }));
@@ -38,6 +39,9 @@ function IngredientsPage() {
   return (
     <Container maxWidth="xl">
       <Box className={classes.formWrapper}>
+        <Typography variant="h4" component="h2">
+          Ингредиенты
+        </Typography>
         {!showForm && (
           <Button
             variant="contained"

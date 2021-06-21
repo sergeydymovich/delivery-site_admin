@@ -7,6 +7,7 @@ import {
   Button,
   Container,
   makeStyles,
+  Typography,
 } from "@material-ui/core";
 import ExtraIngredientsTable from "./ExtraIngredientsTable";
 
@@ -16,9 +17,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "auto",
   },
   formWrapper: {
-    minHeight: "150px",
+    height: "100px",
     display: "flex",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     alignItems: "center",
   }
 }));
@@ -44,6 +45,9 @@ function ExtraIngredientsPage() {
   return (
     <Container maxWidth="xl">
       <Box className={classes.formWrapper}>
+        <Typography variant="h4" component="h2">
+          Доп. ингредиенты
+        </Typography>
         {!showForm && (
           <Button
             variant="contained"

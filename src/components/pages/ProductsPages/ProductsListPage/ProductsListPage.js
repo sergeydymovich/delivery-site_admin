@@ -4,7 +4,7 @@ import { getCategories } from "reducers/categoriesSlice";
 import { getIngredients } from "reducers/ingredientsSlice";
 import { getExtraIngredients } from "reducers/extraIngredientsSlice";
 import { getProducts, changeFilterWord } from "reducers/productsSlice";
-import { Box, Button, Container, makeStyles, TextField } from "@material-ui/core";
+import { Box, Button, Container, makeStyles, TextField, Typography } from "@material-ui/core";
 import ProductsTable from "./ProductsTable";
 import { Link } from "react-router-dom";
 import { debounce } from 'throttle-debounce';
@@ -13,10 +13,13 @@ const useStyles = makeStyles((theme) => ({
   searchWrapper: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignContent: 'center',
-    marginBottom: '20px',
-    marginTop: '20px',
+    alignItems: 'center',
+    height: "100px",
   },
+  searchInput: {
+    marginLeft: 'auto',
+    marginRight: '50px',
+  }
 }));
 
 function ProductsListPage() {
@@ -45,13 +48,17 @@ function ProductsListPage() {
   return (
     <Container  maxWidth="xl">
       <Box className={classes.searchWrapper}>
-      <TextField
-        onChange={debounceFunc}
-        label="Поиск продуктов"
-        type="search"
-        variant="outlined"
-        size='small'
-      />
+        <Typography variant="h4" component="h2">
+            Продукты
+        </Typography>
+        <TextField
+          className={classes.searchInput}
+          onChange={debounceFunc}
+          label="Поиск продуктов"
+          type="search"
+          variant="outlined"
+          size='small'
+        />
         <Link className={classes.link} to="/products/create">
           <Button variant="contained" size="large" color="primary">
             Добавить продукт

@@ -24,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "10px",
   },
   uploadContainer: {
-    width: '150px',
-    height:'150px',
+    width: '100px',
+    height:'100px',
     border: '1px dashed lightgrey',
     marginRight: '10px'
   }
