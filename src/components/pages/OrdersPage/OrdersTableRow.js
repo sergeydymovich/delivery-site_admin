@@ -17,7 +17,7 @@ function OrdersTableRow({ order }) {
               {order.status}
             </TableCell>
             <TableCell>
-              {format(new Date(order.createdAt), 'd/M/yy H:m')}
+              {format(new Date(order.createdAt), 'd/M/yy HH:mm')}
             </TableCell>
             <TableCell>
               {order.name}

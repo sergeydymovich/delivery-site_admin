@@ -112,7 +112,7 @@ function  ExtraIngredientsTableRow({ ingredient }) {
                 size='small'
                 defaultValue={ingredient.name}
                 onChange={handleChangeIngredientName}
-                />
+              />
             }
           </TableCell>
           <TableCell component="th" align="center" scope="row">
@@ -141,7 +141,7 @@ function  ExtraIngredientsTableRow({ ingredient }) {
                 size='small'
                 defaultValue={ingredient.price}
                 onChange={handleChangeIngredientPrice}
-                />
+              />
             }
           </TableCell>
           <TableCell align="right">

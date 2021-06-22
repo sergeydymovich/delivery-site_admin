@@ -58,13 +58,13 @@ function CategoriesTableRow({ category }) {
                     size='small'
                     defaultValue={category.name}
                     onChange={handleChangeCategoryName}
-                    />
-                    <IconButton onClick={deactivateEditMode} aria-label="change">
-                      <CloseIcon aria-label="change" size="small" />
-                    </IconButton>
-                    <IconButton onClick={handleSubmit} aria-label="change">
-                      <CheckIcon aria-label="change" size="small" />
-                    </IconButton>
+                  />
+                  <IconButton onClick={deactivateEditMode} aria-label="change">
+                    <CloseIcon aria-label="change" size="small" />
+                  </IconButton>
+                  <IconButton onClick={handleSubmit} aria-label="change">
+                    <CheckIcon aria-label="change" size="small" />
+                  </IconButton>
                 </>
                }
             </TableCell>
@@ -77,7 +77,6 @@ function CategoriesTableRow({ category }) {
                   <CreateIcon aria-label="change" size="small" />
                 </IconButton>
               }
-          
             </TableCell>
           </TableRow>
   );

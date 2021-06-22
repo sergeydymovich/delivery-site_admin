@@ -83,16 +83,14 @@ function CreateProductPage() {
      } 
 
    });
-
   const watchFields = watch();
-  console.log(watchFields)
 
   const onSubmit = (product) => {
     console.log("form:::::::",product)
-    let newIngredients = [];
-    let ingredientsIds = []; 
-    let newExtraIngredients = [];
-    let extraIngredientsIds = []; 
+    const newIngredients = [];
+    const ingredientsIds = []; 
+    const newExtraIngredients = [];
+    const extraIngredientsIds = []; 
     product.ingredients?.forEach((ingredient) =>
       ingredient._id ? ingredientsIds.push(ingredient._id) : newIngredients.push(ingredient.name)
     )
@@ -200,8 +198,7 @@ function CreateProductPage() {
       <Typography className={classes.title} variant="h4" component="h2">
         Форма создания продукта
       </Typography>
-      <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
-      
+      <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>    
         <UploadPhoto
           handleUploadImage={handleUploadImage}
           handleDeleteImage={handleDeleteImage}
@@ -210,8 +207,6 @@ function CreateProductPage() {
         />
 
         <Box className={classes.mainInfo}>
- 
-
           <FormControl className={classes.field} variant="outlined">
             <InputLabel>
               Категория

@@ -51,12 +51,12 @@ function IngredientsTableRow({ ingredient }) {
               {!isEditMode && ingredient.name}
               {isEditMode &&
                 <>
-                <TextField  
-                  label="Название"
-                  variant="outlined"
-                  size='small'
-                  defaultValue={ingredient.name}
-                  onChange={handleChangeIngredientName}
+                  <TextField  
+                    label="Название"
+                    variant="outlined"
+                    size='small'
+                    defaultValue={ingredient.name}
+                    onChange={handleChangeIngredientName}
                   />
                   <IconButton onClick={deactivateEditMode} aria-label="change">
                     <CloseIcon aria-label="change" size="small" />
@@ -76,7 +76,6 @@ function IngredientsTableRow({ ingredient }) {
                   <CreateIcon aria-label="change" size="small" />
                 </IconButton>
               }
-          
             </TableCell>
           </TableRow>
   );

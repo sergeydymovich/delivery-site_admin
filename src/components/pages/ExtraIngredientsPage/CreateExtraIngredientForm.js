@@ -81,8 +81,6 @@ function CreateExtraIngredientForm({ toggleShowForm }) {
     setImage("");
   };
 
-  
-
   return (
         <form className={classes.form} onSubmit={handleSubmit}>
             <IconButton
@@ -92,14 +90,12 @@ function CreateExtraIngredientForm({ toggleShowForm }) {
             >
               <CancelIcon onClick={toggleShowForm} />
             </IconButton>
-
             <UploadPhoto
               handleDeleteImage={handleDeleteImage}
               handleUploadImage={handleUploadImage}
               image={image}
               className={classes.uploadContainer}
             />
-
             <TextField
               className={classes.input}
               label="Название"

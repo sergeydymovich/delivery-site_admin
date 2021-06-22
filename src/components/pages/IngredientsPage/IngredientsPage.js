@@ -52,9 +52,7 @@ function IngredientsPage() {
             Добавить ингредиент
           </Button>
         )}
-        {showForm &&
-          <CreateIngredientForm toggleShowForm={toggleShowForm} />
-        }
+        {showForm && <CreateIngredientForm toggleShowForm={toggleShowForm} />}
       </Box>
       <IngredientsTable />
     </Container>

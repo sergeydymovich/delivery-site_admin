@@ -63,7 +63,7 @@ function Navigation() {
   const [activeCategory, setActiveCategory] = useState("");
   const classes = useStyles();
 
-  const toogleShowNestedList = (category) => {
+  const toggleShowNestedList = (category) => {
     setActiveCategory((prev) => (prev === category ? "" : category));
   };
   return (
@@ -111,7 +111,7 @@ function Navigation() {
 
           <ListItem
             className={classes.listItem}
-            onClick={() => toogleShowNestedList("ингредиенты")}
+            onClick={() => toggleShowNestedList("ингредиенты")}
             button
           >
             <ListItemIcon>

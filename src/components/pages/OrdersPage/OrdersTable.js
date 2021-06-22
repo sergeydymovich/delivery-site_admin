@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   makeStyles,
@@ -12,6 +12,7 @@ import {
 import OrdersTableRow from "./OrdersTableRow";
 import { changeActivePage } from 'reducers/ordersSlice';
 import Pagination from "@material-ui/lab/Pagination";
+import { sortOrdersArray } from 'utils/sortOrdersArray.utils';
 
 const useStyles = makeStyles((theme) => ({
   pagination: {
@@ -22,21 +23,29 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function OrdersTable() {
-  const orders = useSelector((state) => state.orders.ordersArr);
-  const activePage = useSelector((state) => state.orders.requestOptions.activePage);
+function OrdersTable({ is24hOrders }) {
+  const stateOrders = useSelector((state) => state.orders.ordersArr);
+  const stateActivePage = useSelector((state) => state.orders.requestOptions.activePage);
   const pagesAmount = useSelector((state) => state.orders.requestOptions.pagesAmount);
+  const [orders, setOrders] = useState([]);
   const dispatch = useDispatch();
   const classes = useStyles();
 
   const handlePageChange = (event, value) => {
-    dispatch(changeActivePage(value));
-   };
-   
+      dispatch(changeActivePage(value));
+  };
+
+
    useEffect(() => {
-    dispatch(changeActivePage(1));
-   }, [dispatch])
-   
+    if (is24hOrders) {
+      const sortedArr = sortOrdersArray(stateOrders);
+      setOrders(sortedArr);
+    } else {
+      setOrders(stateOrders);
+    }
+   }, [is24hOrders, stateActivePage, stateOrders])
+
+    
   return (
       <TableContainer>
         <Table aria-label="simple table">
@@ -56,12 +65,14 @@ function OrdersTable() {
             ))}
           </TableBody>
         </Table>
-        <Pagination
-          className={classes.pagination}
-          count={pagesAmount}
-          page={activePage}
-          onChange={handlePageChange}
-        />
+        {!is24hOrders && 
+          <Pagination
+            className={classes.pagination}
+            count={pagesAmount}
+            page={stateActivePage}
+            onChange={handlePageChange}
+          />  
+        }   
       </TableContainer>
   );
 }

@@ -10,11 +10,19 @@ import {
   MenuItem,
   Typography,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  userRole: {
+    marginRight: '15px',
+  }
+}));
 
 function UserProfile() {
   const role = useSelector((state) => state.auth.user.role);
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
+  const classes = useStyles();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -35,7 +43,7 @@ function UserProfile() {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <Typography variant="subtitle1" component="p">
+        <Typography className={classes.userRole} variant="subtitle1" component="p">
           {role}
         </Typography>
         {role === "ADMIN" && (

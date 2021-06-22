@@ -49,7 +49,7 @@ function ProductsListPage() {
     <Container  maxWidth="xl">
       <Box className={classes.searchWrapper}>
         <Typography variant="h4" component="h2">
-            Продукты
+          Продукты
         </Typography>
         <TextField
           className={classes.searchInput}
@@ -65,7 +65,6 @@ function ProductsListPage() {
           </Button>
         </Link>
       </Box>
-
       <ProductsTable />
     </Container>
 
