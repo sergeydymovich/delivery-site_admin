@@ -64,7 +64,7 @@ function UploadPhoto({ handleUploadImage, handleDeleteImage, image, className })
             <img
               className={classes.image}
               src={typeof image === "string" ? image : URL.createObjectURL(image)}
-              alt="ingredient"
+              alt="product"
             />
             <IconButton
               className={classes.deleteImageBtn}

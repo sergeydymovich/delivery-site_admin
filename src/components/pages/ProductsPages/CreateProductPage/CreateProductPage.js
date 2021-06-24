@@ -84,6 +84,7 @@ function CreateProductPage() {
 
    });
   const watchFields = watch();
+  console.log('watchFields',watchFields)
 
   const onSubmit = (product) => {
     console.log("form:::::::",product)
@@ -125,12 +126,19 @@ function CreateProductPage() {
     }
 
 
-    if (product.image) {
+    if (typeof product.image === 'object') {
       formData.append("image", product.image, product.image.name);
-    } else {
-      formData.append("image", '');
- 
     }
+    
+    if (product.image && typeof product.image === 'string') {
+      formData.append("image", product.image);
+    }
+    
+    if (!product.image) {
+      formData.append("image", '');
+    }
+
+    console.log('точно пошел запрос', typeof product.image);
 
     if (location.state) {
       formData.append("id", location.state.product._id);
