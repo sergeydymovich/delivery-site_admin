@@ -43,10 +43,11 @@ function  ExtraIngredientsTableRow({ ingredient }) {
     if (newIngredientName) {
       const formData = new FormData();
 
-      if (newIngredientImage) {
+      if (typeof newIngredientImage === 'object') {
         formData.append("image", newIngredientImage, newIngredientImage.name);
       } else {
-        formData.append("image", '');
+          const img = newIngredientImage.length ? newIngredientImage : "";
+          formData.append("image", img);
       }
 
       formData.append("name", newIngredientName);

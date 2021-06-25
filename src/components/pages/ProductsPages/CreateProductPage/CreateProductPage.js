@@ -128,15 +128,11 @@ function CreateProductPage() {
 
     if (typeof product.image === 'object') {
       formData.append("image", product.image, product.image.name);
+    } else {
+        const img = product.image.length ? product.image : "";
+        formData.append("image", img);
     }
     
-    if (product.image && typeof product.image === 'string') {
-      formData.append("image", product.image);
-    }
-    
-    if (!product.image) {
-      formData.append("image", '');
-    }
 
     console.log('точно пошел запрос', typeof product.image);
 

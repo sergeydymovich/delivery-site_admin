@@ -47,6 +47,7 @@ function CreateExtraIngredientForm({ toggleShowForm }) {
     } else {
       formData.append("image", '');
     }
+    
     formData.append("name", name);
     formData.append("price", price);
 
