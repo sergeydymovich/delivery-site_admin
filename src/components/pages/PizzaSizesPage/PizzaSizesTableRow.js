@@ -3,22 +3,23 @@ import { IconButton, TableCell, TableRow, TextField } from "@material-ui/core";
 import CreateIcon from "@material-ui/icons/Create";
 import CloseIcon from '@material-ui/icons/Close';
 import CheckIcon from '@material-ui/icons/Check';
-import { fetchChangeCategory } from "api/api";
+import { fetchChangePizzaSize } from "api/api";
 import { useDispatch } from "react-redux";
-import { changeCategory } from "reducers/categoriesSlice";
+import { changePizzaSize } from "reducers/pizzaSizesSlice";
 
-function CategoriesTableRow({ category }) {
+
+function PizzaSizesTableRow({ pizzaSize }) {
   const [isEditMode, setIsEditMode] = useState(false);
-  const [newCategoryName, setNewCategoryName] = useState('');
+  const [newPizzaSize, setNewPizzaSize] = useState('');
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
 
-    if (newCategoryName) {
-      fetchChangeCategory({name: newCategoryName, _id: category._id})
+    if (newPizzaSize) {
+      fetchChangePizzaSize({size: newPizzaSize, _id: pizzaSize._id})
       .then((res) => {
-        const { category } = res.data;
-        dispatch(changeCategory(category));
+        const { pizzaSize } = res.data;
+        dispatch(changePizzaSize(pizzaSize));
         setIsEditMode(false);
       })
       .catch((err) => {
@@ -28,8 +29,8 @@ function CategoriesTableRow({ category }) {
 
   }
 
-  const handleChangeCategoryName = (e) => {
-    setNewCategoryName(e.target.value);
+  const handleChangePizzaSize = (e) => {
+    setNewPizzaSize(e.target.value);
   }
 
   const activateEditMode = () => {
@@ -41,21 +42,24 @@ function CategoriesTableRow({ category }) {
   }
 
   useEffect(() => {
-    setNewCategoryName(category.name);
-  }, [category.name]);
+    setNewPizzaSize(pizzaSize.size);
+  }, [pizzaSize.size]);
 
   return (
           <TableRow>
             <TableCell component="th" scope="row">
-              {!isEditMode && category.name}
+              {pizzaSize.name}
+            </TableCell>
+            <TableCell align='center'>
+              {!isEditMode && pizzaSize.size}
               {isEditMode &&
                 <>
                   <TextField  
-                    label="Название"
+                    label="Размер"
                     variant="outlined"
                     size='small'
-                    defaultValue={category.name}
-                    onChange={handleChangeCategoryName}
+                    defaultValue={pizzaSize.size}
+                    onChange={handleChangePizzaSize}
                   />
                   <IconButton onClick={deactivateEditMode} aria-label="change">
                     <CloseIcon aria-label="change" size="small" />
@@ -64,10 +68,7 @@ function CategoriesTableRow({ category }) {
                     <CheckIcon aria-label="change" size="small" />
                   </IconButton>
                 </>
-               }
-            </TableCell>
-            <TableCell align="right">
-              {new Date(category.createdAt).toLocaleDateString()}
+              }
             </TableCell>
             <TableCell component="th" align="right" scope="row">
               {!isEditMode &&
@@ -80,4 +81,4 @@ function CategoriesTableRow({ category }) {
   );
 }
 
-export default CategoriesTableRow;
+export default PizzaSizesTableRow;

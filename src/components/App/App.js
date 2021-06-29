@@ -9,6 +9,7 @@ import CreateProductsPage from "components/pages/ProductsPages/CreateProductPage
 import CategoriesPage from "components/pages/CategoriesPage/CategoriesPage";
 import IngredientsPage from "components/pages/IngredientsPage/IngredientsPage";
 import ExtraIngredientsPage from "components/pages/ExtraIngredientsPage/ExtraIngredientsPage";
+import PizzaSizesPage from "components/pages/PizzaSizesPage/PizzaSizesPage";
 
 function App() {
   useAppInit();
@@ -27,6 +28,7 @@ function App() {
           <Route exact strict path="/products" component={ProductsListPage} />
           <Route path="/products/create" component={CreateProductsPage} />
           <Route path="/products/change" component={CreateProductsPage} />
+          <Route path="/pizza-sizes" component={PizzaSizesPage} />
         </Layout>
       </Switch>
     </Box>

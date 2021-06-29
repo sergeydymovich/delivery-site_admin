@@ -12,7 +12,8 @@ import {
   Chip,
   Typography,
   Box,
-  MenuItem
+  MenuItem,
+  Checkbox
 } from "@material-ui/core";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Controller, useForm } from "react-hook-form";
@@ -80,6 +81,7 @@ function CreateProductPage() {
       image: product?.image || '',
       ingredients: product?.ingredients || [],
       extraIngredients: product?.extraIngredients || [],
+      sizes: product?.sizes || [],
      } 
 
    });

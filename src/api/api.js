@@ -60,3 +60,11 @@ export const fetchChangeProduct = async (data) => {
   return await axios.put(`/products`, data);
 };
 
+export const fetchGetPizzaSizes = async () => {
+  return await axios.get(`/pizza-sizes`);
+};
+
+export const fetchChangePizzaSize = async ({ _id, size }) => {
+  return await axios.put(`/pizza-sizes`, { _id, size });
+};
+

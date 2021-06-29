@@ -8,7 +8,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import RestaurantMenuIcon from "@material-ui/icons/RestaurantMenu";
 import ViewComfyIcon from "@material-ui/icons/ViewComfy";
-import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
+import HeightIcon from '@material-ui/icons/Height';
 import ScatterPlotIcon from "@material-ui/icons/ScatterPlot";
 import CategoryIcon from "@material-ui/icons/Category";
 import BorderAllIcon from "@material-ui/icons/BorderAll";
@@ -155,12 +155,14 @@ function Navigation() {
             </ListItem>
           </Link>
 
-          <ListItem className={classes.listItem} button>
-            <ListItemIcon>
-              <SupervisorAccountIcon />
-            </ListItemIcon>
-            <ListItemText primary="пользователи" />
-          </ListItem>
+          <Link to="/pizza-sizes">
+            <ListItem className={classes.listItem} button>
+              <ListItemIcon>
+                <HeightIcon />
+              </ListItemIcon>
+              <ListItemText primary="размеры пиццы" />
+            </ListItem>
+          </Link>
         </List>
       </Drawer>
     </>
