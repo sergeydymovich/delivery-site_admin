@@ -12,6 +12,7 @@ import HeightIcon from '@material-ui/icons/Height';
 import ScatterPlotIcon from "@material-ui/icons/ScatterPlot";
 import CategoryIcon from "@material-ui/icons/Category";
 import BorderAllIcon from "@material-ui/icons/BorderAll";
+import SettingsIcon from '@material-ui/icons/Settings';
 import logo from "assets/images/logo.png";
 import { Link } from "react-router-dom";
 import {
@@ -161,6 +162,15 @@ function Navigation() {
                 <HeightIcon />
               </ListItemIcon>
               <ListItemText primary="размеры пиццы" />
+            </ListItem>
+          </Link>
+
+          <Link to="/fields">
+            <ListItem className={classes.listItem} button>
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary="поля продуктов" />
             </ListItem>
           </Link>
         </List>

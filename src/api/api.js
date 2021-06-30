@@ -68,3 +68,10 @@ export const fetchChangePizzaSize = async ({ _id, size }) => {
   return await axios.put(`/pizza-sizes`, { _id, size });
 };
 
+export const fetchGetFields = async () => {
+  return await axios.get(`/fields`);
+};
+
+export const fetchAddField = async (data) => {
+  return await axios.post(`/fields`, data);
+};

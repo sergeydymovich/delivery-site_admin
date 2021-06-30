@@ -10,6 +10,8 @@ import CategoriesPage from "components/pages/CategoriesPage/CategoriesPage";
 import IngredientsPage from "components/pages/IngredientsPage/IngredientsPage";
 import ExtraIngredientsPage from "components/pages/ExtraIngredientsPage/ExtraIngredientsPage";
 import PizzaSizesPage from "components/pages/PizzaSizesPage/PizzaSizesPage";
+import FieldsListPage from "components/pages/FieldsPages/FieldsList/FieldsListPage";
+import CreateFieldPage from "components/pages/FieldsPages/CreateFieldPage/CreateFieldPage";
 
 function App() {
   useAppInit();
@@ -29,6 +31,8 @@ function App() {
           <Route path="/products/create" component={CreateProductsPage} />
           <Route path="/products/change" component={CreateProductsPage} />
           <Route path="/pizza-sizes" component={PizzaSizesPage} />
+          <Route exact strict path="/fields" component={FieldsListPage} />
+          <Route path="/fields/create" component={CreateFieldPage} />
         </Layout>
       </Switch>
     </Box>

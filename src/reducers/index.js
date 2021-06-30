@@ -4,7 +4,8 @@ import ordersSlice from 'reducers/ordersSlice';
 import categoriesSlice from "reducers/categoriesSlice";
 import ingredientsSlice from "reducers/ingredientsSlice";
 import extraIngredientsSlice from "reducers/extraIngredientsSlice";
-import pizzaSizesSlice from "./pizzaSizesSlice";
+import pizzaSizesSlice from "reducers/pizzaSizesSlice";
+import fieldsSlice from "reducers/fieldsSlice";
 import { combineReducers } from "redux";
 
 const reducer = {
@@ -15,6 +16,7 @@ const reducer = {
   ingredients: ingredientsSlice,
   extraIngredients: extraIngredientsSlice,
   pizzaSizes: pizzaSizesSlice,
+  fields: fieldsSlice,
 };
 
 const rootReducer = combineReducers(reducer);
