@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategories } from "reducers/categoriesSlice";
 import { getIngredients } from "reducers/ingredientsSlice";
 import { getExtraIngredients } from "reducers/extraIngredientsSlice";
+import { getPizzaSizes } from "reducers/pizzaSizesSlice";
 import { getProducts, changeFilterWord } from "reducers/productsSlice";
 import { Box, Button, Container, makeStyles, TextField, Typography } from "@material-ui/core";
 import ProductsTable from "./ProductsTable";
@@ -39,6 +40,7 @@ function ProductsListPage() {
     dispatch(getCategories());
     dispatch(getIngredients());
     dispatch(getExtraIngredients());
+    dispatch(getPizzaSizes());
   }, [dispatch]);
 
   useEffect(() => {
