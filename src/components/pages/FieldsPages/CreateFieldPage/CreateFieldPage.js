@@ -7,6 +7,8 @@ import {
   FormControl,
   InputLabel,
   Select,
+  Container,
+  Typography,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { fetchAddField } from "api/api";
@@ -38,6 +40,17 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    width: '300px',
+    margin: '0 auto',
+  },
+  selectWrapper: {
+    width: '100%',
+  },
+  input: {
+    width: '100%',
+  },
+  submitBtn: {
+    marginTop: '30px',
   }
 }));
 
@@ -54,15 +67,29 @@ function CreateFieldPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetchAddField({ name, label, description, is_default: isDefault, unit, ui_type: UIType})
-      .then((res) => {
-        const { field } = res.data;
-        dispatch(addField(field));
-        setName("");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (name && label && description && UIType) {
+      const dataObj = {
+        name,
+        label,
+        description,
+        is_default: isDefault,
+        unit,
+        ui_type: UIType
+      }
+  
+      fetchAddField(dataObj)
+        .then((res) => {
+          const { field } = res.data;
+          dispatch(addField(field));
+          setName('');
+          setLabel('');
+          setDescription('');
+          setUIType('');
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const handleChangeName = (e) => {
@@ -92,6 +119,10 @@ function CreateFieldPage() {
 
 
   return (
+      <Container>
+        <Typography variant="h4" component="h2">
+          Форма создания поля
+        </Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
           <FormControlLabel
             control={<Checkbox onChange={handleChangeIsDefault} size='medium' color="primary" />}
@@ -105,6 +136,7 @@ function CreateFieldPage() {
             color="primary"
             margin="normal"
             onChange={handleChangeName}
+            value={name}
           />
           <TextField
             className={classes.input}
@@ -113,6 +145,7 @@ function CreateFieldPage() {
             color="primary"
             margin="normal"
             onChange={handleChangeLabel}
+            value={label}
           />
           <TextField
             className={classes.input}
@@ -121,13 +154,16 @@ function CreateFieldPage() {
             color="primary"
             margin="normal"
             onChange={handleChangeDescription}
+            value={description}
+
           />
-          <FormControl className={classes.formControl}>
-            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+          <FormControl className={classes.selectWrapper}>
+            <InputLabel id="demo-simple-select-label">Тип поля</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               value={UIType}
               onChange={handleUITypeChange}
+
             >  
               {UI_TYPES.map((type) => (
                 <MenuItem value={type.name}>{type.value}</MenuItem>
@@ -136,22 +172,24 @@ function CreateFieldPage() {
           </FormControl>
           <TextField
             className={classes.input}
-            label="Ед. исчисления"
+            label="Ед. исчисления/измерения"
             variant="outlined"
             color="primary"
             margin="normal"
             onChange={handleChangeUnit}
           />
           <Button
+            className={classes.submitBtn}
             type="submit"
             variant="contained"
             size="large"
             color="primary"
-            disabled={!name}
+            // disabled={!name}
           >
             Добавить
           </Button>
         </form>
+      </Container>
   );
 }
 

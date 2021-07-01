@@ -16,12 +16,12 @@ export const fetchGetCategories = async () => {
   return await axios.get(`/categories`);
 };
 
-export const fetchAddCategory = async (name) => {
-  return await axios.post(`/categories`, { name });
+export const fetchAddCategory = async (data) => {
+  return await axios.post(`/categories`, data);
 };
 
-export const fetchChangeCategory = async ({ _id, name }) => {
-  return await axios.put(`/categories`, { _id, name });
+export const fetchChangeCategory = async (data) => {
+  return await axios.put(`/categories`, data);
 };
 
 export const fetchAddIngredient = async (name) => {

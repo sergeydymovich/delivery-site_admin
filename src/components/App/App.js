@@ -6,12 +6,13 @@ import { useAppInit } from "hooks/useAppInit";
 import OrdersPage from "components/pages/OrdersPage/OrdersPage";
 import ProductsListPage from "components/pages/ProductsPages/ProductsListPage/ProductsListPage";
 import CreateProductsPage from "components/pages/ProductsPages/CreateProductPage/CreateProductPage";
-import CategoriesPage from "components/pages/CategoriesPage/CategoriesPage";
+import CategoriesListPage from "components/pages/CategoriesPages/CategoriesListPage/CategoriesPage";
 import IngredientsPage from "components/pages/IngredientsPage/IngredientsPage";
 import ExtraIngredientsPage from "components/pages/ExtraIngredientsPage/ExtraIngredientsPage";
 import PizzaSizesPage from "components/pages/PizzaSizesPage/PizzaSizesPage";
 import FieldsListPage from "components/pages/FieldsPages/FieldsList/FieldsListPage";
 import CreateFieldPage from "components/pages/FieldsPages/CreateFieldPage/CreateFieldPage";
+import CreateCategoryPage from "components/pages/CategoriesPages/CreateCategoryPage/CreateCategoryPage";
 
 function App() {
   useAppInit();
@@ -24,7 +25,9 @@ function App() {
         <Layout>
           <Redirect from="/" to="/orders" />
           <Route exact strict path="/orders" component={OrdersPage} />
-          <Route path="/categories" component={CategoriesPage} />
+          <Route exact strict path="/categories" component={CategoriesListPage} />
+          <Route path="/categories/create" component={CreateCategoryPage} />
+          <Route path="/categories/change" component={CreateCategoryPage} />
           <Route path="/ingredients" component={IngredientsPage} />
           <Route path="/extra-ingredients" component={ExtraIngredientsPage} />
           <Route exact strict path="/products" component={ProductsListPage} />

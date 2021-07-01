@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import CreateCategoryForm from "./CreateCategoryForm";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategories } from "reducers/categoriesSlice";
+import { getFields } from "reducers/fieldsSlice";
 import {
   Box,
   Button,
@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import CategoriesTable from "./CategoriesTable";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   formWrapper: {
@@ -21,20 +22,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function CategoriesPage() {
-  const categories = useSelector((s) => s.categories.categoriesArr);
-  const [showForm, setShowForm] = useState(false);
+  const categories = useSelector((state) => state.categories.categoriesArr);
+  const fields = useSelector(state => state.fields.fieldsArr);
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  const toggleShowForm = () => {
-    setShowForm((prev) => !prev);
-  };
-
   useEffect(() => {
-    if (!categories.length) {
-      dispatch(getCategories());
+    dispatch(getCategories());
+
+    if (!fields.length) {
+      dispatch(getFields());
     }
-  }, [dispatch, categories.length]);
+  }, [dispatch, fields.length]);
 
   return (
     <Container maxWidth="xl">
@@ -42,19 +41,11 @@ function CategoriesPage() {
         <Typography variant="h4" component="h2">
             Категории
         </Typography>
-        {!showForm && (
-          <Button
-            variant="contained"
-            size="large"
-            color="primary"
-            onClick={toggleShowForm}
-          >
+        <Link className={classes.link} to="/categories/create">
+          <Button variant="contained" size="large" color="primary">
             Добавить категорию
           </Button>
-        )}
-        {showForm &&
-          <CreateCategoryForm toggleShowForm={toggleShowForm} />
-        }  
+        </Link>
       </Box>
       <CategoriesTable />     
     </Container>

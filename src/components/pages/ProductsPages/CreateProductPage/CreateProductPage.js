@@ -183,28 +183,28 @@ function CreateProductPage() {
     }
     
 
-    console.log('точно пошел запрос', typeof product.image);
+    console.log('точно пошел запрос', formData);
 
-    if (location.state) {
-      formData.append("id", location.state.product._id);
+    // if (location.state) {
+    //   formData.append("id", location.state.product._id);
 
-      try {
-        fetchChangeProduct(formData)
-      } catch (e) {
-        console.log(e.response.data.errorMessage);
-      } 
+    //   try {
+    //     fetchChangeProduct(formData)
+    //   } catch (e) {
+    //     console.log(e.response.data.errorMessage);
+    //   } 
     
-    } else {
-      fetchAddProduct(formData) 
-      .then((res) => {
-        const { product } = res.data;
-        dispatch(addProduct(product));
-        reset();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    }
+    // } else {
+    //   fetchAddProduct(formData) 
+    //   .then((res) => {
+    //     const { product } = res.data;
+    //     dispatch(addProduct(product));
+    //     reset();
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    // }
  
   };
 

@@ -20,7 +20,7 @@ function CategoriesTable() {
           <TableHead>
             <TableRow>
               <TableCell>Название</TableCell>
-              <TableCell align="right">Дата создания</TableCell>
+              <TableCell align="right">Поля</TableCell>
               <TableCell align="right">Инструменты</TableCell>
             </TableRow>
           </TableHead>
