@@ -22,6 +22,7 @@ import UploadPhoto from 'components/ui-kit/uploadPhoto/uploadPhoto';
 import { fetchAddProduct, fetchChangeProduct } from 'api/api';
 import { addProduct } from 'reducers/productsSlice';
 import { useLocation } from "react-router-dom";
+import { generateProductFormField } from "utils/generateProductFormField";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -119,7 +120,7 @@ function CreateProductPage() {
   const { control, watch, setValue, reset, handleSubmit, register } = useForm({
      defaultValues:  {
       name: product?.name || "",
-      category: product?.category._id ||"",
+      category: product?.category._id || categories.find((_, i) => i === 0),
       isAvailable: product?.isAvailable || true,
       price: product?.price || "",
       volume: product?.volume || "",
@@ -133,7 +134,6 @@ function CreateProductPage() {
 
    });
   const watchFields = watch();
-  const isPizzaCategory = watchFields.category === '60dafb4274a7c9236c138dcd';
   console.log('watchFields',watchFields)
 
   const onSubmit = (product) => {
@@ -152,7 +152,7 @@ function CreateProductPage() {
     const formData = new FormData();
 ;
     formData.append("name", product.name);
-    formData.append("category", product.category);
+    formData.append("category", product.category._id);
     formData.append("isAvailable", product.isAvailable);
     formData.append("price", product.price);
     formData.append("volume", product.volume);
@@ -252,8 +252,27 @@ function CreateProductPage() {
       <Typography className={classes.title} variant="h4" component="h2">
         Форма создания продукта
       </Typography>
-      <form className={classes.form} onSubmit={handleSubmit(onSubmit)}> 
-        <Box className={classes.fieldsWrapper}>    
+      <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+        <FormControl className={classes.field} variant="outlined">
+          <InputLabel>
+            Категория
+          </InputLabel>
+          <Controller
+            name="category"
+            control={control}
+            render={({ field }) => (
+              <Select label="Категория" {...field}>
+                {categories.map((category) => (
+                  <MenuItem key={category._id} value={category}>
+                    {category.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
+          />
+        </FormControl> 
+         {watchFields.category.fields.map((field) => generateProductFormField({ field, control }))}
+        {/* <Box className={classes.fieldsWrapper}>    
           <UploadPhoto
             handleUploadImage={handleUploadImage}
             handleDeleteImage={handleDeleteImage}
@@ -274,25 +293,6 @@ function CreateProductPage() {
                   />
                 )}
             />  
-            <FormControl className={classes.field} variant="outlined">
-              <InputLabel>
-                Категория
-              </InputLabel>
-              <Controller
-                name="category"
-                control={control}
-                render={({ field }) => (
-                  <Select label="Категория" {...field}>
-                    <MenuItem value=''></MenuItem>
-                    {categories.map((category) => (
-                      <MenuItem key={category._id} value={category._id}>
-                        {category.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                )}
-              />
-            </FormControl>
             <Controller
               name="name"
               control={control}
@@ -390,60 +390,59 @@ function CreateProductPage() {
               )}
             />
 
-            {isPizzaCategory &&
-              <Box className={classes.pizzaSizes}>
-              {pizzaSizes.map((pizzaSize) => (
-                <Box className={classes.pizzaSizeWrapper}>
-                  <Box className={classes.pizzaSizeMainInfo}>
-                    <Typography className={classes.pizzaSizeName} component="p">
-                      {`${pizzaSize.name}(${pizzaSize.size}см)`}
-                    </Typography>
+            <Box className={classes.pizzaSizes}>
+            {pizzaSizes.map((pizzaSize) => (
+              <Box className={classes.pizzaSizeWrapper}>
+                <Box className={classes.pizzaSizeMainInfo}>
+                  <Typography className={classes.pizzaSizeName} component="p">
+                    {`${pizzaSize.name}(${pizzaSize.size}см)`}
+                  </Typography>
+                  <TextField
+                    label="Цена"
+                    variant="outlined"
+                    color="primary"
+                    size='small'
+                  />
+                </Box>
+                <Box className={classes.pizzaDough}>
+                  <Box className={classes.traditionalDough}>
+                    <FormControlLabel
+                      className={classes.pizzaDoughLabel}
+                      control={<Checkbox size='small' color="primary" />}
+                      label="Традиционное:"
+                      labelPlacement="end"
+                    />
                     <TextField
-                      label="Цена"
+                      className={classes.pizzaWeight}
+                      label="Вес"
                       variant="outlined"
                       color="primary"
                       size='small'
                     />
                   </Box>
-                  <Box className={classes.pizzaDough}>
-                    <Box className={classes.traditionalDough}>
-                      <FormControlLabel
-                        className={classes.pizzaDoughLabel}
-                        control={<Checkbox size='small' color="primary" />}
-                        label="Традиционное:"
-                        labelPlacement="end"
-                      />
-                      <TextField
-                        className={classes.pizzaWeight}
-                        label="Вес"
-                        variant="outlined"
-                        color="primary"
-                        size='small'
-                      />
-                    </Box>
-                    <Box className={classes.thinDough}>
-                      <FormControlLabel
-                        className={classes.pizzaDoughLabel}
-                        control={<Checkbox size='small' color="primary" />}
-                        label="Тонкое:"
-                        labelPlacement="end"
-                      />
-                      <TextField
-                        className={classes.pizzaWeight}
-                        label="Вес"
-                        variant="outlined"
-                        color="primary"
-                        size='small'
-                      />
-                    </Box>
+                  <Box className={classes.thinDough}>
+                    <FormControlLabel
+                      className={classes.pizzaDoughLabel}
+                      control={<Checkbox size='small' color="primary" />}
+                      label="Тонкое:"
+                      labelPlacement="end"
+                    />
+                    <TextField
+                      className={classes.pizzaWeight}
+                      label="Вес"
+                      variant="outlined"
+                      color="primary"
+                      size='small'
+                    />
                   </Box>
                 </Box>
-              ))}
-            </Box>       
-            }
+              </Box>
+            ))}
+          </Box>       
+
 
           </Box>
-        </Box> 
+        </Box>  */}
 
         <Button 
           type='submit'
