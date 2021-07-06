@@ -1,26 +1,23 @@
-import {  makeStyles, TextField } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import { Controller } from "react-hook-form";
 
-const useStyles = makeStyles((theme) => ({
 
-}));
-
-function InputText({ control }) {
-  const classes = useStyles();
-
+function InputText({ field, control, className }) {
+  
   return (
     <Controller
-    name="name"
+    name={field.name}
     control={control}
     rules={{ required: true }}
-    className={classes.field}
-    render={({ field, fieldState: { error } }) => (
+    render={({ props, field: { value, onChange } }) => (
       <TextField
-        {...field}
-        error={!!error}
-        label="Text"
+        {...props}
+        label={field.label}
         variant="outlined"
         color="primary"
+        onChange={onChange}
+        value={value}
+        className={className}
       />
     )}
   />  

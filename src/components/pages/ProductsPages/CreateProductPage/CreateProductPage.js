@@ -22,7 +22,9 @@ import UploadPhoto from 'components/ui-kit/uploadPhoto/uploadPhoto';
 import { fetchAddProduct, fetchChangeProduct } from 'api/api';
 import { addProduct } from 'reducers/productsSlice';
 import { useLocation } from "react-router-dom";
-import { generateProductFormField } from "utils/generateProductFormField";
+import InputNumber from 'components/pages/ProductsPages/CreateProductPage/ProductFormFields/InputNumber';
+import InputText from 'components/pages/ProductsPages/CreateProductPage/ProductFormFields/InputText';
+import MultiSelect from "./ProductFormFields/MultiSelect";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -40,12 +42,12 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     marginBottom: '35px',
     width: '100%',
+    minHeight: '500px'
   },
   mainInfo: {
     display: "flex",
     flexDirection: 'column',
-    marginRight: "20px",
-    minWidth: "170px",
+    flexWrap: 'wrap',
   },
   additionalInfo: {
     display: "flex",
@@ -53,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: '500px',
   },
   field: {
-    marginBlock: "10px",
+    marginBottom: "10px",
   },
   uploadContainer: {
     width: '300px',
@@ -235,16 +237,21 @@ function CreateProductPage() {
     setValue('extraIngredients', ingredients)
   }
 
-  useEffect(() => {
-    register('ingredients');
-    register('extraIngredients');
+  // useEffect(() => {
+  //   register('ingredients');
+  //   register('extraIngredients');
 
-    if (location.state) {
-      setValue('ingredients', product.ingredients)
-      setValue('extraIngredients', product.extraIngredients)
-      setValue('image', product.imageSrc)
-    }
-  }, [register])
+  //   if (location.state) {
+  //     setValue('ingredients', product.ingredients)
+  //     setValue('extraIngredients', product.extraIngredients)
+  //     setValue('image', product.imageSrc)
+  //   }
+  // }, [register])
+
+  // useEffect(() => {
+  //   const initActiveCategory = categories.find((_, i) => i === 0);
+  //   initActiveCategory.fields.forEach((field) => register(field.name))
+  // }, [register, categories])
 
 
   return (
@@ -270,15 +277,52 @@ function CreateProductPage() {
               </Select>
             )}
           />
-        </FormControl> 
-         {watchFields.category.fields.map((field) => generateProductFormField({ field, control }))}
-        {/* <Box className={classes.fieldsWrapper}>    
+        </FormControl>
+        <Box className={classes.fieldsWrapper}>
           <UploadPhoto
-            handleUploadImage={handleUploadImage}
-            handleDeleteImage={handleDeleteImage}
-            image={watchFields.image}
-            className={classes.uploadContainer}
+              handleUploadImage={handleUploadImage}
+              handleDeleteImage={handleDeleteImage}
+              image={watchFields.image}
+              className={classes.uploadContainer}
           />
+          <Box className={classes.mainInfo}>
+           {watchFields.category.fields.map((field) => {
+              switch (field.ui_type) {
+                case 'INPUT_TEXT':
+                  return  <InputText
+                            className={classes.field}
+                            field={field}
+                            control={control}
+                          />;
+                case 'INPUT_NUMBER':
+                  return  <InputNumber 
+                            className={classes.field}
+                            field={field}
+                            control={control}
+                          />;
+                case 'MULTI_SELECT_INGREDIENTS':
+                  return  <MultiSelect
+                            className={classes.field}
+                            ingredients={ingredients}
+                            handleChange={handleChangeIngredients}
+                            stateIngredients={watchFields.ingredients}
+                            label={field.label}
+                          />;
+                case 'MULTI_SELECT_EXTRA_INGREDIENTS':
+                  return  <MultiSelect
+                            className={classes.field}
+                            ingredients={extraIngredients}
+                            handleChange={handleChangeExtraIngredients}
+                            stateIngredients={watchFields.extraIngredients}
+                            label={field.label}
+                          />;
+                default:
+                 return <></>;
+            }})}
+          </Box>   
+        </Box> 
+         
+        {/* <Box className={classes.fieldsWrapper}>    
 
           <Box className={classes.mainInfo}>
             <Controller

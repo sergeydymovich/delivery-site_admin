@@ -28,11 +28,7 @@ const UI_TYPES = [
   {
      name: 'INPUT_IMAGE',
      value: 'изображение'
-  }, 
-  {
-    name: 'MULTI_SELECT',
-    value: 'множественный выбор имеющихся элементов + создание новых'
-  }
+  },
 ]
 
 const useStyles = makeStyles((theme) => ({
@@ -81,10 +77,12 @@ function CreateFieldPage() {
         .then((res) => {
           const { field } = res.data;
           dispatch(addField(field));
+          setIsDefault(false);
           setName('');
           setLabel('');
           setDescription('');
           setUIType('');
+          setUnit('');
         })
         .catch((err) => {
           console.log(err);

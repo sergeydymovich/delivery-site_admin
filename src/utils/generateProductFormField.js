@@ -9,6 +9,6 @@ export const generateProductFormField = ({ field, control}) => {
     case 'INPUT_NUMBER':
       return <InputNumber control={control} />;
     default:
-     return <p>неизвестный тип</p>;
+     return <></>;
   }
  }
