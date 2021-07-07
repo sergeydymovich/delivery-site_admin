@@ -29,6 +29,10 @@ const UI_TYPES = [
      name: 'INPUT_IMAGE',
      value: 'изображение'
   },
+  {
+    name: 'SWITCH',
+    value: 'переключатель'
+ },
 ]
 
 const useStyles = makeStyles((theme) => ({

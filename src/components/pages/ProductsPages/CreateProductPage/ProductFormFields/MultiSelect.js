@@ -13,6 +13,7 @@ function MultiSelect({ className, ingredients, handleChange, stateIngredients, l
         getOptionLabel={(option) => option.name}
         onChange={handleChange}
         defaultValue={stateIngredients}
+        value={stateIngredients || []}
         filterSelectedOptions
         freeSolo
         renderTags={(value, getTagProps) =>

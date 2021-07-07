@@ -2,18 +2,13 @@ import React, { useEffect } from "react";
 import {
   Button,
   FormControl,
-  FormControlLabel,
-  InputLabel,
   makeStyles,
   Select,
-  TextField,
-  Switch,
   Container,
-  Chip,
   Typography,
   Box,
   MenuItem,
-  Checkbox
+  InputLabel,
 } from "@material-ui/core";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Controller, useForm } from "react-hook-form";
@@ -24,7 +19,9 @@ import { addProduct } from 'reducers/productsSlice';
 import { useLocation } from "react-router-dom";
 import InputNumber from 'components/pages/ProductsPages/CreateProductPage/ProductFormFields/InputNumber';
 import InputText from 'components/pages/ProductsPages/CreateProductPage/ProductFormFields/InputText';
-import MultiSelect from "./ProductFormFields/MultiSelect";
+import MultiSelect from "components/pages/ProductsPages/CreateProductPage/ProductFormFields/MultiSelect";
+import PizzaSizes from "components/pages/ProductsPages/CreateProductPage/ProductFormFields/PizzaSizes";
+import Switcher from "components/pages/ProductsPages/CreateProductPage/ProductFormFields/Switcher";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -49,10 +46,8 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     flexWrap: 'wrap',
   },
-  additionalInfo: {
-    display: "flex",
-    flexDirection: 'column',
-    minWidth: '500px',
+  categoriesField: {
+    width: '200px',
   },
   field: {
     marginBottom: "10px",
@@ -65,47 +60,6 @@ const useStyles = makeStyles((theme) => ({
   },
   multiSelect: {
     marginBottom: '15px',
-  },
-  pizzaSizeWrapper: {
-    display: 'flex',
-    justifyContent: 'space-around',
-    border: `1px solid ${theme.palette.grey[400]}`,
-    borderRadius: '4px',
-    padding: '10px',
-    marginBottom: '7px',
-    "&:last-child": {
-      marginBottom: '0'
-    }
-  },
-  pizzaSizeMainInfo: {
-    width: '200px',
-    marginRight: '25px',
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'column',
-  },
-  pizzaDough: {
-    width: '100%',
-  },
-  pizzaWeight: {
-    width: '100px',
-  },
-  pizzaDoughLabel: {
-    minWidth: '170px',
-  },
-  traditionalDough: {
-    display: 'flex',
-    width: '100%',
-    marginRight: '10px',
-    marginBottom: '10px',
-  },
-  thinDough: {
-    display: 'flex',
-    width: '100%',
-  },
-  pizzaSizeName: {
-    textTransform: 'capitalize',
-    marginBottom: '10px'
   },
 }));
 
@@ -121,17 +75,7 @@ function CreateProductPage() {
 
   const { control, watch, setValue, reset, handleSubmit, register } = useForm({
      defaultValues:  {
-      name: product?.name || "",
       category: product?.category._id || categories.find((_, i) => i === 0),
-      isAvailable: product?.isAvailable || true,
-      price: product?.price || "",
-      volume: product?.volume || "",
-      weight: product?.weight ||"",
-      image: product?.image || '',
-      ingredients: product?.ingredients || [],
-      extraIngredients: product?.extraIngredients || [],
-      sizes: product?.sizes || [],
-      pizzaSizes: product?.pizzaSizes || '',
      } 
 
    });
@@ -147,7 +91,7 @@ function CreateProductPage() {
     product.ingredients?.forEach((ingredient) =>
       ingredient._id ? ingredientsIds.push(ingredient._id) : newIngredients.push(ingredient.name)
     )
-    product.extraIngredients?.forEach((ingredient) => 
+    product.extra_ingredients?.forEach((ingredient) => 
     ingredient._id ? extraIngredientsIds.push(ingredient._id) : newExtraIngredients.push(ingredient.name)
     )
 
@@ -234,7 +178,7 @@ function CreateProductPage() {
       ingredients[ingredients.length - 1] = { name: ingredients[ingredients.length - 1] }  
     }
 
-    setValue('extraIngredients', ingredients)
+    setValue('extra_ingredients', ingredients)
   }
 
   // useEffect(() => {
@@ -268,7 +212,7 @@ function CreateProductPage() {
             name="category"
             control={control}
             render={({ field }) => (
-              <Select label="Категория" {...field}>
+              <Select className={classes.categoriesField} label="Категория" {...field}>
                 {categories.map((category) => (
                   <MenuItem key={category._id} value={category}>
                     {category.name}
@@ -286,7 +230,7 @@ function CreateProductPage() {
               className={classes.uploadContainer}
           />
           <Box className={classes.mainInfo}>
-           {watchFields.category.fields.map((field) => {
+           {watchFields.category?.fields.map((field) => {
               switch (field.ui_type) {
                 case 'INPUT_TEXT':
                   return  <InputText
@@ -316,178 +260,19 @@ function CreateProductPage() {
                             stateIngredients={watchFields.extraIngredients}
                             label={field.label}
                           />;
+                // case 'PIZZA_SIZES':
+                //   return  <PizzaSizes pizzaSizes={pizzaSizes} />;
+                case 'SWITCH':
+                  return  <Switcher
+                            name={field.name}
+                            label={field.label}
+                            control={control}
+                          />;
                 default:
                  return <></>;
             }})}
           </Box>   
         </Box> 
-         
-        {/* <Box className={classes.fieldsWrapper}>    
-
-          <Box className={classes.mainInfo}>
-            <Controller
-                name="isAvailable"
-                control={control}
-                className={classes.field}
-                render={({ field }) => (
-                  <FormControlLabel
-                    control={<Switch checked={field.value} color="primary" {...field} />}
-                    label="Доступен"
-                    labelPlacement='top'
-                  />
-                )}
-            />  
-            <Controller
-              name="name"
-              control={control}
-              rules={{ required: true }}
-              className={classes.field}
-              render={({ field, fieldState: { error } }) => (
-                <TextField
-                  {...field}
-                  error={!!error}
-                  label="Название"
-                  variant="outlined"
-                  color="primary"
-                />
-              )}
-            />           
-            <Controller
-              name="price"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Цена"
-                  variant="outlined"
-                  color="primary"
-                  className={classes.field}
-                />
-              )}
-            /> 
-            <Controller
-              name="weight"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Вес"
-                  variant="outlined"
-                  color="primary"
-                  className={classes.field}
-                />
-              )}
-            /> 
-            <Controller
-              name="volume"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Объем"
-                  variant="outlined"
-                  color="primary"
-                  className={classes.field}
-                />
-              )}
-            />  
-          </Box>
-    
-          <Box className={classes.additionalInfo}>
-            <Autocomplete
-              className={classes.multiSelect}
-              multiple
-              id="tags-filled"
-              options={ingredients}
-              getOptionLabel={(option) => option.name}
-              onChange={handleChangeIngredients}
-              defaultValue={watchFields.ingredients}
-              filterSelectedOptions
-              freeSolo
-              renderTags={(value, getTagProps) =>
-                value.map((option, index) => (
-                  <Chip variant="outlined" label={option.name} {...getTagProps({ index })} />
-                ))
-              }
-              renderInput={(params) => (
-                <TextField {...params} variant="outlined" label="ингредиенты" placeholder="добавить..." />
-              )}
-            />
-
-            <Autocomplete
-              className={classes.multiSelect}
-              multiple
-              id="tags-filled"
-              options={extraIngredients}
-              getOptionLabel={(option) => option.name}
-              onChange={handleChangeExtraIngredients}
-              defaultValue={watchFields.extraIngredients}
-              filterSelectedOptions
-              freeSolo
-              renderTags={(value, getTagProps) =>
-                value.map((option, index) => (
-                  <Chip variant="outlined" label={option.name} {...getTagProps({ index })} />
-                ))
-              }
-              renderInput={(params) => (
-                <TextField {...params} variant="outlined" label="Доп ингредиенты" placeholder="добавить..." />
-              )}
-            />
-
-            <Box className={classes.pizzaSizes}>
-            {pizzaSizes.map((pizzaSize) => (
-              <Box className={classes.pizzaSizeWrapper}>
-                <Box className={classes.pizzaSizeMainInfo}>
-                  <Typography className={classes.pizzaSizeName} component="p">
-                    {`${pizzaSize.name}(${pizzaSize.size}см)`}
-                  </Typography>
-                  <TextField
-                    label="Цена"
-                    variant="outlined"
-                    color="primary"
-                    size='small'
-                  />
-                </Box>
-                <Box className={classes.pizzaDough}>
-                  <Box className={classes.traditionalDough}>
-                    <FormControlLabel
-                      className={classes.pizzaDoughLabel}
-                      control={<Checkbox size='small' color="primary" />}
-                      label="Традиционное:"
-                      labelPlacement="end"
-                    />
-                    <TextField
-                      className={classes.pizzaWeight}
-                      label="Вес"
-                      variant="outlined"
-                      color="primary"
-                      size='small'
-                    />
-                  </Box>
-                  <Box className={classes.thinDough}>
-                    <FormControlLabel
-                      className={classes.pizzaDoughLabel}
-                      control={<Checkbox size='small' color="primary" />}
-                      label="Тонкое:"
-                      labelPlacement="end"
-                    />
-                    <TextField
-                      className={classes.pizzaWeight}
-                      label="Вес"
-                      variant="outlined"
-                      color="primary"
-                      size='small'
-                    />
-                  </Box>
-                </Box>
-              </Box>
-            ))}
-          </Box>       
-
-
-          </Box>
-        </Box>  */}
-
         <Button 
           type='submit'
           variant="contained"
