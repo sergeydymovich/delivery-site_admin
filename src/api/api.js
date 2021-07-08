@@ -64,8 +64,16 @@ export const fetchGetPizzaSizes = async () => {
   return await axios.get(`/pizza-sizes`);
 };
 
-export const fetchChangePizzaSize = async ({ _id, size }) => {
-  return await axios.put(`/pizza-sizes`, { _id, size });
+export const fetchAddPizzaSize = async (data) => {
+  return await axios.post(`/pizza-sizes`, data);
+};
+
+export const fetchChangePizzaSize = async (data) => {
+  return await axios.put(`/pizza-sizes`, data);
+};
+
+export const fetchDeletePizzaSize = async (data) => {
+  return await axios.delete(`/pizza-sizes`, { data });
 };
 
 export const fetchGetFields = async () => {
@@ -74,4 +82,12 @@ export const fetchGetFields = async () => {
 
 export const fetchAddField = async (data) => {
   return await axios.post(`/fields`, data);
+};
+
+export const fetchChangeField = async (data) => {
+  return await axios.put(`/fields`, data);
+};
+
+export const fetchDeleteField = async (data) => {
+  return await axios.delete(`/fields`, { data });
 };

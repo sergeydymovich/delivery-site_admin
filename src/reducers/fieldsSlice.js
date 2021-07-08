@@ -23,6 +23,14 @@ export const fieldsSlice = createSlice({
     addField: (state, action) => {
       state.fieldsArr.push(action.payload);
     },
+    changeField: (state, action) => {
+      state.fieldsArr = state.fieldsArr.map((field) => (
+        field._id === action.payload._id ? action.payload : field
+      ));
+    },
+    deleteField: (state, action) => {
+      state.fieldsArr = state.fieldsArr.filter((field) => field._id !== action.payload);
+    },
   },
   extraReducers: {
     [getFields.pending]: () => {},
@@ -33,6 +41,6 @@ export const fieldsSlice = createSlice({
   },
 });
 
-export const { addField, } = fieldsSlice.actions;
+export const { addField, changeField, deleteField } = fieldsSlice.actions;
 
 export default fieldsSlice.reducer;

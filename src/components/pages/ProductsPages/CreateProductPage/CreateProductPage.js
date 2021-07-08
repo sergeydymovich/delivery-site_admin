@@ -260,8 +260,8 @@ function CreateProductPage() {
                             stateIngredients={watchFields.extraIngredients}
                             label={field.label}
                           />;
-                // case 'PIZZA_SIZES':
-                //   return  <PizzaSizes pizzaSizes={pizzaSizes} />;
+                case 'PIZZA_SIZES':
+                  return  <PizzaSizes pizzaSizes={pizzaSizes} />;
                 case 'SWITCH':
                   return  <Switcher
                             name={field.name}

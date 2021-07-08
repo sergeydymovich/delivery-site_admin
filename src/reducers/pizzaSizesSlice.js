@@ -7,7 +7,7 @@ export const getPizzaSizes = createAsyncThunk(
     try {
       const response = await fetchGetPizzaSizes();
 
-      return response.data.pizzaSizes;
+      return response.data.pizza_sizes;
     } catch (e) {
       return rejectWithValue(e.response.data.errorMessage);
     }
@@ -20,11 +20,17 @@ export const pizzaSizesSlice = createSlice({
     pizzaSizesArr: [],
   },
   reducers: {
+    addPizzaSize: (state, action) => {
+      state.pizzaSizesArr.push(action.payload);
+    },
     changePizzaSize: (state, action) => {
       state.pizzaSizesArr = state.pizzaSizesArr.map((pizzaSize) => (
         pizzaSize._id === action.payload._id ? action.payload : pizzaSize
       ));
-    }
+    },
+    deletePizzaSize: (state, action) => {
+      state.pizzaSizesArr = state.pizzaSizesArr.filter((size) => size._id !== action.payload);
+    },
   },
   extraReducers: {
     [getPizzaSizes.pending]: () => {},
@@ -35,6 +41,6 @@ export const pizzaSizesSlice = createSlice({
   },
 });
 
-export const { changePizzaSize } = pizzaSizesSlice.actions;
+export const { addPizzaSize, changePizzaSize, deletePizzaSize } = pizzaSizesSlice.actions;
 
 export default pizzaSizesSlice.reducer;

@@ -10,11 +10,12 @@ import {
   Container,
   Typography,
 } from "@material-ui/core";
-import React, { useState } from "react";
-import { fetchAddField } from "api/api";
-import { addField } from "reducers/fieldsSlice";
+import React, { useEffect, useState } from "react";
+import { fetchAddField, fetchChangeField } from "api/api";
+import { addField, changeField } from "reducers/fieldsSlice";
 import { useDispatch } from "react-redux";
 import { Checkbox } from "@material-ui/core";
+import { useLocation } from "react-router-dom";
 
 const UI_TYPES = [
   { 
@@ -32,7 +33,16 @@ const UI_TYPES = [
   {
     name: 'SWITCH',
     value: 'переключатель'
- },
+  },
+  {
+    name: 'MULTI_SELECT_INGREDIENTS',
+    value: 'мультиселект'
+  },
+  {
+    name: 'PIZZA_SIZES',
+    value: 'размеры пиццы'
+  },
+  
 ]
 
 const useStyles = makeStyles((theme) => ({
@@ -51,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
   submitBtn: {
     marginTop: '30px',
-  }
+  },
 }));
 
 function CreateFieldPage() {
@@ -61,37 +71,52 @@ function CreateFieldPage() {
   const [description, setDescription] = useState("");
   const [UIType, setUIType] = useState('');
   const [unit, setUnit] = useState("");
+  const isValidField = name && label && description && UIType;
   const classes = useStyles();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (name && label && description && UIType) {
-      const dataObj = {
-        name,
-        label,
-        description,
-        is_default: isDefault,
-        unit,
-        ui_type: UIType
-      }
-  
-      fetchAddField(dataObj)
-        .then((res) => {
-          const { field } = res.data;
-          dispatch(addField(field));
-          setIsDefault(false);
-          setName('');
-          setLabel('');
-          setDescription('');
-          setUIType('');
-          setUnit('');
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    const dataObj = {
+      name,
+      label,
+      description,
+      is_default: isDefault,
+      unit,
+      ui_type: UIType
     }
+
+    if (location.state) {
+      dataObj._id = location.state.field._id;
+
+      fetchChangeField(dataObj)
+      .then((res) => {
+        const { field } = res.data;
+        dispatch(changeField(field));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    } else {
+      fetchAddField(dataObj)
+      .then((res) => {
+        const { field } = res.data;
+        dispatch(addField(field));
+        setIsDefault(false);
+        setName('');
+        setLabel('');
+        setDescription('');
+        setUIType('');
+        setUnit('');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+  
+
   };
 
   const handleChangeName = (e) => {
@@ -118,7 +143,17 @@ function CreateFieldPage() {
     setUnit(e.target.value);
   };
 
-
+  useEffect(() => {
+    if (location.state) {
+      const { name, label, description, is_default, unit, ui_type } = location.state.field;
+      setName(name);
+      setLabel(label);
+      setDescription(description);
+      setIsDefault(is_default);
+      setUIType(ui_type);
+      setUnit(unit);
+    }
+  }, [location])
 
   return (
       <Container>
@@ -127,8 +162,13 @@ function CreateFieldPage() {
         </Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
           <FormControlLabel
-            control={<Checkbox onChange={handleChangeIsDefault} size='medium' color="primary" />}
-            label="Базовое поле"
+            control={<Checkbox 
+                      onChange={handleChangeIsDefault}
+                      value={isDefault}
+                      size='medium'
+                      color="primary"
+                    />}
+            label="Базовое поле(для всех продуктов)"
             labelPlacement="start"
           />
           <TextField
@@ -186,7 +226,7 @@ function CreateFieldPage() {
             variant="contained"
             size="large"
             color="primary"
-            // disabled={!name}
+            disabled={!isValidField}
           >
             Добавить
           </Button>
