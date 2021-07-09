@@ -15,7 +15,7 @@ import { fetchAddField, fetchChangeField } from "api/api";
 import { addField, changeField } from "reducers/fieldsSlice";
 import { useDispatch } from "react-redux";
 import { Checkbox } from "@material-ui/core";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 
 const UI_TYPES = [
   { 
@@ -46,6 +46,9 @@ const UI_TYPES = [
 ]
 
 const useStyles = makeStyles((theme) => ({
+  title: {
+    marginBottom: '30px',
+  },
   form: {
     display: 'flex',
     flexDirection: 'column',
@@ -75,6 +78,7 @@ function CreateFieldPage() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const location = useLocation();
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -95,6 +99,7 @@ function CreateFieldPage() {
       .then((res) => {
         const { field } = res.data;
         dispatch(changeField(field));
+        history.push('/fields');
       })
       .catch((err) => {
         console.log(err);
@@ -104,19 +109,13 @@ function CreateFieldPage() {
       .then((res) => {
         const { field } = res.data;
         dispatch(addField(field));
-        setIsDefault(false);
-        setName('');
-        setLabel('');
-        setDescription('');
-        setUIType('');
-        setUnit('');
+        history.push('/fields');
       })
       .catch((err) => {
         console.log(err);
       });
     }
   
-
   };
 
   const handleChangeName = (e) => {
@@ -157,8 +156,8 @@ function CreateFieldPage() {
 
   return (
       <Container>
-        <Typography variant="h4" component="h2">
-          Форма создания поля
+        <Typography className={classes.title} variant="h4" component="h2">
+          {location.state ? 'Форма редактирования поля' : 'Форма создания поля'}  
         </Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
           <FormControlLabel
@@ -228,7 +227,7 @@ function CreateFieldPage() {
             color="primary"
             disabled={!isValidField}
           >
-            Добавить
+            {location.state ? 'Изменить' : 'Добавить'}
           </Button>
         </form>
       </Container>

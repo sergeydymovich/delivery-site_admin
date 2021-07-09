@@ -10,7 +10,7 @@ function CategoriesTableRow({ category }) {
             <TableCell component="th" scope="row">
               {category.name}
             </TableCell>
-            <TableCell align="right">
+            <TableCell align='center'>
               {category.fields.map((field) => field.label).join(', ')}
             </TableCell>
             <TableCell component="th" align="right" scope="row">

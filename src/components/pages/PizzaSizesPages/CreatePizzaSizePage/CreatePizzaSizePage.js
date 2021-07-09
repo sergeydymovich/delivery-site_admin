@@ -12,7 +12,7 @@ import {
 import { Button } from "@material-ui/core";
 import { IconButton } from "@material-ui/core";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -51,6 +51,7 @@ function CreatePizzaSizePage() {
   const [doughArr, setDoughArr] = useState([]);
   const classes = useStyles();
   const location = useLocation();
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
@@ -67,7 +68,8 @@ function CreatePizzaSizePage() {
       fetchChangePizzaSize(dataObj)
       .then((res) => {
         const { pizza_size } = res.data;
-        dispatch(changePizzaSize(pizza_size))
+        dispatch(changePizzaSize(pizza_size));
+        history.push('/pizza-sizes');
       })
       .catch((err) => {
         console.log(err);
@@ -76,7 +78,8 @@ function CreatePizzaSizePage() {
       fetchAddPizzaSize(dataObj)
       .then((res) => {
         const { pizza_size } = res.data;
-        dispatch(addPizzaSize(pizza_size))
+        dispatch(addPizzaSize(pizza_size));
+        history.push('/pizza-sizes');
       })
       .catch((err) => {
         console.log(err);
@@ -123,7 +126,7 @@ function CreatePizzaSizePage() {
   return (
       <Container>
         <Typography className={classes.title} variant="h4" component="h2">
-          Форма создания размера пиццы
+          {location.state ? 'Форма редактирования размера пиццы' : 'Форма создания размера пиццы'}
         </Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
           <TextField
@@ -178,7 +181,7 @@ function CreatePizzaSizePage() {
             color="primary"
             disabled={!name || !size || !doughArr.length}
           >
-            Добавить
+            {location.state ? 'Изменить' : 'Добавить'}
           </Button>
         </form>   
       </Container>

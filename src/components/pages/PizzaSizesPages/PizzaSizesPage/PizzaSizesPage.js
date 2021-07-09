@@ -42,7 +42,6 @@ function PizzaSizesPage() {
     });
   }
 
-
   useEffect(() => {
     if (!pizzaSizes.length) {
       dispatch(getPizzaSizes());

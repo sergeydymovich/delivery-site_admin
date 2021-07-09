@@ -6,6 +6,9 @@ import { Link } from "react-router-dom";
 import cn from "classnames/bind";
 
 const useStyles = makeStyles((theme) => ({
+  tableRow: {
+    height: '80px',
+  },
   baseField: {
     backgroundColor: theme.palette.grey[100],
   },
@@ -20,6 +23,7 @@ function FieldsTableRow({ field, handleDeleteField, pizzaSizes }) {
   return (
           <TableRow 
             className={cn({
+              [classes.tableRow]: true,
               [classes.baseField]: field.is_base,
               [classes.noPizzaSizes]: field.name === 'pizza_sizes' && !pizzaSizes,
             })}

@@ -15,7 +15,7 @@ import {
 } from "@material-ui/core";
 import { ListItem } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -50,6 +50,7 @@ function CreateCategoryPage() {
   const countDefaultFields = rightFields.filter((field) => field.is_default).length;
   const classes = useStyles();
   const location = useLocation();
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
@@ -66,6 +67,7 @@ function CreateCategoryPage() {
       .then((res) => {
         const { category } = res.data;
         dispatch(changeCategory(category));
+        history.push('/categories');
       })
       .catch((err) => {
         console.log(err);
@@ -78,6 +80,7 @@ function CreateCategoryPage() {
         .then((res) => {
           const { category } = res.data;
           dispatch(addCategory(category));
+          history.push('/categories');
         })
         .catch((err) => {
           console.log(err);

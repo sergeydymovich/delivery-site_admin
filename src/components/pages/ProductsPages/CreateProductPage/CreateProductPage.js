@@ -181,6 +181,10 @@ function CreateProductPage() {
     setValue('extra_ingredients', ingredients)
   }
 
+  const handleChangePizzaSizes = (sizesArr) => {
+    setValue('pizza_sizes', sizesArr);
+  }
+
   // useEffect(() => {
   //   register('ingredients');
   //   register('extraIngredients');
@@ -196,7 +200,6 @@ function CreateProductPage() {
   //   const initActiveCategory = categories.find((_, i) => i === 0);
   //   initActiveCategory.fields.forEach((field) => register(field.name))
   // }, [register, categories])
-
 
   return (
     <Container>
@@ -245,15 +248,16 @@ function CreateProductPage() {
                             control={control}
                           />;
                 case 'MULTI_SELECT_INGREDIENTS':
-                  return  <MultiSelect
+                  return field.name === 'ingredients' ?
+                          <MultiSelect
                             className={classes.field}
                             ingredients={ingredients}
                             handleChange={handleChangeIngredients}
                             stateIngredients={watchFields.ingredients}
                             label={field.label}
-                          />;
-                case 'MULTI_SELECT_EXTRA_INGREDIENTS':
-                  return  <MultiSelect
+                          />
+                          :
+                          <MultiSelect
                             className={classes.field}
                             ingredients={extraIngredients}
                             handleChange={handleChangeExtraIngredients}
@@ -261,7 +265,10 @@ function CreateProductPage() {
                             label={field.label}
                           />;
                 case 'PIZZA_SIZES':
-                  return  <PizzaSizes pizzaSizes={pizzaSizes} />;
+                  return  <PizzaSizes
+                            pizzaSizes={pizzaSizes}
+                            handleChangePizzaSizes={handleChangePizzaSizes}
+                          />;
                 case 'SWITCH':
                   return  <Switcher
                             name={field.name}

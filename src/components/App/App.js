@@ -9,7 +9,7 @@ import CreateProductsPage from "components/pages/ProductsPages/CreateProductPage
 import CategoriesListPage from "components/pages/CategoriesPages/CategoriesListPage/CategoriesPage";
 import IngredientsPage from "components/pages/IngredientsPage/IngredientsPage";
 import ExtraIngredientsPage from "components/pages/ExtraIngredientsPage/ExtraIngredientsPage";
-import PizzaSizesPage from "components/pages/PizzaSizesPages/PizzaSizesListPage/PizzaSizesPage";
+import PizzaSizesPage from "components/pages/PizzaSizesPages/PizzaSizesPage/PizzaSizesPage";
 import CreatePizzaSizePage from "components/pages/PizzaSizesPages/CreatePizzaSizePage/CreatePizzaSizePage";
 import FieldsListPage from "components/pages/FieldsPages/FieldsList/FieldsListPage";
 import CreateFieldPage from "components/pages/FieldsPages/CreateFieldPage/CreateFieldPage";
