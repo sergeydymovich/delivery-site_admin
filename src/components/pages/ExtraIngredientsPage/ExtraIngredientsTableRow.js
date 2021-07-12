@@ -96,8 +96,8 @@ function  ExtraIngredientsTableRow({ ingredient }) {
   }
 
   useEffect(() => {
-    const { imageSrc, name, price } = ingredient;
-    setNewIngredientImage(imageSrc);
+    const { image_src, name, price } = ingredient;
+    setNewIngredientImage(image_src);
     setNewIngredientName(name);
     setNewIngredientPrice(price);
   }, [ingredient])
@@ -121,7 +121,7 @@ function  ExtraIngredientsTableRow({ ingredient }) {
               <Avatar
                 className={classes.imageWrapper}
                 alt="extra-ingredient"
-                src={ingredient.imageSrc}
+                src={ingredient.image_src}
               />
             }
             {isEditMode && 

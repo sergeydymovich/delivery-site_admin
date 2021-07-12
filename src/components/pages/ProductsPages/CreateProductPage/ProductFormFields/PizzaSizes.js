@@ -1,5 +1,4 @@
 import { Box, Checkbox, FormControlLabel, makeStyles, TextField, Typography } from "@material-ui/core";
-import { useEffect, useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   pizzaSizeWrapper: {
@@ -39,18 +38,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function PizzaSizes({ pizzaSizes, handleChangePizzaSizes }) {
-  const [pizzaArr, setPizzaArr] = useState([]);
   const classes = useStyles();
 
   const handleChangePizzaPrice = (price, sizeId) => {
-    const updatedPizzaArr = pizzaArr.map((pizzaSize) => (
+    const updatedPizzaArr = pizzaSizes.map((pizzaSize) => (
       pizzaSize._id === sizeId ? {...pizzaSize, price} : pizzaSize
     ))
-    setPizzaArr(updatedPizzaArr);
+    handleChangePizzaSizes(updatedPizzaArr);
   }
 
   const toggleIncludeDough = (sizeId, doughName) => {
-    const updatedPizzaArr = pizzaArr.map((size) => {
+    const updatedPizzaArr = pizzaSizes.map((size) => {
         if (size._id === sizeId) {
           return {...size, dough: size.dough.map((doughItem) => (
             doughItem.name === doughName ? {...doughItem, is_active: !doughItem.is_active} : doughItem
@@ -60,11 +58,11 @@ function PizzaSizes({ pizzaSizes, handleChangePizzaSizes }) {
           return size
         }       
       })
-    setPizzaArr(updatedPizzaArr);
+    handleChangePizzaSizes(updatedPizzaArr);
   }
 
   const handleChangeDoughWeight = (weight, sizeId, doughName) => {
-    const updatedPizzaArr = pizzaArr.map((size) => {
+    const updatedPizzaArr = pizzaSizes.map((size) => {
        if (size._id === sizeId) {
         return {...size, dough: size.dough.map((doughItem) => (
           doughItem.name === doughName ? {...doughItem, weight} : doughItem
@@ -74,22 +72,12 @@ function PizzaSizes({ pizzaSizes, handleChangePizzaSizes }) {
          return size
        }   
     })
-    setPizzaArr(updatedPizzaArr);
+    handleChangePizzaSizes(updatedPizzaArr);
   }
 
-  useEffect(() => {
-    setPizzaArr(pizzaSizes);
-  }, [pizzaSizes]);
-
-  useEffect(() => {
-    if (pizzaArr.length) {
-      handleChangePizzaSizes(pizzaArr);
-    }
-  }, [JSON.stringify(pizzaArr)]);
- 
   return (
     <Box className={classes.pizzaSizes}>
-    {pizzaArr.map((pizzaSize) => (
+    {pizzaSizes.map((pizzaSize) => (
       <Box className={classes.pizzaSizeWrapper}>
         <Box className={classes.pizzaSizeMainInfo}>
           <Typography className={classes.pizzaSizeName} component="p">

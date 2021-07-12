@@ -10,7 +10,7 @@ function Switcher({ name, label, control }) {
     control={control}
     render={({ field }) => (
       <FormControlLabel
-        control={<Switch checked={field.value} color="primary" {...field} />}
+        control={<Switch checked={field.value ?? true} color="primary" {...field} />}
         label={label}
         labelPlacement='top'
       />

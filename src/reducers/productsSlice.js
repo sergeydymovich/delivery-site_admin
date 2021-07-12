@@ -47,7 +47,7 @@ export const productsSlice = createSlice({
     [getProducts.pending]: () => {},
     [getProducts.fulfilled]: (state, action) => {
       state.productsArr = action.payload.products;
-      state.requestOptions.pagesAmount = Math.ceil(action.payload.productsAmount / PRODUCTS_PAGE_SIZE);  
+      state.requestOptions.pagesAmount = Math.ceil(action.payload.products_amount / PRODUCTS_PAGE_SIZE);  
     },
     [getProducts.rejected]: () => {},
   },

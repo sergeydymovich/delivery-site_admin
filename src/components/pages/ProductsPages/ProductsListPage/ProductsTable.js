@@ -66,14 +66,14 @@ function ProductsTable() {
                 <Avatar
                   className={classes.imageWrapper}
                   alt="extra-ingredient"
-                  src={product.imageSrc}
+                  src={product.image_src}
                 />
               </TableCell>
               <TableCell component="th" align="right" scope="row">
-                {product.price}
+                {product.price ?? '-'}
               </TableCell>
               <TableCell component="th" align="right" scope="row">
-                {product.weight} гр.
+                {product.weight ?? '-'} гр.
               </TableCell>
               <TableCell component="th" align="right" scope="row">
                 {product.category.name}
@@ -82,7 +82,7 @@ function ProductsTable() {
                 {product.ingredients.map((ingredient) => ingredient.name + ",")}
               </TableCell>
               <TableCell component="th" align="right" scope="row">
-                {product.extraIngredients.map((ingredient) => ingredient.name + ",")}
+                {product.extra_ingredients.map((ingredient) => ingredient.name + ",")}
               </TableCell>
               <TableCell align="right">
                 {new Date(product.createdAt).toLocaleDateString()}

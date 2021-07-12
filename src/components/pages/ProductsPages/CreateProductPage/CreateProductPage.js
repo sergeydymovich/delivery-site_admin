@@ -10,13 +10,11 @@ import {
   MenuItem,
   InputLabel,
 } from "@material-ui/core";
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Controller, useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import UploadPhoto from 'components/ui-kit/uploadPhoto/uploadPhoto';
 import { fetchAddProduct, fetchChangeProduct } from 'api/api';
-import { addProduct } from 'reducers/productsSlice';
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import InputNumber from 'components/pages/ProductsPages/CreateProductPage/ProductFormFields/InputNumber';
 import InputText from 'components/pages/ProductsPages/CreateProductPage/ProductFormFields/InputText';
 import MultiSelect from "components/pages/ProductsPages/CreateProductPage/ProductFormFields/MultiSelect";
@@ -71,13 +69,13 @@ function CreateProductPage() {
   const extraIngredients = useSelector((state) => state.extraIngredients.extraIngredientsArr);
   const pizzaSizes = useSelector((state) => state.pizzaSizes.pizzaSizesArr);
   const classes = useStyles();
-  const dispatch = useDispatch();
+  const history = useHistory();
 
   const { control, watch, setValue, reset, handleSubmit, register } = useForm({
      defaultValues:  {
-      category: product?.category._id || categories.find((_, i) => i === 0),
+      category: categories.length && categories[0],
+      is_available: true,
      } 
-
    });
   const watchFields = watch();
   console.log('watchFields',watchFields)
@@ -96,73 +94,78 @@ function CreateProductPage() {
     )
 
     const formData = new FormData();
-;
-    formData.append("name", product.name);
-    formData.append("category", product.category._id);
-    formData.append("isAvailable", product.isAvailable);
-    formData.append("price", product.price);
-    formData.append("volume", product.volume);
-    formData.append("weight", product.weight);
 
     if (ingredientsIds.length) {
       formData.append("ingredients", ingredientsIds);
     }
     
     if (extraIngredientsIds.length) {
-      formData.append("extraIngredients", extraIngredientsIds);
+      formData.append("extra_ingredients", extraIngredientsIds);
     }
     
     if (newIngredients.length) {
-      formData.append("newIngredients", newIngredients);
+      formData.append("new_ingredients", newIngredients);
     }
 
     if (newExtraIngredients.length) {
-      formData.append("newExtraIngredients", newExtraIngredients);
+      formData.append("new_extra_ingredients", newExtraIngredients);
     }
 
-
-    if (typeof product.image === 'object') {
-      formData.append("image", product.image, product.image.name);
+    if (typeof product.image_src === 'object') {
+      formData.append("image", product.image_src, product.image_src.name);
     } else {
-        const img = product.image.length ? product.image : "";
+        const img = product.image_src.length ? product.image_src : "";
         formData.append("image", img);
     }
+
+    if (product.pizza_sizes) {
+      formData.append('pizza_sizes', JSON.stringify(product.pizza_sizes))
+    }
+
+    formData.append('category', product.category._id);
+
+
+    for (const key in product) {
+      if (
+        key !== 'ingredients' &&
+        key !== 'extra_ingredients' &&
+        key !== 'image_src' &&
+        key !== 'category' &&
+        key !== 'pizza_sizes'
+      ) {
+        formData.append(key, product[key])
+      }
+    }
+  
+    if (location.state) {
+      formData.append("_id", location.state.product._id);
+
+      try {
+        fetchChangeProduct(formData);
+        history.push('/products');
+      } catch (e) {
+        console.log(e.response.data.errorMessage);
+      } 
     
-
-    console.log('точно пошел запрос', formData);
-
-    // if (location.state) {
-    //   formData.append("id", location.state.product._id);
-
-    //   try {
-    //     fetchChangeProduct(formData)
-    //   } catch (e) {
-    //     console.log(e.response.data.errorMessage);
-    //   } 
-    
-    // } else {
-    //   fetchAddProduct(formData) 
-    //   .then((res) => {
-    //     const { product } = res.data;
-    //     dispatch(addProduct(product));
-    //     reset();
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-    // }
- 
+    } else {
+        try {
+          fetchAddProduct(formData);
+          history.push('/products');
+        } catch (e) {
+          console.log(e.response.data.errorMessage);
+        } 
+      }
   };
 
   const handleUploadImage = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setValue('image', file);
+      setValue('image_src', file);
     }
   }
 
   const handleDeleteImage = () => {  
-    setValue('image', '');
+    setValue('image_src', '');
   };
 
   const handleChangeIngredients = (e, ingredients) => {
@@ -185,51 +188,57 @@ function CreateProductPage() {
     setValue('pizza_sizes', sizesArr);
   }
 
-  // useEffect(() => {
-  //   register('ingredients');
-  //   register('extraIngredients');
+  useEffect(() => {
+    register('ingredients');
+    register('extra_ingredients');
+    register('category');
 
-  //   if (location.state) {
-  //     setValue('ingredients', product.ingredients)
-  //     setValue('extraIngredients', product.extraIngredients)
-  //     setValue('image', product.imageSrc)
-  //   }
-  // }, [register])
+    if (product) {
+      for (const key in product) {
+        if (key === 'category') {
+          const activeCategory = categories.find((category) => category._id === product.category._id)
+          setValue(key, activeCategory);
+        } else {
+          setValue(key, product[key])
+        }   
+      }
+    } 
+  }, []) 
 
-  // useEffect(() => {
-  //   const initActiveCategory = categories.find((_, i) => i === 0);
-  //   initActiveCategory.fields.forEach((field) => register(field.name))
-  // }, [register, categories])
+  const handleChangeCategory = (e) => {
+    reset({}, { keepDefaultValues: true });
+    setValue('category', e.target.value);
+  }
 
   return (
     <Container>
       <Typography className={classes.title} variant="h4" component="h2">
-        Форма создания продукта
+        Форма {location.state ? 'редактирования' : 'создания'} продукта
       </Typography>
       <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
         <FormControl className={classes.field} variant="outlined">
           <InputLabel>
             Категория
           </InputLabel>
-          <Controller
-            name="category"
-            control={control}
-            render={({ field }) => (
-              <Select className={classes.categoriesField} label="Категория" {...field}>
-                {categories.map((category) => (
-                  <MenuItem key={category._id} value={category}>
-                    {category.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            )}
-          />
+            <Select
+              className={classes.categoriesField}
+              disabled={!!location.state}
+              label="Категория"
+              onChange={handleChangeCategory}
+              value={watchFields.category}
+            >
+              {categories.map((category) => (
+                <MenuItem key={category._id} value={category}>
+                  {category.name}
+                </MenuItem>
+              ))}
+            </Select>
         </FormControl>
         <Box className={classes.fieldsWrapper}>
           <UploadPhoto
               handleUploadImage={handleUploadImage}
               handleDeleteImage={handleDeleteImage}
-              image={watchFields.image}
+              image={watchFields.image_src}
               className={classes.uploadContainer}
           />
           <Box className={classes.mainInfo}>
@@ -237,12 +246,14 @@ function CreateProductPage() {
               switch (field.ui_type) {
                 case 'INPUT_TEXT':
                   return  <InputText
+                            key={field._id}
                             className={classes.field}
                             field={field}
                             control={control}
                           />;
                 case 'INPUT_NUMBER':
                   return  <InputNumber 
+                            key={field._id}
                             className={classes.field}
                             field={field}
                             control={control}
@@ -250,6 +261,7 @@ function CreateProductPage() {
                 case 'MULTI_SELECT_INGREDIENTS':
                   return field.name === 'ingredients' ?
                           <MultiSelect
+                            key={field._id}
                             className={classes.field}
                             ingredients={ingredients}
                             handleChange={handleChangeIngredients}
@@ -258,19 +270,22 @@ function CreateProductPage() {
                           />
                           :
                           <MultiSelect
+                            key={field._id}
                             className={classes.field}
                             ingredients={extraIngredients}
                             handleChange={handleChangeExtraIngredients}
-                            stateIngredients={watchFields.extraIngredients}
+                            stateIngredients={watchFields.extra_ingredients}
                             label={field.label}
                           />;
                 case 'PIZZA_SIZES':
                   return  <PizzaSizes
-                            pizzaSizes={pizzaSizes}
+                            key={field._id}
+                            pizzaSizes={watchFields.pizza_sizes ?? pizzaSizes}
                             handleChangePizzaSizes={handleChangePizzaSizes}
                           />;
                 case 'SWITCH':
                   return  <Switcher
+                            key={field._id}
                             name={field.name}
                             label={field.label}
                             control={control}
@@ -286,7 +301,7 @@ function CreateProductPage() {
           size="large"
           color="primary"
         >
-          Добавить
+          {location.state ? 'Изменить' : "Добавить"}
         </Button>
       </form>
     </Container>
