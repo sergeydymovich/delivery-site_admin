@@ -71,12 +71,7 @@ function CreateProductPage() {
   const classes = useStyles();
   const history = useHistory();
 
-  const { control, watch, setValue, reset, handleSubmit, register } = useForm({
-     defaultValues:  {
-      category: categories.length && categories[0],
-      is_available: true,
-     } 
-   });
+  const { control, watch, setValue, reset, handleSubmit, register } = useForm();
   const watchFields = watch();
   console.log('watchFields',watchFields)
 
@@ -95,20 +90,17 @@ function CreateProductPage() {
 
     const formData = new FormData();
 
-    if (ingredientsIds.length) {
+    if (watchFields.category.name === 'пицца') {
       formData.append("ingredients", ingredientsIds);
-    }
-    
-    if (extraIngredientsIds.length) {
       formData.append("extra_ingredients", extraIngredientsIds);
-    }
-    
-    if (newIngredients.length) {
-      formData.append("new_ingredients", newIngredients);
-    }
 
-    if (newExtraIngredients.length) {
-      formData.append("new_extra_ingredients", newExtraIngredients);
+      if (newIngredients.length) {
+        formData.append("new_ingredients", newIngredients);
+      }
+  
+      if (newExtraIngredients.length) {
+        formData.append("new_extra_ingredients", newExtraIngredients);
+      }
     }
 
     if (typeof product.image_src === 'object') {
@@ -199,6 +191,7 @@ function CreateProductPage() {
     register('ingredients');
     register('extra_ingredients');
     register('category');
+    register('is_available');
 
     if (product) {
       for (const key in product) {
@@ -209,7 +202,10 @@ function CreateProductPage() {
           setValue(key, product[key])
         }   
       }
-    } 
+    } else {
+      setValue('category', categories[0]);
+      setValue('is_available', true)
+    }
   }, []) 
 
   return (

@@ -74,16 +74,16 @@ function ProductsTable() {
                 {product.price ?? '-'}
               </TableCell>
               <TableCell component="th" align="right" scope="row">
-                {product.weight ?? '-'} гр.
+                {product.weight ? `${product.weight}гр.` : '-'}
               </TableCell>
               <TableCell component="th" align="right" scope="row">
                 {product.category.name}
               </TableCell>
               <TableCell component="th" align="right" scope="row">
-                {product.ingredients.map((ingredient) => ingredient.name + ",")}
+                {product.ingredients?.map((ingredient) => ingredient.name).join(', ')}
               </TableCell>
               <TableCell component="th" align="right" scope="row">
-                {product.extra_ingredients.map((ingredient) => ingredient.name + ",")}
+                {product.extra_ingredients?.map((ingredient) => ingredient.name).join(', ')}
               </TableCell>
               <TableCell align="right">
                 {new Date(product.createdAt).toLocaleDateString()}
