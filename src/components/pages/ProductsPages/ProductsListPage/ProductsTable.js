@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { changeActivePage } from 'reducers/productsSlice';
 import Pagination from '@material-ui/lab/Pagination';
+import { cfg } from 'config';
 
 const useStyles = makeStyles((theme) => ({
   imageWrapper: {
@@ -66,7 +67,7 @@ function ProductsTable() {
                 <Avatar
                   className={classes.imageWrapper}
                   alt="extra-ingredient"
-                  src={product.image_src}
+                  src={`${cfg.imageBaseUrl}${product.image_src}`}
                 />
               </TableCell>
               <TableCell component="th" align="right" scope="row">

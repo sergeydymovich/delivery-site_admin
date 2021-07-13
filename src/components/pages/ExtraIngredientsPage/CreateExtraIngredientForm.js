@@ -44,16 +44,14 @@ function CreateExtraIngredientForm({ toggleShowForm }) {
     
     if (image) {
       formData.append("image", image, image.name);
-    } else {
-      formData.append("image", '');
-    }
+    } 
     
     formData.append("name", name);
     formData.append("price", price);
 
     fetchAddExtraIngredient(formData)
       .then((res) => {
-        dispatch(addExtraIngredient(res.data));
+        dispatch(addExtraIngredient(res.data.ingredient));
         setName("");
         setPrice("");
         setImage("");

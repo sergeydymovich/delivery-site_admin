@@ -115,7 +115,7 @@ function CreateProductPage() {
       formData.append("image", product.image_src, product.image_src.name);
     } else {
         const img = product.image_src.length ? product.image_src : "";
-        formData.append("image", img);
+        formData.append("image_src", img);
     }
 
     if (product.pizza_sizes) {
@@ -158,6 +158,7 @@ function CreateProductPage() {
   };
 
   const handleChangeCategory = (e) => {
+    console.log(e.target.value)
     reset({});
     setValue('category', e.target.value);
     setValue('is_available', true);

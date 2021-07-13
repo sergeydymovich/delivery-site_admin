@@ -1,6 +1,7 @@
 import { Box, IconButton, makeStyles } from "@material-ui/core";
 import React from "react";
 import { PhotoCamera, Close } from "@material-ui/icons";
+import { cfg } from 'config';
 
 const useStyles = makeStyles((theme) => ({
   inputImage: {
@@ -63,7 +64,7 @@ function UploadPhoto({ handleUploadImage, handleDeleteImage, image, className })
           <Box className={classes.imageWrapper}>
             <img
               className={classes.image}
-              src={typeof image === "string" ? image : URL.createObjectURL(image)}
+              src={typeof image === "string" ? `${cfg.imageBaseUrl}${image}` : URL.createObjectURL(image)}
               alt="product"
             />
             <IconButton

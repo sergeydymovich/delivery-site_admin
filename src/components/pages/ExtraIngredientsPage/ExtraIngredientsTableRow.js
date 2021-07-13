@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { changeExtraIngredient } from "reducers/extraIngredientsSlice";
 import { Avatar } from "@material-ui/core";
 import UploadPhoto from "components/ui-kit/uploadPhoto/uploadPhoto";
+import { cfg } from 'config';
 
 const useStyles = makeStyles((theme) => ({
   formWrapper: {
@@ -46,8 +47,7 @@ function  ExtraIngredientsTableRow({ ingredient }) {
       if (typeof newIngredientImage === 'object') {
         formData.append("image", newIngredientImage, newIngredientImage.name);
       } else {
-          const img = newIngredientImage.length ? newIngredientImage : "";
-          formData.append("image", img);
+          formData.append("image_src", newIngredientImage);
       }
 
       formData.append("name", newIngredientName);
@@ -57,8 +57,7 @@ function  ExtraIngredientsTableRow({ ingredient }) {
 
       fetchChangeExtraIngredient(formData)
       .then((res) => {
-        const ingredient = res.data;
-        dispatch(changeExtraIngredient(ingredient));
+        dispatch(changeExtraIngredient(res.data.ingredient));
         setIsEditMode(false);
       })
       .catch((err) => {
@@ -121,7 +120,7 @@ function  ExtraIngredientsTableRow({ ingredient }) {
               <Avatar
                 className={classes.imageWrapper}
                 alt="extra-ingredient"
-                src={ingredient.image_src}
+                src={`${cfg.imageBaseUrl}${ingredient.image_src}`}
               />
             }
             {isEditMode && 
