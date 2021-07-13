@@ -157,6 +157,12 @@ function CreateProductPage() {
       }
   };
 
+  const handleChangeCategory = (e) => {
+    reset({});
+    setValue('category', e.target.value);
+    setValue('is_available', true);
+  }
+
   const handleUploadImage = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -204,11 +210,6 @@ function CreateProductPage() {
       }
     } 
   }, []) 
-
-  const handleChangeCategory = (e) => {
-    reset({}, { keepDefaultValues: true });
-    setValue('category', e.target.value);
-  }
 
   return (
     <Container>

@@ -78,7 +78,7 @@ function PizzaSizes({ pizzaSizes, handleChangePizzaSizes }) {
   return (
     <Box className={classes.pizzaSizes}>
     {pizzaSizes.map((pizzaSize) => (
-      <Box className={classes.pizzaSizeWrapper}>
+      <Box key={pizzaSize.name} className={classes.pizzaSizeWrapper}>
         <Box className={classes.pizzaSizeMainInfo}>
           <Typography className={classes.pizzaSizeName} component="p">
             {`${pizzaSize.name}(${pizzaSize.size}см)`}
@@ -94,7 +94,7 @@ function PizzaSizes({ pizzaSizes, handleChangePizzaSizes }) {
         </Box>
         <Box className={classes.pizzaDough}>
           {pizzaSize.dough.map((dough) => (
-            <Box className={classes.traditionalDough}>
+            <Box key={dough.createdAt} className={classes.traditionalDough}>
               <FormControlLabel
                 className={classes.pizzaDoughLabel}
                 control={
