@@ -3,9 +3,9 @@ import { IconButton, TableCell, TableRow, TextField } from "@material-ui/core";
 import CreateIcon from "@material-ui/icons/Create";
 import CloseIcon from '@material-ui/icons/Close';
 import CheckIcon from '@material-ui/icons/Check';
-import { fetchChangeIngredient} from "api/api";
+import { ingredientsApi } from "api/api";
 import { useDispatch } from "react-redux";
-import { changeIngredient } from "reducers/ingredientsSlice";
+import { editIngredient } from "reducers/ingredientsSlice";
 
 
 function IngredientsTableRow({ ingredient }) {
@@ -14,19 +14,17 @@ function IngredientsTableRow({ ingredient }) {
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-
     if (newIngredientName) {
-      fetchChangeIngredient({name: newIngredientName, _id: ingredient._id})
+      ingredientsApi.edit({name: newIngredientName, _id: ingredient._id})
       .then((res) => {
         const { ingredient } = res.data;
-        dispatch(changeIngredient(ingredient));
+        dispatch(editIngredient(ingredient));
         setIsEditMode(false);
       })
       .catch((err) => {
         console.log(err);
       });
     }
-
   }
 
   const handleChangeIngredientName = (e) => {

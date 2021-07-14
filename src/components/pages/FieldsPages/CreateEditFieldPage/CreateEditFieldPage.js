@@ -11,8 +11,8 @@ import {
   Typography,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { fetchAddField, fetchChangeField } from "api/api";
-import { addField, changeField } from "reducers/fieldsSlice";
+import { fieldsApi } from "api/api";
+import { addField, editField } from "reducers/fieldsSlice";
 import { useDispatch } from "react-redux";
 import { Checkbox } from "@material-ui/core";
 import { useLocation, useHistory } from "react-router-dom";
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CreateFieldPage() {
+function CreateEditFieldPage() {
   const [isDefault, setIsDefault] = useState(false);
   const [name, setName] = useState("");
   const [label, setLabel] = useState("");
@@ -95,17 +95,17 @@ function CreateFieldPage() {
     if (location.state) {
       dataObj._id = location.state.field._id;
 
-      fetchChangeField(dataObj)
+      fieldsApi.edit(dataObj)
       .then((res) => {
         const { field } = res.data;
-        dispatch(changeField(field));
+        dispatch(editField(field));
         history.push('/fields');
       })
       .catch((err) => {
         console.log(err);
       });
     } else {
-      fetchAddField(dataObj)
+      fieldsApi.edit(dataObj)
       .then((res) => {
         const { field } = res.data;
         dispatch(addField(field));
@@ -114,8 +114,7 @@ function CreateFieldPage() {
       .catch((err) => {
         console.log(err);
       });
-    }
-  
+    } 
   };
 
   const handleChangeName = (e) => {
@@ -234,4 +233,4 @@ function CreateFieldPage() {
   );
 }
 
-export default CreateFieldPage;
+export default CreateEditFieldPage;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { fetchAddCategory, fetchChangeCategory } from "api/api";
-import { addCategory, changeCategory } from "reducers/categoriesSlice";
+import { categoriesApi } from "api/api";
+import { addCategory, editCategory } from "reducers/categoriesSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CreateCategoryPage() {
+function CreateEditCategoryPage() {
   const fields = useSelector(state => state.fields.fieldsArr);
   const [name, setName] = useState("");
   const [leftFields, setLeftFields] = useState([]);
@@ -59,21 +59,21 @@ function CreateCategoryPage() {
 
 
     if (location.state) {
-      fetchChangeCategory({
+      categoriesApi.edit({
         _id: location.state.category._id,
         name,
         fields: categoryFields
       })
       .then((res) => {
         const { category } = res.data;
-        dispatch(changeCategory(category));
+        dispatch(editCategory(category));
         history.push('/categories');
       })
       .catch((err) => {
         console.log(err);
       });
     } else {
-      fetchAddCategory({
+      categoriesApi.create({
         name,
         fields: categoryFields
       })
@@ -251,4 +251,4 @@ function CreateCategoryPage() {
   );
 }
 
-export default CreateCategoryPage;
+export default CreateEditCategoryPage;

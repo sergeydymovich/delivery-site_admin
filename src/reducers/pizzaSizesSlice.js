@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchGetPizzaSizes } from "api/api";
+import { pizzaSizesApi } from "api/api";
 
 export const getPizzaSizes = createAsyncThunk(
-  "/pizza-sizes",
+  "pizza-sizes/get",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetchGetPizzaSizes();
+      const response = await pizzaSizesApi.get();
 
       return response.data.pizza_sizes;
     } catch (e) {
@@ -23,7 +23,7 @@ export const pizzaSizesSlice = createSlice({
     addPizzaSize: (state, action) => {
       state.pizzaSizesArr.push(action.payload);
     },
-    changePizzaSize: (state, action) => {
+    editPizzaSize: (state, action) => {
       state.pizzaSizesArr = state.pizzaSizesArr.map((pizzaSize) => (
         pizzaSize._id === action.payload._id ? action.payload : pizzaSize
       ));
@@ -41,6 +41,6 @@ export const pizzaSizesSlice = createSlice({
   },
 });
 
-export const { addPizzaSize, changePizzaSize, deletePizzaSize } = pizzaSizesSlice.actions;
+export const { addPizzaSize, editPizzaSize, deletePizzaSize } = pizzaSizesSlice.actions;
 
 export default pizzaSizesSlice.reducer;

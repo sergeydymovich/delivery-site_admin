@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchLogin } from "api/api";
+import { authApi } from "api/api";
 
 export const login = createAsyncThunk(
   "auth/login",
   async ({ phone, password }, { rejectWithValue }) => {
-    try {
-      const response = await fetchLogin(phone, password);
+    try {   
+      const response = await authApi.login({ phone, password });
       const { user, token } = response.data;
 
       return { user, token };

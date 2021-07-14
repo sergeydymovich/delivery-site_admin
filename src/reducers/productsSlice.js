@@ -1,14 +1,14 @@
 import {  createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchGetProducts } from "api/api";
+import { productsApi } from "api/api";
 
 const PRODUCTS_PAGE_SIZE = 1;
 
 export const getProducts = createAsyncThunk(
-  "/products",
+  "products/get",
   async (_, { rejectWithValue, getState }) => {
     try {
       const { activePage, filterWord } = getState().products.requestOptions;
-      const response = await fetchGetProducts({
+      const response = await productsApi.get({
         pageSize: PRODUCTS_PAGE_SIZE,
         offset: (activePage - 1) * PRODUCTS_PAGE_SIZE,
         filterWord

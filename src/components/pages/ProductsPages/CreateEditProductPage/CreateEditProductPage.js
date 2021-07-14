@@ -13,13 +13,13 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import UploadPhoto from 'components/ui-kit/uploadPhoto/uploadPhoto';
-import { fetchAddProduct, fetchChangeProduct } from 'api/api';
+import { productsApi } from 'api/api';
 import { useLocation, useHistory } from "react-router-dom";
-import InputNumber from 'components/pages/ProductsPages/CreateProductPage/ProductFormFields/InputNumber';
-import InputText from 'components/pages/ProductsPages/CreateProductPage/ProductFormFields/InputText';
-import MultiSelect from "components/pages/ProductsPages/CreateProductPage/ProductFormFields/MultiSelect";
-import PizzaSizes from "components/pages/ProductsPages/CreateProductPage/ProductFormFields/PizzaSizes";
-import Switcher from "components/pages/ProductsPages/CreateProductPage/ProductFormFields/Switcher";
+import InputNumber from 'components/pages/ProductsPages/CreateEditProductPage/ProductFormFields/InputNumber';
+import InputText from 'components/pages/ProductsPages/CreateEditProductPage/ProductFormFields/InputText';
+import MultiSelect from "components/pages/ProductsPages/CreateEditProductPage/ProductFormFields/MultiSelect";
+import PizzaSizes from "components/pages/ProductsPages/CreateEditProductPage/ProductFormFields/PizzaSizes";
+import Switcher from "components/pages/ProductsPages/CreateEditProductPage/ProductFormFields/Switcher";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CreateProductPage() {
+function CreateEditProductPage() {
   const location = useLocation();
   const { product } = location.state || {};
   const categories = useSelector((state) => state.categories.categoriesArr);
@@ -71,7 +71,12 @@ function CreateProductPage() {
   const classes = useStyles();
   const history = useHistory();
 
-  const { control, watch, setValue, reset, handleSubmit, register } = useForm();
+  const { control, watch, setValue, reset, handleSubmit, register } = useForm({
+    defaultValues: {
+      category: categories[0],
+      is_available: true,
+    }
+  });
   const watchFields = watch();
   console.log('watchFields',watchFields)
 
@@ -133,7 +138,7 @@ function CreateProductPage() {
       formData.append("_id", location.state.product._id);
 
       try {
-        fetchChangeProduct(formData);
+        productsApi.edit(formData);
         history.push('/products');
       } catch (e) {
         console.log(e.response.data.errorMessage);
@@ -141,7 +146,7 @@ function CreateProductPage() {
     
     } else {
         try {
-          fetchAddProduct(formData);
+          productsApi.create(formData);
           history.push('/products');
         } catch (e) {
           console.log(e.response.data.errorMessage);
@@ -151,7 +156,7 @@ function CreateProductPage() {
 
   const handleChangeCategory = (e) => {
     console.log(e.target.value)
-    reset({});
+    reset();
     setValue('category', e.target.value);
     setValue('is_available', true);
   }
@@ -191,22 +196,18 @@ function CreateProductPage() {
     register('ingredients');
     register('extra_ingredients');
     register('category');
-    register('is_available');
 
     if (product) {
-      for (const key in product) {
-        if (key === 'category') {
-          const activeCategory = categories.find((category) => category._id === product.category._id)
-          setValue(key, activeCategory);
-        } else {
-          setValue(key, product[key])
-        }   
-      }
+      const activeCategory = categories.find((category) => category._id === product.category._id);
+
+      setValue('category', activeCategory);
+      activeCategory.fields.forEach((field) => {
+          setValue(field.name, product[field.name])
+      })
     } else {
       setValue('category', categories[0]);
-      setValue('is_available', true)
     }
-  }, []) 
+  }, [product]) 
 
   return (
     <Container>
@@ -306,4 +307,4 @@ function CreateProductPage() {
   );
 }
 
-export default CreateProductPage;
+export default CreateEditProductPage;

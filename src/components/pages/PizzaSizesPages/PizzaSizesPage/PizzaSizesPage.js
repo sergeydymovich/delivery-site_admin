@@ -16,7 +16,7 @@ import {
 import PizzaSizesTableRow from "./PizzaSizesTableRow";
 import { Box } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { fetchDeletePizzaSize } from 'api/api';
+import { pizzaSizesApi } from 'api/api';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -33,7 +33,7 @@ function PizzaSizesPage() {
   const classes = useStyles();
 
   const handleDeletePizzaSize = (id) => { 
-    fetchDeletePizzaSize({ _id: id })
+    pizzaSizesApi.delete({ _id: id })
     .then((res) => {
       dispatch(deletePizzaSize(id));
     })

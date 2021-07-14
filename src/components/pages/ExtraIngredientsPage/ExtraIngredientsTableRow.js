@@ -3,9 +3,9 @@ import { IconButton, makeStyles, TableCell, TableRow, TextField } from "@materia
 import CreateIcon from "@material-ui/icons/Create";
 import CloseIcon from '@material-ui/icons/Close';
 import CheckIcon from '@material-ui/icons/Check';
-import { fetchChangeExtraIngredient } from "api/api";
+import { extraIngredientsApi } from "api/api";
 import { useDispatch } from "react-redux";
-import { changeExtraIngredient } from "reducers/extraIngredientsSlice";
+import { editExtraIngredient } from "reducers/extraIngredientsSlice";
 import { Avatar } from "@material-ui/core";
 import UploadPhoto from "components/ui-kit/uploadPhoto/uploadPhoto";
 import { cfg } from 'config';
@@ -55,9 +55,9 @@ function  ExtraIngredientsTableRow({ ingredient }) {
       formData.append("_id", ingredient._id);
 
 
-      fetchChangeExtraIngredient(formData)
+      extraIngredientsApi.edit(formData)
       .then((res) => {
-        dispatch(changeExtraIngredient(res.data.ingredient));
+        dispatch(editExtraIngredient(res.data.ingredient));
         setIsEditMode(false);
       })
       .catch((err) => {

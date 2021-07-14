@@ -2,7 +2,7 @@ import React from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteField } from "reducers/fieldsSlice";
-import { fetchDeleteField } from "api/api";
+import { fieldsApi } from "api/api";
 import FieldsTableRow from "components/pages/FieldsPages/FieldsList/FieldsTableRow";
 
 
@@ -13,7 +13,7 @@ function FieldsTable() {
   const dispatch = useDispatch();
 
   const handleDeleteField = (id) => { 
-    fetchDeleteField({ _id: id })
+    fieldsApi.delete({ _id: id })
     .then((res) => {
       dispatch(deleteField(id));
     })

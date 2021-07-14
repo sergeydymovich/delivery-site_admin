@@ -3,91 +3,93 @@ import axios from "axios";
 const API_BASE = "http://localhost:5000";
 axios.defaults.baseURL = API_BASE;
 
-export const fetchLogin = async (phone, password) => {
-  return await axios.post(`/login`, { phone, password });
+
+export const authApi = {
+  login: async (data) => {
+     return await axios.post(`/login`, data);
+    },
 };
 
-export const fetchGetOrders = async ({ startDate, endDate, pageSize, offset, filterWord }) => {
-
-  return await axios.get(`/orders?startDate=${startDate}&endDate=${endDate}&limit=${pageSize}&offset=${offset}&filterWord=${filterWord}`);
+export const ordersApi = {
+  get: async ({ startDate, endDate, pageSize, offset, filterWord }) => {
+    return await axios.get(`/orders?startDate=${startDate}&endDate=${endDate}&limit=${pageSize}&offset=${offset}&filterWord=${filterWord}`);
+  },
 };
 
-export const fetchGetCategories = async () => {
-  return await axios.get(`/categories`);
+export const categoriesApi = {
+  get: async () => {
+    return await axios.get(`/categories`);
+  },
+  create: async (data) => {
+    return await axios.post(`/categories`, data);
+  },
+  edit: async (data) => {
+    return await axios.put(`/categories`, data);
+  },
 };
 
-export const fetchAddCategory = async (data) => {
-  return await axios.post(`/categories`, data);
+export const ingredientsApi = {
+  get: async () => {
+    return await axios.get(`/ingredients`);
+  },
+  create: async (name) => {
+    return await axios.post(`/ingredients`, { name });
+  },
+  edit: async (data) => {
+    return await axios.put(`/ingredients`, data);
+  },
 };
 
-export const fetchChangeCategory = async (data) => {
-  return await axios.put(`/categories`, data);
+export const extraIngredientsApi = {
+  get: async () => {
+    return await axios.get(`/extra-ingredients`);
+  },
+  create: async (data) => {
+    return await axios.post(`/extra-ingredients`, data);
+  },
+  edit: async (data) => {
+    return await axios.put(`/extra-ingredients`, data);
+  },
 };
 
-export const fetchAddIngredient = async (name) => {
-  return await axios.post(`/ingredients`, { name });
+export const productsApi = {
+  get: async ({ pageSize, offset, filterWord }) => {
+    return await axios.get(`/products?limit=${pageSize}&offset=${offset}&filter_word=${filterWord}`)
+  },
+  create: async (data) => {
+    return await axios.post(`/products`, data);
+  },
+  edit: async (data) => {
+    return await axios.put(`/products`, data);
+  }
 };
 
-export const fetchChangeIngredient = async ({ _id, name }) => {
-  return await axios.put(`/ingredients`, { _id, name });
+export const pizzaSizesApi = {
+  get: async () => {
+    return await axios.get(`/pizza-sizes`);
+  },
+  create: async (data) => {
+    return await axios.post(`/pizza-sizes`, data);
+  },
+  edit: async (data) => {
+    return await axios.put(`/pizza-sizes`, data);
+  },
+  delete: async (data) => {
+    return await axios.delete(`/pizza-sizes`, { data });
+  }
 };
 
-export const fetchGetIngredients = async () => {
-  return await axios.get(`/ingredients`);
-};
-
-export const fetchAddExtraIngredient = async (data) => {
-  return await axios.post(`/extra-ingredients`, data);
-};
-
-export const fetchChangeExtraIngredient = async (data) => {
-  return await axios.put(`/extra-ingredients`, data);
-};
-
-export const fetchGetExtraIngredients = async () => {
-  return await axios.get(`/extra-ingredients`);
-};
-
-export const fetchGetProducts = async ({ pageSize, offset, filterWord }) => {
-  return await axios.get(`/products?limit=${pageSize}&offset=${offset}&filter_word=${filterWord}`)
-};
-
-export const fetchAddProduct = async (data) => {
-  return await axios.post(`/products`, data);
-};
-
-export const fetchChangeProduct = async (data) => {
-  return await axios.put(`/products`, data);
-};
-
-export const fetchGetPizzaSizes = async () => {
-  return await axios.get(`/pizza-sizes`);
-};
-
-export const fetchAddPizzaSize = async (data) => {
-  return await axios.post(`/pizza-sizes`, data);
-};
-
-export const fetchChangePizzaSize = async (data) => {
-  return await axios.put(`/pizza-sizes`, data);
-};
-
-export const fetchDeletePizzaSize = async (data) => {
-  return await axios.delete(`/pizza-sizes`, { data });
-};
-
-export const fetchGetFields = async () => {
-  return await axios.get(`/fields`);
-};
-
-export const fetchAddField = async (data) => {
-  return await axios.post(`/fields`, data);
-};
-
-export const fetchChangeField = async (data) => {
-  return await axios.put(`/fields`, data);
-};
-
-export const fetchDeleteField = async (data) => {
-  return await axios.delete(`/fields`, { data });
+export const fieldsApi = {
+  get: async () => {
+    return await axios.get(`/fields`);
+  },
+  create: async (data) => {
+    return await axios.post(`/fields`, data);
+  },
+  edit: async (data) => {
+    return await axios.put(`/fields`, data);
+  },
+  delete: async (data) => {
+    return await axios.delete(`/fields`, { data });
+  },
 };

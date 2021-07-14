@@ -6,7 +6,7 @@ import {
 } from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
 import React, { useState } from "react";
-import { fetchAddExtraIngredient } from "api/api";
+import { extraIngredientsApi } from "api/api";
 import { addExtraIngredient } from "reducers/extraIngredientsSlice";
 import { useDispatch } from "react-redux";
 import UploadPhoto from "components/ui-kit/uploadPhoto/uploadPhoto";
@@ -49,7 +49,7 @@ function CreateExtraIngredientForm({ toggleShowForm }) {
     formData.append("name", name);
     formData.append("price", price);
 
-    fetchAddExtraIngredient(formData)
+    extraIngredientsApi.create(formData)
       .then((res) => {
         dispatch(addExtraIngredient(res.data.ingredient));
         setName("");

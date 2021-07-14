@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchGetCategories } from "api/api";
+import { categoriesApi } from "api/api";
 
 export const getCategories = createAsyncThunk(
-  "/categories",
+  "categories/get",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetchGetCategories();
+      const response = await categoriesApi.get();
 
       return response.data.categories;
     } catch (e) {
@@ -23,7 +23,7 @@ export const categoriesSlice = createSlice({
     addCategory: (state, action) => {
       state.categoriesArr.push(action.payload);
     },
-    changeCategory: (state, action) => {
+    editCategory: (state, action) => {
       state.categoriesArr = state.categoriesArr.map((category) => (
         category._id === action.payload._id ? action.payload : category
       ));
@@ -38,6 +38,6 @@ export const categoriesSlice = createSlice({
   },
 });
 
-export const { addCategory, changeCategory } = categoriesSlice.actions;
+export const { addCategory, editCategory } = categoriesSlice.actions;
 
 export default categoriesSlice.reducer;

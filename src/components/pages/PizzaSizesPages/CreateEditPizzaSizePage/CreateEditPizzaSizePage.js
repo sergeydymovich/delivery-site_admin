@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { fetchAddPizzaSize, fetchChangePizzaSize } from 'api/api';
-import { addPizzaSize, changePizzaSize } from 'reducers/pizzaSizesSlice';
+import { pizzaSizesApi } from 'api/api';
+import { addPizzaSize, editPizzaSize } from 'reducers/pizzaSizesSlice';
 import {
   makeStyles,
   Container,
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function CreatePizzaSizePage() {
+function CreateEditPizzaSizePage() {
   const [name, setName] = useState('');
   const [size, setSize] = useState('');
   const [dough, setDough] = useState('');
@@ -65,17 +65,17 @@ function CreatePizzaSizePage() {
 
     if (location.state) {
       dataObj._id = location.state.pizzaSize._id
-      fetchChangePizzaSize(dataObj)
+      pizzaSizesApi.edit(dataObj)
       .then((res) => {
         const { pizza_size } = res.data;
-        dispatch(changePizzaSize(pizza_size));
+        dispatch(editPizzaSize(pizza_size));
         history.push('/pizza-sizes');
       })
       .catch((err) => {
         console.log(err);
       });
     } else {
-      fetchAddPizzaSize(dataObj)
+      pizzaSizesApi.create(dataObj)
       .then((res) => {
         const { pizza_size } = res.data;
         dispatch(addPizzaSize(pizza_size));
@@ -188,4 +188,4 @@ function CreatePizzaSizePage() {
   );
 }
 
-export default CreatePizzaSizePage;
+export default CreateEditPizzaSizePage;

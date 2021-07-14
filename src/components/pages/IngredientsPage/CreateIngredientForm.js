@@ -6,7 +6,7 @@ import {
 } from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
 import React, { useState } from "react";
-import { fetchAddIngredient } from "api/api";
+import { ingredientsApi } from "api/api";
 import { addIngredient } from "reducers/ingredientsSlice";
 import { useDispatch } from "react-redux";
 
@@ -32,7 +32,7 @@ function CreateIngredientForm({ toggleShowForm }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetchAddIngredient(name)
+    ingredientsApi.create(name)
       .then((res) => {
         const { ingredient } = res.data;
         dispatch(addIngredient(ingredient));

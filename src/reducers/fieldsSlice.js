@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchGetFields } from "api/api";
+import { fieldsApi} from "api/api";
 
 export const getFields = createAsyncThunk(
-  "/fields",
+  "fields/get",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetchGetFields();
+      const response = await fieldsApi.get();
 
       return response.data.fields;
     } catch (e) {
@@ -23,7 +23,7 @@ export const fieldsSlice = createSlice({
     addField: (state, action) => {
       state.fieldsArr.push(action.payload);
     },
-    changeField: (state, action) => {
+    editField: (state, action) => {
       state.fieldsArr = state.fieldsArr.map((field) => (
         field._id === action.payload._id ? action.payload : field
       ));
@@ -41,6 +41,6 @@ export const fieldsSlice = createSlice({
   },
 });
 
-export const { addField, changeField, deleteField } = fieldsSlice.actions;
+export const { addField, editField, deleteField } = fieldsSlice.actions;
 
 export default fieldsSlice.reducer;

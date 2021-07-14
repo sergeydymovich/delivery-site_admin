@@ -1,16 +1,16 @@
 import {  createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchGetOrders } from "api/api";
+import { ordersApi } from "api/api";
 
 const ORDERS_PAGE_SIZE = 10;
 
 export const getOrders = createAsyncThunk(
-  "/orders",
+  "orders/get",
   async (params, { rejectWithValue, getState }) => {
     try {
       const { startDate, endDate, noLimit } = params;
       const { activePage, filterWord } = getState().orders.requestOptions;
 
-      const response = await fetchGetOrders({
+      const response = await ordersApi.get({
         startDate: startDate || '',
         endDate: endDate || '',
         pageSize: noLimit ? '' : ORDERS_PAGE_SIZE,
